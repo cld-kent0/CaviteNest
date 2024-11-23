@@ -27,7 +27,7 @@ const IdUpload: React.FC<IdUploadProps> = ({ onChange, value }) => {
       {/* Front Image Upload */}
       <CldUploadWidget
         onSuccess={(result) => handleUpload(result, "front")}
-        uploadPreset="fsvzne6s"
+        uploadPreset="CaviteNest"
         options={{ maxFiles: 1 }}
       >
         {({ open }) => (
