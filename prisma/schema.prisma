@@ -1,0 +1,313 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  LESSOR
+  LESSEE
+}
+
+enum Plan {
+  free
+  premium
+  business
+}
+
+enum SubscriptionPeriod {
+  quarterly
+  yearly
+}
+
+enum IdType{
+  passport
+  drivers_license
+  identity
+}
+
+enum IdStatus{
+  verified 
+  pending
+  unverified
+  rejected
+}
+
+enum SubscriptionStatus {
+  NONE        // No subscription yet
+  ACTIVE      //CANCELLED, PAUSED, ARCHIVED
+  CANCELLED   //ACTIVE, ARCHIVED
+  EXPIRED     //ACTIVE, ARCHIVED
+  UNDER_REVIEW
+}
+
+enum PaymentStatus {
+  UNDER_REVIEW
+  PENDING
+  APPROVED
+  DECLINED
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum PaymentMethodType {
+  STRIPE
+  GCASH
+  OTHER
+}
+
+
+model User {
+  id                 String    @id @default(auto()) @map("_id") @db.ObjectId
+  name               String?
+  email              String?   @unique
+  emailVerified      DateTime?
+  idStatus           IdStatus? @default(unverified)
+  idFront            String?
+  idBack             String?
+  idType             IdType?
+  profileCreated     Boolean   @default(false)
+  image              String?
+  hashedPassword     String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  favoriteIds        String[]  @db.ObjectId
+  resetToken         String? // Field for storing the password reset token
+  resetTokenExpiry   DateTime? // Field for storing the expiration time of the reset token
+  resetPasswordToken String?
+  is_archived        Boolean   @default(false) // New field to mark account as archived
+
+  plan               Plan     @default(free)
+  customerId         String?  //@unique //unqueness is remove bacause upon registration it will ecounter error // Stripe customer ID, this will be important when we need to delete the subscription
+  //subscriptionStatus  SubscriptionStatus? @default(NONE) // Status for subscriptions
+  Subscription       Subscription? @relation
+  GcashPayment       GcashPayment[]
+
+  role UserRole     @default(LESSEE) // Default role is 'LESSEE'
+
+  conversationIds String[]       @db.ObjectId
+  conversations   Conversation[] @relation(fields: [conversationIds], references: [id])
+
+  seenMessageIds String[]  @db.ObjectId
+  seenMessages   Message[] @relation("Seen", fields: [seenMessageIds], references: [id])
+
+  accounts     Account[]
+  message      Message[]
+  listings     Listing[]
+  profile      Profile[]
+  reservations Reservation[]
+  verification VerificationToken[]
+
+}
+
+model Subscription {
+  id     String             @id @default(cuid()) @map("_id") // this is use for prisma (cuid()) @map("_id") not auto
+  userId String             @unique @db.ObjectId
+  plan   Plan
+  period SubscriptionPeriod
+  priceId   String?             // Stripe Price ID to track the specific plan
+  subscriptionStatus  SubscriptionStatus? // Status for subscriptions - kapag nag subscribe si user then mag aactivate ito sa webhook - dars
+  paymentMethodType    PaymentMethodType? @default(STRIPE)
+  
+  startDate DateTime @default(now())
+  endDate   DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gcashpayment GcashPayment[]
+}
+
+model GcashPayment {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @db.ObjectId
+  subscriptionId String? 
+  plan          Plan 
+  billingPeriod String
+  receiptFile   String // URL to the uploaded receipt file
+  referenceNo  String?
+  price         String  // Payment amount
+  status        PaymentStatus? @default(PENDING)  // Status specific to payments
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subscription  Subscription?   @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+}
+
+model QRCode {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  qrCodeData  String?   // Stores the QR Code Data (text or string)
+  qrCodeImage String?  // Stores the image URL if you upload an image
+  accountNumber String
+  accountName String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  // role UserRole @default(LESSEE) // Default role is 'LESSEE'
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Conversation {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt     DateTime @default(now())
+  lastMessageAt DateTime @default(now())
+  name          String?
+  isGroup       Boolean?
+
+  messagesIds String[]  @db.ObjectId
+  messages    Message[]
+
+  userIds String[] @db.ObjectId
+  users   User[]   @relation(fields: [userIds], references: [id])
+}
+
+model Message {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  body         String?
+  image        String?
+  createdAt    DateTime @default(now())
+  listingId    String?  @db.ObjectId
+  listingOwner String?  @db.ObjectId
+
+  seenIds String[] @db.ObjectId
+  seen    User[]   @relation("Seen", fields: [seenIds], references: [id])
+
+  conversationId String       @db.ObjectId
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  senderId String @db.ObjectId
+  sender   User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
+}
+
+// Optionally, define an enum for rental types
+enum RentalType {
+  rent
+  booking
+  both
+  unknown
+}
+
+model Listing {
+  id                     String   @id @default(auto()) @map("_id") @db.ObjectId
+  title                  String
+  description            String
+  imageSrc               String
+  createdAt              DateTime @default(now())
+  category               String
+  roomCount              Int
+  bathroomCount          Int
+  guestCount             Int
+  locationValue          String
+  userId                 String   @db.ObjectId
+  price                  Int?
+  is_archived            Boolean  @default(false)
+  rentalAddress          String?
+  rentalAmount           Int?
+  rentalSecurityDeposit  Int?
+  utilitiesMaintenance   String?
+  paymentMethod          String?
+  bookingAddress         String?
+  bookingFee             Int?
+  bookingSecurityDeposit Int?
+  cancellationPolicy     String?
+
+  // Add the amenities field
+  amenities  String[]    @db.String // This defines amenities as an array of strings
+  rentalType RentalType? // Add rentalType field with the enum
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reservations Reservation[]
+}
+
+model VerificationToken {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  token     String   @unique
+  userId    String   @db.ObjectId
+  expires   DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Status {
+  confirmed
+  pending
+}
+
+model Reservation {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String    @db.ObjectId
+  listingId    String    @db.ObjectId
+  listingOwner String    @db.ObjectId
+  startDate    DateTime?
+  endDate      DateTime?
+  totalPrice   Int
+  createdAt    DateTime  @default(now())
+  status       Status?   @default(pending)
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+}
+
+
+model AboutUs {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  vision  String
+  mission String
+  heroImageSrc     String   // URL of the hero image
+  heroTitle        String   // Title like "Rent unique properties around Cavite City"
+  heroDescription  String   // Description text
+}
+
+model CarouselItem {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  description String
+  image  String
+}
+
+model Profile {
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId              String   @unique @db.ObjectId
+  interest            String[]
+  contactNo           String?  @unique
+  location            String?
+  description         String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @default(now()) @updatedAt
+  imageSrc            String? //tatagaling to
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
