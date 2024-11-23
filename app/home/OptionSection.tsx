@@ -17,7 +17,7 @@ const OptionSection: React.FC<OptionSectionProps> = ({ currentUser }) => {
   const rentModal = useRentModal(); // Initialize rent modal
 
   const handleFindPropertyClick = () => {
-    router.push("/"); // Navigate to the home page
+    router.push("/browse"); // Navigate to the home page
   };
 
   const onRent = () => {

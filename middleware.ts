@@ -14,30 +14,20 @@ export default withAuth(
 
     const session = await getToken({ req });
 
-    // If there is no session or user is not logged in, redirect to login page
+    // If there is no session, redirect to the login page
     if (!session) {
       return NextResponse.redirect(new URL("/", req.url));
     }
 
-    // Role-based access control
+    // Role-based access control for the /admin route
     if (pathname.startsWith("/admin")) {
       // Only allow Admins to access the /admin path
       if (session.role !== "ADMIN") {
         return NextResponse.redirect(new URL("/403", req.url)); // Custom "Access Denied" page
       }
-    } else if (pathname.startsWith("/lessor")) {
-      // Only allow Lessors to access the /lessor path
-      if (session.role !== "LESSOR") {
-        return NextResponse.redirect(new URL("/403", req.url)); // Custom "Access Denied" page
-      }
-    } else if (pathname.startsWith("/lessee")) {
-      // Only allow Lessees to access the /lessee path
-      if (session.role !== "LESSEE") {
-        return NextResponse.redirect(new URL("/403", req.url)); // Custom "Access Denied" page
-      }
     }
 
-    // For all other users, allow the request to proceed
+    // Allow Lessors and Lessees to access all other paths
     return NextResponse.next();
   },
   {
@@ -47,7 +37,7 @@ export default withAuth(
   }
 );
 
-// Define routes that require authentication and role-based access
+// Define routes that require authentication
 export const config = {
   matcher: [
     "/admin/:path*",
@@ -62,3 +52,4 @@ export const config = {
     "/subscription/:path*",
   ],
 };
+

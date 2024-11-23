@@ -66,7 +66,7 @@ const CategoriesSection: React.FC = () => {
 
       const url = qs.stringifyUrl(
         {
-          url: "/",
+          url: "/browse",
           query: updatedQuery,
         },
         { skipNull: true }
