@@ -9,14 +9,14 @@ const NavLinks = () => {
   const router = useRouter(); // Initialize useRouter
 
   const handlePropertiesClick = () => {
-    router.push("/"); // Navigate to properties page on click
+    router.push("/browse"); // Navigate to properties page on click
   };
 
   return (
     <div className="flex space-x-8 md:space-x-20">
       {/* Home Link */}
       <Link
-        href="/home"
+        href="/"
         className="group flex flex-col items-center text-center"
       >
         <FiHome className="text-xl md:text-2xl group-hover:text-emerald-600 transition duration-300 transform group-hover:scale-105" />

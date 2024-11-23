@@ -25,7 +25,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, value }) => {
   return (
     <CldUploadWidget
       onSuccess={handleUpload}
-      uploadPreset="CaviteNestTry"
+      uploadPreset="CaviteNest"
       options={{
         maxFiles: 1,
       }}
