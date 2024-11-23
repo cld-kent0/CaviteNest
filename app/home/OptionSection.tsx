@@ -6,11 +6,13 @@ import { useSession } from "next-auth/react"; // Import next-auth session hook
 import optionImage from "@/public/images/option.jpg"; // Import the background image
 import useLoginModal from "@/app/hooks/useLoginModal"; // Import necessary hooks
 import useRentModal from "@/app/hooks/useRentModal"; // Import necessary hooks
+import useGetVerifiedModal from "@/app/hooks/useGetVerifiedModal"; // Import GetVerified modal hook
 
 const OptionSection: React.FC = () => {
   const router = useRouter(); // Initialize the router
   const loginModal = useLoginModal(); // Initialize login modal
   const rentModal = useRentModal(); // Initialize rent modal
+  const getVerifiedModal = useGetVerifiedModal(); // Initialize GetVerified modal
 
   const { data: session } = useSession(); // Get session data using next-auth
 
@@ -18,11 +20,41 @@ const OptionSection: React.FC = () => {
     router.push("/browse"); // Navigate to the browse page
   };
 
-  const onRent = () => {
+  const onRent = async () => {
+    console.log("Session User Email:", session?.user?.email);
+
     if (!session) {
       loginModal.onOpen(); // Open login modal if no session exists
-    } else {
-      rentModal.onOpen(); // Open rent modal if user is logged in
+      return;
+    }
+
+    try {
+      // Fetch the user verification status from the backend
+      const response = await fetch("/api/check-verification", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: session.user.email }), // Send the email from the session
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch verification status");
+      }
+
+      // Check the user's verification status
+      if (data.idStatus === "verified") {
+        rentModal.onOpen(); // Open Rent Modal if verified
+      } else if (data.idStatus === "unverified" || data.idStatus === "pending") {
+        getVerifiedModal.onOpen(); // Open Get Verified Modal if unverified or pending
+      } else {
+        console.error("User status is not valid.");
+      }
+    } catch (error) {
+      console.error(error);
+      // Optionally handle error (e.g., show a toast message)
     }
   };
 
@@ -58,7 +90,7 @@ const OptionSection: React.FC = () => {
           />
         </div>
         <h3 className="text-xl font-bold mt-4 text-center">Rent a property</h3>
-        <p className="text-center text-gray-600 my-2 text-sm md:text-base">
+        <p className="text-justify text-gray-600 my-2 text-sm md:text-base">
           Renting a property presents a convenient option by affording
           flexibility and alleviating the obligations associated with ownership.
         </p>
@@ -92,13 +124,13 @@ const OptionSection: React.FC = () => {
           />
         </div>
         <h3 className="text-xl font-bold mt-4 text-center">Become a Host</h3>
-        <p className="text-center text-gray-600 my-2 text-sm md:text-base">
+        <p className="text-justify text-gray-600 my-2 text-sm md:text-base">
           Listing a property for rent on a website offers convenience by
           providing a platform to reach potential tenants, streamline the rental
           process, and manage inquiries and bookings efficiently.
         </p>
         <button
-          onClick={onRent} // Use onRent to handle navigation
+          onClick={onRent} // Use onRent to handle verification and open modals
           className="mt-4 bg-yellow-500 text-white px-6 py-2 rounded-full hover:bg-yellow-600 text-sm md:text-base"
         >
           List a property

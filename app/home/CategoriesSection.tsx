@@ -21,7 +21,7 @@ const CategoryCard: React.FC<CategoryP> = ({
 }) => (
   <div
     onClick={onClick}
-    className="relative block rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-transform duration-300 cursor-pointer max-w-[22rem] sm:max-w-[24rem] md:max-w-[28rem] w-full h-auto"
+    className="relative block rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-transform transform hover:scale-105 duration-300 cursor-pointer max-w-[22rem] sm:max-w-[24rem] md:max-w-[28rem] w-full h-auto box-border hover:outline hover:outline-4 hover:outline-emerald-500"
   >
     <div className="relative w-full h-[24rem] md:h-[32rem]">
       <Image
@@ -42,6 +42,11 @@ const CategoryCard: React.FC<CategoryP> = ({
     </div>
   </div>
 );
+
+
+
+
+
 
 const CategoriesSection: React.FC = () => {
   const router = useRouter();
