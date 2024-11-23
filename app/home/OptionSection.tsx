@@ -2,27 +2,25 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation"; // Import useRouter
+import { useSession } from "next-auth/react"; // Import next-auth session hook
 import optionImage from "@/public/images/option.jpg"; // Import the background image
 import useLoginModal from "@/app/hooks/useLoginModal"; // Import necessary hooks
 import useRentModal from "@/app/hooks/useRentModal"; // Import necessary hooks
-import { SafeUser } from "@/app/types"; // Import SafeUser type
 
-interface OptionSectionProps {
-  currentUser?: SafeUser | null; // Define the type for currentUser
-}
-
-const OptionSection: React.FC<OptionSectionProps> = ({ currentUser }) => {
+const OptionSection: React.FC = () => {
   const router = useRouter(); // Initialize the router
   const loginModal = useLoginModal(); // Initialize login modal
   const rentModal = useRentModal(); // Initialize rent modal
 
+  const { data: session } = useSession(); // Get session data using next-auth
+
   const handleFindPropertyClick = () => {
-    router.push("/browse"); // Navigate to the home page
+    router.push("/browse"); // Navigate to the browse page
   };
 
   const onRent = () => {
-    if (!currentUser) {
-      loginModal.onOpen(); // Open login modal if user is not logged in
+    if (!session) {
+      loginModal.onOpen(); // Open login modal if no session exists
     } else {
       rentModal.onOpen(); // Open rent modal if user is logged in
     }

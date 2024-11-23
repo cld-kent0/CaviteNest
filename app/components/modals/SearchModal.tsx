@@ -84,7 +84,7 @@ const SearchModal = () => {
 
     const url = qs.stringifyUrl(
       {
-        url: "/",
+        url: "/browse",
         query: updatedQuery,
       },
       { skipNull: true }
@@ -151,7 +151,7 @@ const SearchModal = () => {
         <button
           onClick={() => setRentalType("both")}
           className={`w-full p-4 text-left ${
-            rentalType === "both" ? "bg-green-5   00 text-white" : "bg-white"
+            rentalType === "both" ? "bg-green-500   00 text-white" : "bg-white"
           }`}
         >
           Both
