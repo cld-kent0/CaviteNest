@@ -1,3 +1,14 @@
+<!-- PROJECT SHIELDS -->
+<!--
+*** I'm using markdown "reference style" links for readability.
+*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
+*** See the bottom of this document for the declaration of the reference variables
+*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
+*** https://www.markdownguide.org/basic-syntax/#reference-style-links
+-->
+[![Contributors][contributors-shield]][contributors-url]
+[![MIT License][license-shield]][license-url]
+
 <a id="readme-top"></a>
 <!-- PROJECT LOGO -->
 <br />
@@ -32,7 +43,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-![](https://github.com/cld-kent0/CaviteNest/blob/master/public/images/gif.gif)
+[![CaviteNest][product-gif]](https://cavite-nest.vercel.app)
 
 CaviteNest is an online rental and booking platform focused on properties in Cavite City. 
 
@@ -48,9 +59,15 @@ Features:
 
 
 ### Built With
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Prisma][Prisma]][Prisma-url]
+
+* [![Next][Next.js]][Next-url] **Next.js**: A React framework for building server-side rendered and statically generated web apps.  
+* [![React][React.js]][React-url] **React**: A JavaScript library for building user interfaces with a component-based architecture.  
+* [![Prisma][Prisma]][Prisma-url] **Prisma**: An ORM that simplifies database access with type-safe queries.  
+* [![TypeScript][TypeScript]][TypeScript-url] **TypeScript**: A superset of JavaScript that adds static typing for better maintainability and fewer errors.  
+* [![Node][Node.js]][Node.js-url] **Node.js**: A JavaScript runtime for building fast, scalable server-side applications.  
+* [![Vercel][Vercel]][Vercel-url] **Vercel**: A deployment platform that offers easy scaling, serverless functions, and fast global CDN.
+
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -68,6 +85,13 @@ Features:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Contributors
+
+<a href="https://github.com/cld-kent0/CaviteNest/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=cld-kent0/CaviteNest" alt="img" />
+</a>
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTACT -->
 ## Contact
@@ -87,11 +111,20 @@ Project Link: [https://github.com/cld-kent0/CaviteNest](https://github.com/cld-k
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[product-screenshot]: https://github.com/cld-kent0/CaviteNest/blob/master/public/images/gif.gif
+[product-gif]: https://github.com/cld-kent0/CaviteNest/blob/master/public/images/gif.gif
+[contributors-shield]: https://img.shields.io/github/contributors/cld-kent0/CaviteNest.svg?style=for-the-badge
+[contributors-url]: https://github.com/cld-kent0/CaviteNest/graphs/contributors
+[license-shield]: https://img.shields.io/github/license/cld-kent0/CaviteNest.svg?style=for-the-badge
+[license-url]: https://github.com/cld-kent0/CaviteNest/blob/master/LICENSE.txt
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
 [Prisma]: https://img.shields.io/badge/Prisma-%23457dd1?style=for-the-badge&logo=prisma
-[Prisma-url]: https://www.prisma.io/
-
+[Prisma-url]: https://www.prisma.io
+[TypeScript]: https://img.shields.io/badge/Typescript-lightblue?style=for-the-badge&logo=typescript
+[TypeScript-url]: https://www.typescriptlang.org/
+[Node.js]: https://img.shields.io/badge/Node.js-%23e1efd8?style=for-the-badge&logo=node.js
+[Node.js-url]: https://nodejs.org/en
+[Vercel]: https://img.shields.io/badge/Vercel-black?style=for-the-badge&logo=vercel
+[Vercel-url]: https://vercel.com
