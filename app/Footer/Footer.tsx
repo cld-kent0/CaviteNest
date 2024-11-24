@@ -25,22 +25,24 @@ const Footer = () => {
 
   return (
     <footer
-      className={`flex z-20 items-center justify-between bg-white border-t border-gray-300 transition-shadow duration-300 ${
+      className={`flex flex-wrap items-center justify-between bg-white border-t border-gray-300 transition-shadow duration-300 p-4 ${
         isAtBottom
           ? "shadow-[0_15px_25px_5px_rgba(0,0,0,0.2)]" // Custom stronger shadow when at the bottom
           : "shadow-md" // Default shadow
-      } p-4`}
+      }`}
     >
       {/* Left Section (Logo and Links) */}
-      <div className="flex items-center">
+      <div className="flex items-center w-full sm:w-auto justify-center sm:justify-start">
         <Image
           src="/images/cavitenest.png" // Replace with your image path
           alt="Footer Logo"
           width={150} // Adjust width as needed
           height={100} // Adjust height as needed
-          className="ml-16 -mt-2" // Adds right margin to the logo
+          className="ml-0 sm:ml-16 -mt-2" // Adjust logo margin for small screens
         />
-        <span className="text-gray-700 ml-4">© 2024 CaviteNest</span>
+        <span className="text-gray-700 ml-4 text-center sm:text-left">
+          © 2024 CaviteNest
+        </span>
         {/* Privacy Policy Link */}
         <span className="mx-2 text-gray-700">•</span>
         <a
@@ -68,7 +70,7 @@ const Footer = () => {
       </div>
 
       {/* Right Section for Language, GitHub Source Code, and Contact Us */}
-      <div className="flex items-center gap-6 ml-auto mr-16">
+      <div className="flex flex-wrap items-center justify-center sm:justify-end gap-6 ml-auto mr-16 mt-4 sm:mt-0">
         {/* Language Selector */}
         <div className="flex items-center gap-2">
           <FaGlobeAmericas size={20} className="text-gray-600" />

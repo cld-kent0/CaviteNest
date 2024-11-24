@@ -27,27 +27,28 @@ const Home = async ({ searchParams }: HomeProps) => {
     (listing: SafeListing) => !listing.is_archived
   );
 
-  if (activeListings.length === 0) {
-    return (
-      <ClientOnly>
-        <EmptyState showReset />
-      </ClientOnly>
-    );
-  }
-
   return (
     <ClientLayout>
-      <ClientOnly>
-        <Container>
-          <div className="grid grid-cols-1 gap-8 pt-24 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols4 xl:grid-cols-5 2xl:grid-cols-6">
-            {activeListings.map((item: SafeListing) => (
-              <div key={item.id}>
-                <ListingCard data={item} currentUser={currentUser} />
-              </div>
-            ))}
+      <div className="flex flex-col min-h-screen">
+        <ClientOnly>
+          {/* Main content area */}
+          <div className="flex-grow">
+            {activeListings.length === 0 ? (
+              <EmptyState showReset />
+            ) : (
+              <Container>
+                <div className="grid grid-cols-1 gap-8 pt-24 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+                  {activeListings.map((item: SafeListing) => (
+                    <div key={item.id}>
+                      <ListingCard data={item} currentUser={currentUser} />
+                    </div>
+                  ))}
+                </div>
+              </Container>
+            )}
           </div>
-        </Container>
-      </ClientOnly>
+        </ClientOnly>
+      </div>
     </ClientLayout>
   );
 };

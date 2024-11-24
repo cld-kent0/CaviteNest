@@ -18,8 +18,8 @@ export default function ClientLayout({
     console.log("Current Pathname:", pathname); // Log the pathname to check it
     if (
       pathname?.startsWith("/messages") ||
-      pathname?.startsWith("/conversations") ||
-      pathname?.startsWith("/browse")
+      pathname?.startsWith("/conversations") //||
+      //pathname?.startsWith("/browse")
     ) {
       setShowFooter(false); // Hide footer on these pages
     } else {

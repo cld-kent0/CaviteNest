@@ -56,14 +56,13 @@ const About = () => {
         <section className="relative h-[65vh]">
           <div
             className="absolute inset-0 bg-cover bg-center shadow-md"
-            style={{
-              backgroundImage: `url(${heroImageSrc})`,
-            }}
+            style={{ backgroundImage: `url(${heroImageSrc})` }}
           />
-          <div className="relative z-10 flex flex-col justify-start items-start h-full text-left pl-[100px] pt-[120px]">
-            <h1 className="text-7xl font-bold text-white">{heroTitle}</h1>
-            <div className="mt-11 ml-6 max-w-7xl text-lg text-white">
-              {/* Split heroDescription into paragraphs and render them */}
+          <div className="relative z-10 flex flex-col justify-start items-start h-full text-left px-6 md:px-[100px] pt-[100px]">
+            <h1 className="text-4xl md:text-7xl font-bold text-white">
+              {heroTitle}
+            </h1>
+            <div className="mt-6 md:mt-11 max-w-full md:max-w-7xl text-sm md:text-lg text-white">
               {heroDescription.split("\n").map((paragraph, index) => (
                 <p
                   key={index}
