@@ -39,8 +39,6 @@ const PropertyOverview = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-semibold mb-6">Property Overview</h2>
-
       {/* Render Recharts PieChart */}
       <ResponsiveContainer width="100%" height={400}>
         <PieChart>

@@ -1,6 +1,9 @@
+'use client';
+
 import Modal from '@/app/components/modals/Modal';
 import axios from 'axios';
 import React, { useState } from 'react';
+import Image from 'next/image'; // Import the Next.js Image component
 
 interface LessorDetailsModalProps {
   isOpen: boolean;
@@ -81,29 +84,54 @@ const LessorDetailsModal: React.FC<LessorDetailsModalProps> = ({ isOpen, lessor,
   let bodyContent = (
     <div className="space-y-4">
       <div className="flex justify-center">
-        <img
-          src={lessor.image}
+        <Image
+          src={lessor.image ? lessor.image: '/images/placeholder.jpg'}
           alt={lessor.name}
-          className="w-24 h-24 rounded-full"
+          className="rounded-full"
+          width={96} // Profile picture width
+          height={96} // Profile picture height
+          priority // Ensure quick loading
         />
       </div>
-      <p><strong>ID:</strong> {lessor.id}</p>
-      <p><strong>ID Status:</strong> {lessor.idStatus}</p>
-      <p><strong>Name:</strong> {lessor.name}</p>
-      <p><strong>Email:</strong> {lessor.email}</p>
-      <p><strong>Created At:</strong> {new Date(lessor.createdAt).toLocaleDateString()}</p>
+      <p>
+        <strong>ID:</strong> {lessor.id}
+      </p>
+      <p>
+        <strong>ID Status:</strong> {lessor.idStatus}
+      </p>
+      <p>
+        <strong>Name:</strong> {lessor.name}
+      </p>
+      <p>
+        <strong>Email:</strong> {lessor.email}
+      </p>
+      <p>
+        <strong>Created At:</strong> {new Date(lessor.createdAt).toLocaleDateString()}
+      </p>
 
       {/* Subscription Details */}
       {lessor.Subscription ? (
         <div>
-          <p><strong>Subscription Plan:</strong> {lessor.Subscription.plan}</p>
-          <p><strong>Period:</strong> {lessor.Subscription.period}</p>
-          <p><strong>Status:</strong> {lessor.Subscription.status}</p>
-          <p><strong>Start Date:</strong> {new Date(lessor.Subscription.startDate).toLocaleDateString()}</p>
-          <p><strong>End Date:</strong> {new Date(lessor.Subscription.endDate).toLocaleDateString()}</p>
+          <p>
+            <strong>Subscription Plan:</strong> {lessor.Subscription.plan}
+          </p>
+          <p>
+            <strong>Period:</strong> {lessor.Subscription.period}
+          </p>
+          <p>
+            <strong>Status:</strong> {lessor.Subscription.status}
+          </p>
+          <p>
+            <strong>Start Date:</strong> {new Date(lessor.Subscription.startDate).toLocaleDateString()}
+          </p>
+          <p>
+            <strong>End Date:</strong> {new Date(lessor.Subscription.endDate).toLocaleDateString()}
+          </p>
         </div>
       ) : (
-        <p><strong>No Subscription</strong></p>
+        <p>
+          <strong>No Subscription</strong>
+        </p>
       )}
     </div>
   );
@@ -111,22 +139,34 @@ const LessorDetailsModal: React.FC<LessorDetailsModalProps> = ({ isOpen, lessor,
   if (step === STEPS.ID_VERIFICATION) {
     bodyContent = (
       <div className="space-y-4">
-        <p><strong>ID Type:</strong> {lessor.idType}</p>
+        <p>
+          <strong>ID Type:</strong> {lessor.idType}
+        </p>
         <div className="flex gap-4">
           <div>
-            <p><strong>ID Front:</strong></p>
-            <img
+            <p>
+              <strong>ID Front:</strong>
+            </p>
+            <Image
               src={lessor.idFront}
               alt="ID Front"
-              className="max-w-full h-auto border border-gray-300 rounded"
+              className="rounded border border-gray-300"
+              width={300}
+              height={400}
+              objectFit="contain" // Prevent cropping
             />
           </div>
           <div>
-            <p><strong>ID Back:</strong></p>
-            <img
+            <p>
+              <strong>ID Back:</strong>
+            </p>
+            <Image
               src={lessor.idBack}
               alt="ID Back"
-              className="max-w-full h-auto border border-gray-300 rounded"
+              className="rounded border border-gray-300"
+              width={300}
+              height={400}
+              objectFit="contain"
             />
           </div>
         </div>
@@ -138,7 +178,11 @@ const LessorDetailsModal: React.FC<LessorDetailsModalProps> = ({ isOpen, lessor,
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      onSubmit={step === STEPS.ID_VERIFICATION ? () => toggleVerification(lessor.idStatus === 'verified' ? 'unverified' : 'verified') : onNext}
+      onSubmit={
+        step === STEPS.ID_VERIFICATION
+          ? () => toggleVerification(lessor.idStatus === 'verified' ? 'unverified' : 'verified')
+          : onNext
+      }
       title="Lessor Details"
       actionLabel={
         step === STEPS.ID_VERIFICATION

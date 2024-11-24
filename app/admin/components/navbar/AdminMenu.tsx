@@ -1,40 +1,3 @@
-// import React, { useState } from 'react'
-// import { FaUserCircle } from 'react-icons/fa'
-
-// const AdminMenu = () => {
-//     const [menuOpen, setMenuOpen] = useState(false);
-//     const toggleMenu = () => {
-//         setMenuOpen(!menuOpen);
-//     };
-//   return (
-//       <div className="flex items-center space-x-4">
-//       <div className="relative">
-//         <FaUserCircle
-//           className="text-3xl cursor-pointer"
-//           onClick={toggleMenu}
-//         />
-//         {menuOpen && (
-//           <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2">
-//             <a href="/admin/dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-//               Dashboard
-//             </a>
-//             <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-//               Settings
-//             </a>
-//             <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-//               Logout
-//             </a>
-//           </div>
-//         )}
-//       </div>
-//     </div>
- 
-//   )
-// }
-
-// export default AdminMenu
-
-
 'use client';
 
 import Avatar from "@/app/components/Avatar";
@@ -48,17 +11,16 @@ import { AiOutlineMenu } from "react-icons/ai";
 const AdminMenu: React.FC = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState<any | null>(null); // State for current user
+  const [currentUser, setCurrentUser] = useState<any | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  // Fetch the session to check the user's role
   useEffect(() => {
     const fetchSession = async () => {
-      const session = await getSession(); // Fetch the current session
+      const session = await getSession();
       if (session?.user) {
-        setCurrentUser(session.user); // Set the user object
-        if (session.user.role === 'ADMIN') {
-          setIsAdmin(true); // Set admin state to true if user is admin
+        setCurrentUser(session.user);
+        if (session.user.role === "ADMIN") {
+          setIsAdmin(true);
         }
       }
     };
@@ -70,26 +32,28 @@ const AdminMenu: React.FC = () => {
     setIsOpen((value) => !value);
   }, []);
 
+  const handleMainPageClick = () => {
+    window.location.href = "/"; // Perform a full page reload by setting `window.location.href`
+  };
+
   if (!currentUser) {
-    return null; // Avoid rendering if the session hasn't loaded yet
+    return null;
   }
 
   return (
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
         <div
-            className="
-                    hidden
-                    md:block
-                    text-sm
-                    font-semibold
-                    py-3
-                    px-4
-                    
-                "
-            >
-
-                {currentUser.role}
+          className="
+            hidden
+            md:block
+            text-sm
+            font-semibold
+            py-3
+            px-4
+          "
+        >
+          {currentUser.role}
         </div>
         <div
           onClick={toggleOpen}
@@ -134,12 +98,8 @@ const AdminMenu: React.FC = () => {
             {isAdmin ? (
               <>
                 <MenuItem
-                  onClick={() => router.push("/admin/profile")}
-                  label="Profile"
-                />
-                <MenuItem
-                  onClick={() => router.push("/admin/settings")}
-                  label="Settings"
+                  onClick={handleMainPageClick}
+                  label="Main Page"
                 />
                 <hr />
                 <MenuItem onClick={signOut} label="Logout" />

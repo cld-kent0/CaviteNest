@@ -10,27 +10,55 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-// Define types for the transactions and chart data
 interface Transaction {
-  createdAt: string; // ISO date string
-  price: number; // Revenue amount
-  status: string; // Transaction status (e.g., "COMPLETED", "ACTIVE")
+  createdAt: string; 
+  price: number; 
+  status: string; 
 }
 
 interface ChartData {
-  date: string; // Formatted date
-  total: number; // Total revenue for the date
+  date: string; 
+  total: number; 
 }
 
 const SalesRevenueGraph = () => {
-  const [transactions, setTransactions] = useState<Transaction[]>([]); // Transaction data
-  const [chartData, setChartData] = useState<ChartData[]>([]); // Data for the graph
-  const [startDate, setStartDate] = useState('2024-11-01'); // Start date for filtering
-  const [endDate, setEndDate] = useState('2024-11-21'); // End date for filtering
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [chartData, setChartData] = useState<ChartData[]>([]);
+  const [startDate, setStartDate] = useState('2024-11-01');
+  const [endDate, setEndDate] = useState('2024-11-21');
+
+  const processChartData = (data: Transaction[]) => {
+    const filteredData = data.filter(
+      (transaction) =>
+        new Date(transaction.createdAt) >= new Date(startDate) &&
+        new Date(transaction.createdAt) <= new Date(endDate) &&
+        (transaction.status === 'COMPLETED' || transaction.status === 'ACTIVE')
+    );
+
+    const groupedData: Record<string, number> = filteredData.reduce(
+      (acc, transaction) => {
+        const date = new Date(transaction.createdAt)
+          .toISOString()
+          .split('T')[0];
+        acc[date] = (acc[date] || 0) + transaction.price;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
+
+    const chartData: ChartData[] = Object.entries(groupedData)
+      .map(([date, total]) => ({
+        date,
+        total,
+      }))
+      .reverse();
+
+    setChartData(chartData);
+  };
 
   useEffect(() => {
     axios
-      .get<Transaction[]>('/api/admin/subscriptions/transaction-history') // Define API response type
+      .get<Transaction[]>('/api/admin/subscriptions/transaction-history')
       .then((response) => {
         setTransactions(response.data);
         processChartData(response.data);
@@ -38,43 +66,11 @@ const SalesRevenueGraph = () => {
       .catch((error) =>
         console.error('Error fetching transactions:', error)
       );
-  }, []);
-
-  const processChartData = (data: Transaction[]) => {
-    // Filter transactions based on the selected date range and the status (COMPLETED or ACTIVE)
-    const filteredData = data.filter(
-      (transaction) =>
-        new Date(transaction.createdAt) >= new Date(startDate) &&
-        new Date(transaction.createdAt) <= new Date(endDate) &&
-        (transaction.status === 'COMPLETED' || transaction.status === 'ACTIVE')
-    );
-  
-    // Group transactions by date and calculate total revenue
-    const groupedData: Record<string, number> = filteredData.reduce(
-      (acc, transaction) => {
-        const date = new Date(transaction.createdAt)
-          .toISOString()
-          .split('T')[0]; // Format date as YYYY-MM-DD
-        acc[date] = (acc[date] || 0) + transaction.price; // Add up prices for each date
-        return acc;
-      },
-      {} as Record<string, number> // Explicitly cast the accumulator type
-    );
-  
-    // Convert grouped data into an array for Recharts and reverse the order
-    const chartData: ChartData[] = Object.entries(groupedData)
-      .map(([date, total]) => ({
-        date,
-        total,
-      }))
-      .reverse(); // Reverse the order of the data so the latest date is first
-  
-    setChartData(chartData);
-  };
+  }, []); // Empty dependency array ensures this only runs on mount
 
   return (
     <div className="p-6">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6">Sales/Revenue</h2>
+      <h2 className="text-2xl font-bold mb-6">Sales/Revenue</h2>
       <div className="flex items-center space-x-4 mb-4">
         <input
           type="date"
@@ -106,10 +102,10 @@ const SalesRevenueGraph = () => {
               type="monotone"
               dataKey="total"
               stroke="#82ca9d"
-              strokeWidth={3} // Thicker line
-              dot={{ r: 5, fill: '#82ca9d' }} // Larger dots
-              activeDot={{ r: 8 }} // Active dots on hover
-              connectNulls // Line will continue even if there's missing data
+              strokeWidth={3}
+              dot={{ r: 5, fill: '#82ca9d' }}
+              activeDot={{ r: 8 }}
+              connectNulls
             />
           </LineChart>
         </ResponsiveContainer>

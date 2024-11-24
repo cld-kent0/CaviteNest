@@ -1,10 +1,11 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from "react";
 import Modal from "@/app/components/modals/Modal";
 import Heading from "../Heading";
 import ImageUpload from "@/app/components/inputs/ImageUpload";
 import toast from "react-hot-toast";
+import Image from "next/image"; // Import the Image component from Next.js
 
 enum STEPS {
   DETAILS = 0,
@@ -141,17 +142,19 @@ const GcashPaymentModal: React.FC<GcashPaymentModalProps> = ({
       <div className="p-4 mt-24">
         <Heading title="Step 2: GCash QR Code" subTitle="Scan the QR code below to make your payment" />
         <div className="flex justify-center my-4">
-          {qrCodeData ?
+          {qrCodeData ? (
             qrCodeData.qrCodeImage ? (
-              <img
+              <Image
                 src={qrCodeData.qrCodeImage}
                 alt="Gcash QR Code"
-                className="w-auto h-auto"
+                width={300} // Set width and height for better performance with Next.js Image component
+                height={300}
+                className="object-contain"
               />
             ) : (
-              <p>No QR code image available</p>
+              <p>No QR code image available yet</p>
             )
-           : (
+          ) : (
             <p>Loading QR code...</p>
           )}
         </div>

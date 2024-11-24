@@ -1,6 +1,9 @@
-import Modal from '@/app/components/modals/Modal';
-import axios from 'axios';
-import React, { useState } from 'react';
+"use client";
+
+import Modal from "@/app/components/modals/Modal";
+import axios from "axios";
+import React, { useState } from "react";
+import Image from "next/image"; // Import the Next.js Image component
 
 interface LesseeDetailsModalProps {
   isOpen: boolean;
@@ -13,7 +16,11 @@ enum STEPS {
   ID_VERIFICATION = 1,
 }
 
-const LesseeDetailsModal: React.FC<LesseeDetailsModalProps> = ({ isOpen, lessee, onClose }) => {
+const LesseeDetailsModal: React.FC<LesseeDetailsModalProps> = ({
+  isOpen,
+  lessee,
+  onClose,
+}) => {
   const [step, setStep] = useState(STEPS.DETAILS);
   const [isVerifying, setIsVerifying] = useState(false);
 
@@ -37,10 +44,10 @@ const LesseeDetailsModal: React.FC<LesseeDetailsModalProps> = ({ isOpen, lessee,
     try {
       setIsVerifying(true);
 
-      const response = await axios.post('/api/admin/users/lessees/verify', {
+      const response = await axios.post("/api/admin/users/lessees/verify", {
         id: lessee.id,
         idStatus: newStatus,
-        role: newStatus === 'verified' ? 'LESSOR' : lessee.role,
+        role: newStatus === "verified" ? "LESSOR" : lessee.role,
         idFront: lessee.idFront,
         idBack: lessee.idBack,
         idType: lessee.idType,
@@ -48,21 +55,21 @@ const LesseeDetailsModal: React.FC<LesseeDetailsModalProps> = ({ isOpen, lessee,
 
       if (response.data) {
         lessee.idStatus = newStatus;
-        lessee.role = newStatus === 'verified' ? 'LESSOR' : lessee.role;
+        lessee.role = newStatus === "verified" ? "LESSOR" : lessee.role;
 
         alert(
           `Lessee has been ${
-            newStatus === 'verified'
-              ? 'verified and promoted to Lessor'
-              : newStatus === 'rejected'
-              ? 'rejected'
-              : 'unverified'
-          }.`
+            newStatus === "verified"
+              ? "verified and promoted to Lessor"
+              : newStatus === "rejected"
+              ? "rejected"
+              : "unverified"
+          }`
         );
       }
     } catch (error) {
-      console.error('Failed to update verification status:', error);
-      alert('An error occurred while updating the verification status.');
+      console.error("Failed to update verification status:", error);
+      alert("An error occurred while updating the verification status.");
     } finally {
       setIsVerifying(false);
       onClose();
@@ -72,20 +79,36 @@ const LesseeDetailsModal: React.FC<LesseeDetailsModalProps> = ({ isOpen, lessee,
   let bodyContent = (
     <div className="space-y-4">
       <div className="flex justify-center">
-        <img
-          src={lessee.image}
+        <Image
+          src={lessee.image ? lessee.image : "/images/placeholder.jpg"}
           alt={lessee.name}
-          className="w-24 h-24 rounded-full"
+          className="rounded-full"
+          width={96} // Fixed size for better consistency
+          height={96}
+          priority // Ensures the image loads quickly
         />
       </div>
-      <p><strong>ID:</strong> {lessee.id}</p>
-      <p><strong>Name:</strong> {lessee.name}</p>
-      <p><strong>Email:</strong> {lessee.email}</p>
-      <p><strong>Created At:</strong> {new Date(lessee.createdAt).toLocaleDateString()}</p>
+      <p>
+        <strong>ID:</strong> {lessee.id}
+      </p>
+      <p>
+        <strong>Name:</strong> {lessee.name}
+      </p>
+      <p>
+        <strong>Email:</strong> {lessee.email}
+      </p>
+      <p>
+        <strong>Created At:</strong>{" "}
+        {new Date(lessee.createdAt).toLocaleDateString()}
+      </p>
 
       {/* Updated ID Verification Fields */}
-      <p><strong>ID Status:</strong> {lessee.idStatus}</p>
-      <p><strong>ID Type:</strong> {lessee.idType}</p>
+      <p>
+        <strong>ID Status:</strong> {lessee.idStatus}
+      </p>
+      <p>
+        <strong>ID Type:</strong> {lessee.idType}
+      </p>
     </div>
   );
 
@@ -94,10 +117,13 @@ const LesseeDetailsModal: React.FC<LesseeDetailsModalProps> = ({ isOpen, lessee,
       <div className="space-y-4">
         <div className="flex justify-center">
           {lessee.idFront ? (
-            <img
+            <Image
               src={lessee.idFront}
               alt="ID Front"
-              className="max-w-full h-auto"
+              className="rounded-lg"
+              width={300}
+              height={400}
+              objectFit="contain" // Adjust to prevent cropping
             />
           ) : (
             <p>No Front ID Image Available</p>
@@ -105,10 +131,13 @@ const LesseeDetailsModal: React.FC<LesseeDetailsModalProps> = ({ isOpen, lessee,
         </div>
         <div className="flex justify-center">
           {lessee.idBack ? (
-            <img
+            <Image
               src={lessee.idBack}
               alt="ID Back"
-              className="max-w-full h-auto"
+              className="rounded-lg"
+              width={300}
+              height={400}
+              objectFit="contain"
             />
           ) : (
             <p>No Back ID Image Available</p>
@@ -122,29 +151,36 @@ const LesseeDetailsModal: React.FC<LesseeDetailsModalProps> = ({ isOpen, lessee,
     <Modal
       isOpen={isOpen}
       onClose={handleClose}
-      onSubmit={step === STEPS.ID_VERIFICATION ? () => toggleVerification(lessee.idStatus === 'verified' ? 'unverified' : 'verified') : onNext}
+      onSubmit={
+        step === STEPS.ID_VERIFICATION
+          ? () =>
+              toggleVerification(
+                lessee.idStatus === "verified" ? "unverified" : "verified"
+              )
+          : onNext
+      }
       title="Lessee Details"
       actionLabel={
         step === STEPS.ID_VERIFICATION
           ? isVerifying
-            ? 'Updating...'
-            : lessee.idStatus === 'verified'
-            ? 'Unverified'
-            : lessee.idStatus === 'rejected'
-            ? 'Verify'
-            : 'Verify'
-          : 'View ID Verification'
+            ? "Updating..."
+            : lessee.idStatus === "verified"
+            ? "Unverified"
+            : lessee.idStatus === "rejected"
+            ? "Verify"
+            : "Verify"
+          : "View ID Verification"
       }
       actionDisabled={step === STEPS.ID_VERIFICATION && isVerifying}
-      secondaryActionLabel={step === STEPS.DETAILS ? undefined : 'Back'}
+      secondaryActionLabel={step === STEPS.DETAILS ? undefined : "Back"}
       secondaryAction={step === STEPS.DETAILS ? undefined : onBack}
     >
       {bodyContent}
 
       {/* Added Rejected button */}
-      {step === STEPS.ID_VERIFICATION && lessee.idStatus !== 'rejected' && (
+      {step === STEPS.ID_VERIFICATION && lessee.idStatus !== "rejected" && (
         <button
-          onClick={() => toggleVerification('rejected')}
+          onClick={() => toggleVerification("rejected")}
           disabled={isVerifying}
           className="w-full mt-4 p-2 bg-red-500 text-white rounded-lg"
         >

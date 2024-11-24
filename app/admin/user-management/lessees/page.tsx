@@ -1,8 +1,9 @@
-'use client'
+'use client';
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image'; // Import the Next.js Image component
 import SearchInput from '../../components/SearchInput';
 import ActionButton from '../../components/ActionButton';
 import Pagination from '../../components/Pagination';
@@ -16,7 +17,6 @@ interface Lessee {
   idStatus: string;
   image: string; // New field for image URL
   createdAt: string; // New field for creation date
-
 }
 
 const LesseeList = () => {
@@ -118,13 +118,24 @@ const LesseeList = () => {
               paginatedLessees.map((lessee) => (
                 <tr key={lessee.id} className="hover:bg-gray-50">
                   <td className="px-4 py-2 border-b">
-                    <img src={lessee.image} alt={lessee.name} className="w-12 h-12 rounded-full" />
+                    <Image
+                      src={lessee.image ? lessee.image: '/images/placeholder.jpg'}
+                      alt={lessee.name}
+                      className="rounded-full"
+                      width={48} // Adjust width as needed
+                      height={48} // Adjust height as needed
+                      priority={true} // Ensure quick loading
+                    />
                   </td>
                   <td className="px-4 py-2 border-b">{lessee.id}</td>
                   <td className="px-4 py-2 border-b whitespace-nowrap">{lessee.name}</td>
                   <td className="px-4 py-2 border-b">{lessee.email}</td>
                   <td className="px-4 py-2 border-b whitespace-nowrap">
-                    {lessee.idStatus}
+                    {lessee.idStatus
+                      ? lessee.idStatus
+                          .toLowerCase() // Convert all to lowercase
+                          .replace(/^\w/, (c) => c.toUpperCase()) // Capitalize the first letter
+                      : ""}
                   </td>
                   <td className="px-4 py-2 border-b">{new Date(lessee.createdAt).toLocaleDateString()}</td>
                   <td className="px-4 py-2 border-b">

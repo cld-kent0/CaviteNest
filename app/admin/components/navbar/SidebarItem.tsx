@@ -1,6 +1,6 @@
 // SidebarItem.tsx
-import React from 'react';
-import { useRouter } from 'next/navigation';
+import React from "react";
+import { useRouter } from "next/navigation";
 
 interface SidebarItemProps {
   icon: React.ReactNode;
@@ -34,7 +34,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
     <div
       onClick={handleClick} // Trigger handleClick on click
       className={`flex items-center space-x-4 px-4 py-2 cursor-pointer w-full rounded-2xl 
-        ${isActive ? 'bg-emerald-800 text-white' : 'hover:bg-emerald-800'}`} // Apply active styles if active
+        ${isActive ? "bg-emerald-800 text-white" : "hover:bg-emerald-800"}`} // Apply active styles if active
     >
       <span>{icon}</span>
       {isOpen && <span className="ml-4">{label}</span>}
