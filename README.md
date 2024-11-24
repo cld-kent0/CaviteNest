@@ -111,7 +111,7 @@ Project Link: [https://github.com/cld-kent0/CaviteNest](https://github.com/cld-k
 [product-gif]: https://github.com/cld-kent0/CaviteNest/blob/master/public/images/gif.gif
 [contributors-shield]: https://img.shields.io/github/contributors/cld-kent0/CaviteNest.svg?style=for-the-badge
 [contributors-url]: https://github.com/cld-kent0/CaviteNest/graphs/contributors
-[license-shield]: https://img.shields.io/github/license/cld-kent0/CaviteNest.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/cld-kent0/CaviteNest?style=for-the-badge
 [license-url]: https://github.com/cld-kent0/CaviteNest/blob/master/LICENSE.txt
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
