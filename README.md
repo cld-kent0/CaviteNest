@@ -3,13 +3,13 @@
 <br />
 <div align="center">
   <a href="https://github.com/cld-kent0/CaviteNest">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="public/images/cavitenest.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">CaviteNest</h3>
 
   <p align="center">
-    A rental and booking platform in Cavite City.
+    A Rental and Booking Platform in Cavite City.
     <br />
   </p>
 </div>
@@ -32,16 +32,22 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+![](https://github.com/cld-kent0/CaviteNest/blob/master/public/images/gif.gif)
 
-[![Product Name Screen Shot][product-screenshot]](https://cavite-nest.vercel.app)
+CaviteNest is an online rental and booking platform focused on properties in Cavite City. 
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
+The platform allows users to list their properties for rent, search for available rentals, and easily book accommodations. It aims to provide a seamless experience for both property owners and renters, with a user-friendly interface and reliable backend.
+
+Features:
+* User account management (registration, login, and profile)
+* Property listing, booking, and rental system
+* Search filters for finding the right property
+* Interactive property details page with photos, descriptions, and booking or rental prices
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 ### Built With
-
 * [![Next][Next.js]][Next-url]
 * [![React][React.js]][React-url]
 * [![Prisma][Prisma]][Prisma-url]
@@ -57,8 +63,8 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 - [ ] Design Improvements
   - [ ] First Batch
   - [ ] Second Batch
-- [ ] Stripe Payment Integration
-- [ ] Multiple Images Upload in Listing Property
+- [ ] Stripe Payments - Integrating Stripe for plan subscription payments
+- [ ] Multiple Images Upload in Listing Property - Allow property owners to upload multiple images per listing
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -74,15 +80,14 @@ Project Link: [https://github.com/cld-kent0/CaviteNest](https://github.com/cld-k
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
-
-* []()
-* []()
-* []()
+* Special thanks to the open-source community for their libraries and frameworks that made this project possible.
+* Gratitude to the group who came up with testing, design suggestions, and feedback during development.
+* 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: https://github.com/cld-kent0/CaviteNest/blob/master/public/images/gif.gif
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
