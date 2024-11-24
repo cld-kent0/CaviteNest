@@ -32,6 +32,7 @@
     </li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li><a href="#contributors">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
@@ -40,15 +41,16 @@
 ## About The Project
 [![CaviteNest][product-gif]](https://cavite-nest.vercel.app)
 
-CaviteNest is an online rental and booking platform focused on properties in Cavite City. 
+**CaviteNest** is an online rental and booking platform focused on properties in Cavite City. 
 
 The platform allows users to list their properties for rent, search for available rentals, and easily book accommodations. It aims to provide a seamless experience for both property owners and renters, with a user-friendly interface and reliable backend.
 
-Features:
+**Features:**
 * User account management (registration, login, and profile)
 * Property listing, booking, and rental system
 * Search filters for finding the right property
 * Interactive property details page with photos, descriptions, and booking or rental prices
+* ...
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -80,8 +82,8 @@ Features:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<!-- CONTRIBUTORS -->
 ## Contributors
-
 <a href="https://github.com/cld-kent0/CaviteNest/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=cld-kent0/CaviteNest" alt="img" />
 </a>
@@ -101,7 +103,7 @@ Project Link: [https://github.com/cld-kent0/CaviteNest](https://github.com/cld-k
 ## Acknowledgments
 * Special thanks to the open-source community for their libraries and frameworks that made this project possible.
 * Gratitude to the group who came up with testing, design suggestions, and feedback during development.
-* 
+* ...
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
