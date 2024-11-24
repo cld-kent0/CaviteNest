@@ -1,7 +1,13 @@
 ## Project Overview:
 
+CaviteNest
+
+A rental and booking platform in Cavite City
+
+PLs: Next.js, React.js, Node.js, Tailwind CSS
+
 - **FEATURES**: TO BE EDITED
 
 ### Deployment
-  [Go to Rent Properties](https://cavite-nest.vercel.app/).
+  [CaviteNest](https://cavite-nest.vercel.app/) is deployed through Vercel
   
