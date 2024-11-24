@@ -19,13 +19,11 @@ import ClientProvider from "./components/ClientProvider";
 const font = Nunito({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "CaviteNest",
-  description: "A Platform for rental properties in Cavite",
+  title: "CaviteNest | Rental & booking Platform in Cavite City",
+  description: "A platform for rental properties in Cavite City",
   icons: {
-
     icon: "/images/favicon.png",
-    
-    },
+  },
 };
 
 export default async function RootLayout({
@@ -48,9 +46,7 @@ export default async function RootLayout({
           <main className="flex-grow pt-20">{children}</main>
           <Footer />
         </ClientOnly> */}
-        <ClientProvider currentUser={currentUser}>
-          {children}
-        </ClientProvider>
+        <ClientProvider currentUser={currentUser}>{children}</ClientProvider>
       </body>
     </html>
   );

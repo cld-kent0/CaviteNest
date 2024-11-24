@@ -61,7 +61,6 @@ const Card = ({
         alt={title}
         fill
         style={{ objectFit: "cover", borderRadius: "12px" }}
-        className=""
       />
       <div className="absolute top-1/4 left-10 md:left-10 lg:left-24 p-4 md:p-6 lg:p-8">
         <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-white leading-tight">
@@ -77,6 +76,7 @@ const Card = ({
 
 const HeroSection = () => {
   const [carouselItems, setCarouselItems] = useState<CarouselItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true); // Track loading state
 
   useEffect(() => {
     const fetchCarouselItems = async () => {
@@ -90,6 +90,8 @@ const HeroSection = () => {
         setCarouselItems(data);
       } catch (error) {
         console.error("Error fetching carousel items:", error);
+      } finally {
+        setIsLoading(false); // Set loading to false once data is fetched
       }
     };
 
@@ -110,19 +112,44 @@ const HeroSection = () => {
 
   return (
     <div className="relative px-6 md:px-8 lg:px-16 overflow-hidden min-h-[50vh] md:min-h-[70vh] mt-12 md:mt-16">
-      <Slider {...settings}>
-        {carouselItems.map((item) => (
-          <Card
-            key={item.id}
-            image={item.image}
-            title={item.title}
-            description={item.description}
-          />
-        ))}
-      </Slider>
+      {isLoading ? (
+        <div className="flex items-center justify-center min-h-[50vh]">
+          <div className="animate-spin border-t-2 border-b-2 border-green-500 w-16 h-16 rounded-full"></div>{" "}
+          {/* Loading spinner */}
+        </div>
+      ) : (
+        <Slider {...settings}>
+          {carouselItems.map((item) => (
+            <Card
+              key={item.id}
+              image={item.image}
+              title={item.title}
+              description={item.description}
+            />
+          ))}
+        </Slider>
+      )}
+      {/* Custom Styling for Dots */}
+      <style jsx global>{`
+        .slick-dots {
+          bottom: -38px !important; /* Adjusted position of the dots */
+        }
+
+        .slick-dots li button:before {
+          font-size: 12px;
+          color: gray !important; /* Default dot color */
+        }
+
+        .slick-dots li.slick-active button:before {
+          color: green !important; /* Active dot color */
+        }
+
+        .slick-dots li {
+          margin: 0 5px;
+        }
+      `}</style>
     </div>
   );
 };
 
 export default HeroSection;
-  

@@ -9,9 +9,9 @@ const Logo = () => {
     <Image
       onClick={() => router.push("/")}
       alt="logo"
-      className="hidden cursor-pointer md:block"
+      className="hidden cursor-pointer md:block -ml-5"
       height={90}
-      width={90}
+      width={150}
       src="/images/cavitenest.png"
     />
   );
