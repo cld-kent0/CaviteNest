@@ -47,7 +47,10 @@ const OptionSection: React.FC = () => {
       // Check the user's verification status
       if (data.idStatus === "verified") {
         rentModal.onOpen(); // Open Rent Modal if verified
-      } else if (data.idStatus === "unverified" || data.idStatus === "pending") {
+      } else if (
+        data.idStatus === "unverified" ||
+        data.idStatus === "pending"
+      ) {
         getVerifiedModal.onOpen(); // Open Get Verified Modal if unverified or pending
       } else {
         console.error("User status is not valid.");
@@ -59,11 +62,11 @@ const OptionSection: React.FC = () => {
   };
 
   return (
-    <div className="relative mt-28 mb-28 flex flex-col md:flex-row justify-center items-center p-4 rounded-lg">
-      {/* Background image container */}
+    <div className="relative mt-28 mb-28 flex flex-col md:flex-row justify-center items-center p-4">
+      {/* Background image container with shadow effect */}
       <div className="absolute inset-0 z-0 flex justify-center items-center">
         <div
-          className="bg-center bg-no-repeat w-full h-[700px] md:h-[120%] bg-cover"
+          className="bg-center bg-no-repeat w-full h-[700px] md:h-[120%] bg-cover shadow-lg"
           style={{
             backgroundImage: `url(${optionImage.src})`,
             backgroundPosition: "center",

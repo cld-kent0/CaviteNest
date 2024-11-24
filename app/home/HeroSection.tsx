@@ -118,16 +118,20 @@ const HeroSection = () => {
           {/* Loading spinner */}
         </div>
       ) : (
-        <Slider {...settings}>
-          {carouselItems.map((item) => (
-            <Card
-              key={item.id}
-              image={item.image}
-              title={item.title}
-              description={item.description}
-            />
-          ))}
-        </Slider>
+        <div className="carousel-container shadow-xl rounded-lg overflow-visible">
+          {" "}
+          {/* Fix overflow */}
+          <Slider {...settings}>
+            {carouselItems.map((item) => (
+              <Card
+                key={item.id}
+                image={item.image}
+                title={item.title}
+                description={item.description}
+              />
+            ))}
+          </Slider>
+        </div>
       )}
       {/* Custom Styling for Dots */}
       <style jsx global>{`

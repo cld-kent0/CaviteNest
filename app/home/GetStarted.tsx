@@ -55,9 +55,9 @@ const GetStarted = () => {
                 </div>
               </div>
               <h3 className="text-base md:text-lg font-semibold text-gray-800">
-                Find a Property
+                Search
               </h3>
-              <p className="text-gray-600 mt-2 text-sm md:text-base">
+              <p className="text-gray-600 mt-2 text-sm md:text-base max-w-xs sm:max-w-sm line-clamp-2">
                 Assess each property based on your predefined criteria.
               </p>
             </div>
@@ -79,11 +79,11 @@ const GetStarted = () => {
                 </div>
               </div>
               <h3 className="text-base md:text-lg font-semibold text-gray-800">
-                Check Reviews
+                Inquire
               </h3>
-              <p className="text-gray-600 mt-2 text-sm md:text-base">
-                It is essential to check reviews from current or previous
-                tenants or homeowners.
+              <p className="text-gray-600 mt-2 text-sm md:text-base max-w-xs sm:max-w-sm line-clamp-2">
+                Reach out to property owners to clarify any questions about the
+                property.
               </p>
             </div>
 
@@ -106,8 +106,8 @@ const GetStarted = () => {
               <h3 className="text-base md:text-lg font-semibold text-gray-800">
                 Acquire
               </h3>
-              <p className="text-gray-600 mt-2 text-sm md:text-base">
-                Rent your stay through CoviteNest.
+              <p className="text-gray-600 mt-2 text-sm md:text-base max-w-xs sm:max-w-sm line-clamp-2">
+                Book or Rent your stay through CaviteNest and enjoy your time!
               </p>
             </div>
           </div>

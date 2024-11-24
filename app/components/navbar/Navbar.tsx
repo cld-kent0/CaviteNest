@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { SafeUser } from "@/app/types";
 import Container from "../Container";
 /*import Categories from "./Categories";*/
@@ -13,8 +14,32 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Effect hook to detect page scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setIsScrolled(true); // Add shadow when scrolled down
+      } else {
+        setIsScrolled(false); // Remove shadow when at top
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <div className="fixed z-30 w-full bg-white shadow-sm">
+    <div
+      className={`fixed z-30 w-full bg-white transition-shadow duration-300 ${
+        isScrolled ? "shadow-lg" : "shadow-sm"
+      }`}
+    >
       <div className="-p-4 border-b-[1px]">
         <Container>
           <div className="flex flex-row items-center">
