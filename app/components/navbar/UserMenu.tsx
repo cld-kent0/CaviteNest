@@ -32,7 +32,10 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
     if (!currentUser) {
       // If no user is logged in, open the login modal
       return loginModal.onOpen();
-    } else if (currentUser.role === "LESSOR" && currentUser.idStatus === "verified") {
+    } else if (
+      currentUser.role === "LESSOR" &&
+      currentUser.idStatus === "verified"
+    ) {
       // If the user is a verified LESSOR, open the rent modal
       return rentModal.onOpen();
     } else {
@@ -40,12 +43,13 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
       return getVerifiedModal.onOpen();
     }
   }, [currentUser, getVerifiedModal, loginModal, rentModal]);
-  
-  // Check if the user is a verified lessor
-  const isVerifiedLessor = currentUser?.role === "LESSOR" && currentUser?.idStatus;
 
-    // Check if the user is an admin
-  const isAdmin = currentUser?.role === "ADMIN"
+  // Check if the user is a verified lessor
+  const isVerifiedLessor =
+    currentUser?.role === "LESSOR" && currentUser?.idStatus;
+
+  // Check if the user is an admin
+  const isAdmin = currentUser?.role === "ADMIN";
 
   // Check if the user is a verified lessor with a paid plan
   const isEligibleForBillingPortal =
@@ -80,52 +84,51 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
               <>
                 {isAdmin && (
                   <MenuItem
-                  onClick={() => router.push("/admin/dashboard")}
-                  label="Admin Page"
-                />
+                    onClick={() => router.push("/admin/dashboard")}
+                    label="Admin Page"
+                  />
                 )}
                 <hr />
                 <MenuItem
                   onClick={() => router.push("/profile")}
-                  label="My Profile"
+                  label="Profile"
                 />
-                <hr />
                 <MenuItem
                   onClick={() => router.push("/messages")}
                   label="Messages"
+                />
+                <hr />
+                <MenuItem
+                  onClick={() => router.push("/trips")}
+                  label="My trips"
                 />
                 <MenuItem
                   onClick={() => router.push("/favorites")}
                   label="My favorites"
                 />
-                <MenuItem
-                  onClick={() => router.push("/trips")}
-                  label="My trips"
-                />
                 <hr />
                 {isVerifiedLessor && (
                   <>
                     <MenuItem
-                      onClick={() => router.push("/reservations")}
-                      label="My reservations"
-                    />
-                    <MenuItem
                       onClick={() => router.push("/properties")}
                       label="My properties"
                     />
+                    <MenuItem
+                      onClick={() => router.push("/reservations")}
+                      label="My reservations"
+                    />
                     {isEligibleForBillingPortal && (
-                    <MenuItem
-                    onClick={() => {
-                      // Redirects to the Stripe customer portal URL
-                      window.location.href = process.env.NEXT_PUBLIC_STRIPE_CUSTOMER_PORTAL_URL || "/";
-                    }}
-                    label="Billing Portal"
-                    />
+                      <MenuItem
+                        onClick={() => {
+                          // Redirects to the Stripe customer portal URL
+                          window.location.href =
+                            process.env
+                              .NEXT_PUBLIC_STRIPE_CUSTOMER_PORTAL_URL || "/";
+                        }}
+                        label="Billing Portal"
+                      />
                     )}
-                    <MenuItem
-                      onClick={onRent}
-                      label="Host your nest"
-                    />
+                    <MenuItem onClick={onRent} label="List property" />
                   </>
                 )}
                 <hr />
@@ -140,7 +143,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
           </div>
         </div>
       )}
-      <GetVerifiedModal/>
+      <GetVerifiedModal />
     </div>
   );
 };

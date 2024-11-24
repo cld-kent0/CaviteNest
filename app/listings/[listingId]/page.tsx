@@ -5,6 +5,7 @@ import ListingClient from "@/app/listings/[listingId]/ListingClient";
 import ClientOnly from "@/app/components/ClientOnly";
 import EmptyState from "@/app/components/EmptyState";
 import prisma from "@/app/libs/prismadb";
+import ClientLayout from "@/app/client-layout";
 
 interface IParams {
   listingId?: string;
@@ -40,14 +41,16 @@ const ListingPage = async ({ params }: { params: IParams }) => {
 
   // Return the listing page with the profile passed to ListingClient
   return (
-    <ClientOnly>
-      <ListingClient
-        listing={listing}
-        profile={profile || undefined}
-        currentUser={currentUser}
-        reservations={reservations}
-      />
-    </ClientOnly>
+    <ClientLayout>
+      <ClientOnly>
+        <ListingClient
+          listing={listing}
+          profile={profile || undefined}
+          currentUser={currentUser}
+          reservations={reservations}
+        />
+      </ClientOnly>
+    </ClientLayout>
   );
 };
 
