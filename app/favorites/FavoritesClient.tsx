@@ -14,14 +14,19 @@ const FavoritesClient: React.FC<FavoritesClientProps> = ({
 }) => {
   return (
     <Container>
-      <Heading
-        title="Favorites"
-        subTitle="List of places you have favorited!"
-      />
-      <div className="grid grid-cols-1 gap-8 mt-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-        {favlistings.map((fav) => (
-          <ListingCard key={fav.id} data={fav} currentUser={currentUser} />
-        ))}
+      {/* Wrapper with padding to push content below navbar */}
+      <div className="pt-16">
+        {" "}
+        {/* Adjust padding here */}
+        <Heading
+          title="Favorites"
+          subTitle="List of places you have favorited!"
+        />
+        <div className="grid grid-cols-1 gap-8 mt-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+          {favlistings.map((fav) => (
+            <ListingCard key={fav.id} data={fav} currentUser={currentUser} />
+          ))}
+        </div>
       </div>
     </Container>
   );
