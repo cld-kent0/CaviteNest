@@ -19,7 +19,7 @@ import ClientProvider from "./components/ClientProvider";
 const font = Nunito({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "CaviteNest | Rental & booking Platform in Cavite City",
+  title: "CaviteNest | Rental & Booking Platform in Cavite City",
   description: "A platform for rental properties in Cavite City",
   icons: {
     icon: "/images/favicon.png",

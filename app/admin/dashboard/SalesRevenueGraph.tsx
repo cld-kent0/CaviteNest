@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect, useCallback } from "react";
+import axios from "axios";
 import {
   LineChart,
   Line,
@@ -8,65 +8,67 @@ import {
   Tooltip,
   CartesianGrid,
   ResponsiveContainer,
-} from 'recharts';
+} from "recharts";
 
 interface Transaction {
-  createdAt: string; 
-  price: number; 
-  status: string; 
+  createdAt: string;
+  price: number;
+  status: string;
 }
 
 interface ChartData {
-  date: string; 
-  total: number; 
+  date: string;
+  total: number;
 }
 
 const SalesRevenueGraph = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [chartData, setChartData] = useState<ChartData[]>([]);
-  const [startDate, setStartDate] = useState('2024-11-01');
-  const [endDate, setEndDate] = useState('2024-11-21');
+  const [startDate, setStartDate] = useState("2024-11-01");
+  const [endDate, setEndDate] = useState("2024-11-21");
 
-  const processChartData = (data: Transaction[]) => {
-    const filteredData = data.filter(
-      (transaction) =>
-        new Date(transaction.createdAt) >= new Date(startDate) &&
-        new Date(transaction.createdAt) <= new Date(endDate) &&
-        (transaction.status === 'COMPLETED' || transaction.status === 'ACTIVE')
-    );
+  const processChartData = useCallback(
+    (data: Transaction[]) => {
+      const filteredData = data.filter(
+        (transaction) =>
+          new Date(transaction.createdAt) >= new Date(startDate) &&
+          new Date(transaction.createdAt) <= new Date(endDate) &&
+          (transaction.status === "COMPLETED" ||
+            transaction.status === "ACTIVE")
+      );
 
-    const groupedData: Record<string, number> = filteredData.reduce(
-      (acc, transaction) => {
-        const date = new Date(transaction.createdAt)
-          .toISOString()
-          .split('T')[0];
-        acc[date] = (acc[date] || 0) + transaction.price;
-        return acc;
-      },
-      {} as Record<string, number>
-    );
+      const groupedData: Record<string, number> = filteredData.reduce(
+        (acc, transaction) => {
+          const date = new Date(transaction.createdAt)
+            .toISOString()
+            .split("T")[0];
+          acc[date] = (acc[date] || 0) + transaction.price;
+          return acc;
+        },
+        {} as Record<string, number>
+      );
 
-    const chartData: ChartData[] = Object.entries(groupedData)
-      .map(([date, total]) => ({
-        date,
-        total,
-      }))
-      .reverse();
+      const chartData: ChartData[] = Object.entries(groupedData)
+        .map(([date, total]) => ({
+          date,
+          total,
+        }))
+        .reverse();
 
-    setChartData(chartData);
-  };
+      setChartData(chartData);
+    },
+    [startDate, endDate]
+  );
 
   useEffect(() => {
     axios
-      .get<Transaction[]>('/api/admin/subscriptions/transaction-history')
+      .get<Transaction[]>("/api/admin/subscriptions/transaction-history")
       .then((response) => {
         setTransactions(response.data);
         processChartData(response.data);
       })
-      .catch((error) =>
-        console.error('Error fetching transactions:', error)
-      );
-  }, []); // Empty dependency array ensures this only runs on mount
+      .catch((error) => console.error("Error fetching transactions:", error));
+  }, [processChartData]); // Add processChartData as a dependency
 
   return (
     <div className="p-6">
@@ -103,7 +105,7 @@ const SalesRevenueGraph = () => {
               dataKey="total"
               stroke="#82ca9d"
               strokeWidth={3}
-              dot={{ r: 5, fill: '#82ca9d' }}
+              dot={{ r: 5, fill: "#82ca9d" }}
               activeDot={{ r: 8 }}
               connectNulls
             />
