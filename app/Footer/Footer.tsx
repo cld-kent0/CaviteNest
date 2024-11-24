@@ -57,6 +57,14 @@ const Footer = () => {
         >
           Privacy
         </a>
+
+        <span className="mx-2 text-gray-700">•</span>
+        <a
+          href="/faqs" // Replace with your actual Privacy Policy URL
+          className="text-gray-600 hover:text-black hover:underline transition-colors duration-300"
+        >
+          FAQs
+        </a>
       </div>
 
       {/* Right Section for Language, GitHub Source Code, and Contact Us */}

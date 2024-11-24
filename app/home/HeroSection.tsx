@@ -66,7 +66,7 @@ const Card = ({
         <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-white leading-tight">
           {title}
         </h2>
-        <p className="mt-1 sm:mt-3 md:mt-4 lg:mt-5 text-lg sm:text-base md:text-lg lg:text-xl text-white">
+        <p className="mt-1 sm:mt-3 md:mt-4 lg:mt-5 text-lg sm:text-base md:text-lg lg:text-xl text-white ml-2">
           {description}
         </p>
       </div>
@@ -136,7 +136,7 @@ const HeroSection = () => {
       {/* Custom Styling for Dots */}
       <style jsx global>{`
         .slick-dots {
-          bottom: -38px !important; /* Adjusted position of the dots */
+          bottom: -50px !important; /* Adjusted position of the dots */
         }
 
         .slick-dots li button:before {
