@@ -51,13 +51,11 @@ const MessageBox: React.FC<MessageBoxProps> = ({
 
   const handleConfirmReservationStatus = async () => {
     try {
-      // Ensure reservationDetails is available
       if (!reservationDetails.id) {
         console.error("Reservation details are not available.");
         return;
       }
 
-      // Make the API call to confirm the reservation
       const response = await fetch("/api/reservations/confirmReservation", {
         method: "PUT",
         headers: {
@@ -74,10 +72,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({
         throw new Error("Failed to update reservation status");
       }
 
-      // Optionally, show a success message or toast notification
       toast.success("Reservation confirmed successfully!");
-
-      // Close the modal after confirming
       setIsConfirmModalOpen(false);
     } catch (error) {
       console.error("Error confirming reservation:", error);
@@ -89,24 +84,13 @@ const MessageBox: React.FC<MessageBoxProps> = ({
     if (listingId && isConfirmModalOpen) {
       const fetchReservationDetails = async () => {
         try {
-          console.log("Fetching reservation details for listingId:", listingId); // Debugging
           const response = await fetch(
             `/api/reservations/getReservation?listingId=${listingId}`
           );
-
-          if (!response.ok) {
-            console.error("API call failed:", response.status);
-            throw new Error(`Error: ${response.status}`);
-          }
+          if (!response.ok) throw new Error(`Error: ${response.status}`);
 
           const reservationDetails = await response.json();
-          console.log("Fetched reservation details:", reservationDetails); // Debugging
-
-          if (reservationDetails && reservationDetails.id) {
-            setReservationDetails(reservationDetails); // Set the object directly, no need for checking length
-          } else {
-            setReservationDetails({}); // No reservation details found
-          }
+          setReservationDetails(reservationDetails || {});
         } catch (error) {
           console.error("Failed to fetch reservation details:", error);
         }
@@ -116,17 +100,10 @@ const MessageBox: React.FC<MessageBoxProps> = ({
     }
   }, [isConfirmModalOpen, listingId]);
 
-  // Handle the button click and navigate to ReservationsClient (for now, opening modal instead)
-  const handleConfirmReservation = () => {
-    setIsConfirmModalOpen(true); // Open the confirm reservation modal
+  const handleImageClick = (src: string) => {
+    setImageModalOpen(true);
   };
 
-  // Handle modal close
-  const handleModalClose = () => {
-    setIsConfirmModalOpen(false);
-  };
-
-  // HTML content to be injected (without the button)
   const messageBody = `${data.body || "null"}`;
 
   return (
@@ -142,38 +119,33 @@ const MessageBox: React.FC<MessageBoxProps> = ({
           </div>
         </div>
         <div className={message}>
-          <ImageModal
-            src={data.image}
-            isOpen={imageModalOpen}
-            onClose={() => setImageModalOpen(false)}
-          />
           {data.image ? (
-            <Image
-              onClick={() => setImageModalOpen(true)}
-              alt="Image"
-              height="288"
-              width="288"
-              src={data.image}
-              className="object-cover cursor-pointer hover:scale-110 transition translate"
-            />
+            <div className="flex justify-center items-center">
+              <Image
+                onClick={() => setImageModalOpen(true)}
+                alt="Image"
+                height="288"
+                width="288"
+                src={data.image}
+                className="object-cover cursor-pointer hover:scale-110 transition translate"
+              />
+            </div>
           ) : (
-            <div
-              dangerouslySetInnerHTML={{
-                __html: messageBody, // Inject the formatted text here
-              }}
-            />
+            <div dangerouslySetInnerHTML={{ __html: messageBody }} />
           )}
+
           <div className="text-center">
-          {isOwnerOfListing && (
-            <button
-              onClick={handleConfirmReservation} // Open the confirm reservation modal
-              className="mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-            >
-              Confirm Reservation
-            </button>
-          )}
+            {isOwnerOfListing && (
+              <button
+                onClick={() => setIsConfirmModalOpen(true)}
+                className="mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+              >
+                Confirm Reservation
+              </button>
+            )}
           </div>
         </div>
+
         {isLast && isOwn && seenList.length > 0 && (
           <div className="text-xs font-light text-gray-500">{`Seen by ${seenList}`}</div>
         )}
@@ -182,14 +154,11 @@ const MessageBox: React.FC<MessageBoxProps> = ({
       {/* Confirm Reservation Modal */}
       <Modal
         isOpen={isConfirmModalOpen}
-        onClose={handleModalClose}
+        onClose={() => setIsConfirmModalOpen(false)}
         title="Latest Reservation Summary"
         body={
-          reservationDetails &&
-          reservationDetails.listing &&
-          reservationDetails.user ? (
+          reservationDetails?.listing && reservationDetails?.user ? (
             <div>
-              {/* Listing Information */}
               <p>
                 <strong>Listing Information:</strong>
               </p>
@@ -198,23 +167,27 @@ const MessageBox: React.FC<MessageBoxProps> = ({
                 Description: {reservationDetails?.listing?.description || "N/A"}
               </p>
               <p>
-                Listing Image:{" "}
-                {reservationDetails?.listing?.imageSrc ? (
-                  <Image
-                    src={reservationDetails?.listing?.imageSrc}
-                    alt="Listing Image"
-                    width={100}
-                    height={100}
-                    style={{
-                      objectFit: "cover",
-                    }}
-                  />
+                Listing Images:{" "}
+                {reservationDetails?.listing?.imageSrc?.length > 0 ? (
+                  <div className="flex gap-2">
+                    {reservationDetails?.listing?.imageSrc.map(
+                      (image: string, index: number) => (
+                        <div key={index} className="flex justify-center">
+                          <Image
+                            src={image}
+                            alt={`Listing Image ${index + 1}`}
+                            width={100}
+                            height={100}
+                            className="object-cover"
+                          />
+                        </div>
+                      )
+                    )}
+                  </div>
                 ) : (
-                  "No image available"
+                  "No images available"
                 )}
               </p>
-
-              {/* Reservation Information */}
               <p>
                 <strong>Reservation Details:</strong>
               </p>
@@ -235,8 +208,6 @@ const MessageBox: React.FC<MessageBoxProps> = ({
                   : "Not Applicable"}
               </p>
               <p>Total Price: ${reservationDetails?.totalPrice || "N/A"}</p>
-
-              {/* Lesse Information */}
               <p className="mt-2">
                 <strong>Lessee Information:</strong>
               </p>
@@ -251,10 +222,10 @@ const MessageBox: React.FC<MessageBoxProps> = ({
             <p>Loading reservation details...</p>
           )
         }
-        onSubmit={handleConfirmReservationStatus} // Confirm the reservation
+        onSubmit={handleConfirmReservationStatus}
         actionLabel="Confirm Reservation"
         secondaryActionLabel="Not Now"
-        secondaryAction={handleModalClose}
+        secondaryAction={() => setIsConfirmModalOpen(false)}
       />
     </div>
   );

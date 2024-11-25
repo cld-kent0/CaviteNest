@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import prisma from "@/app/libs/prismadb";
 
@@ -15,7 +14,7 @@ export async function POST(request: Request) {
     const {
         title,
         description,
-        imageSrc,
+        imageSrc,  // Expecting a string or an array of image URLs
         category,
         location,
         guestCount,
@@ -26,29 +25,31 @@ export async function POST(request: Request) {
         amenities,
         rentalType,
         rentalAddress,
-        rentalAmount,      
-        rentalSecurityDeposit,        
-        utilitiesMaintenance, 
-        paymentMethod,         
-        bookingAddress,         
-        bookingFee,             
+        rentalAmount,
+        rentalSecurityDeposit,
+        utilitiesMaintenance,
+        paymentMethod,
+        bookingAddress,
+        bookingFee,
         bookingSecurityDeposit,
         cancellationPolicy,
     } = body;
 
-    // Validate only required fields
-    const requiredFields = { 
-        title, 
-        description, 
-        imageSrc, 
-        category, 
-        guestCount, 
-        roomCount, 
-        bathroomCount
+    // Ensure imageSrc is an array, even if it's a single string
+    const images = Array.isArray(imageSrc) ? imageSrc : imageSrc ? [imageSrc] : [];
+
+    // Validate only required fields (removed imageSrc from required fields)
+    const requiredFields = {
+        title,
+        description,
+        category,
+        guestCount,
+        roomCount,
+        bathroomCount,
     };
-    
+
     for (const [key, value] of Object.entries(requiredFields)) {
-        if (!value) {
+        if (!value || (Array.isArray(value) && value.length === 0)) {
             return NextResponse.json({ error: `${key} is required` }, { status: 400 });
         }
     }
@@ -58,19 +59,19 @@ export async function POST(request: Request) {
         const data: any = {
             title,
             description,
-            imageSrc,
+            imageSrc: images,  // imageSrc is now guaranteed to be an array
             category,
             roomCount,
             bathroomCount,
             guestCount,
-            locationValue: location?.value, 
+            locationValue: location?.value,
             userId: currentUser.id,
-            amenities, 
-            rentalType, 
+            amenities,
+            rentalType,
             rentalAddress,
-            utilitiesMaintenance, 
-            paymentMethod,         
-            bookingAddress,         
+            utilitiesMaintenance,
+            paymentMethod,
+            bookingAddress,
             cancellationPolicy,
         };
 
@@ -82,6 +83,7 @@ export async function POST(request: Request) {
         if (bookingFee) data.bookingFee = parseInt(bookingFee, 10);
         if (bookingSecurityDeposit) data.bookingSecurityDeposit = parseInt(bookingSecurityDeposit, 10);
 
+        // Create listing with multiple images (imageSrc is now guaranteed to be an array)
         const listing = await prisma.listing.create({ data });
 
         return NextResponse.json(listing, { status: 201 });

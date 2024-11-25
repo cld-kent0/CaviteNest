@@ -1,5 +1,3 @@
-"use client";
-
 import useLoginModal from "@/app/hooks/useLoginModal";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import { getSession, signIn } from "next-auth/react";
@@ -13,8 +11,8 @@ import Heading from "../Heading";
 import Input from "../inputs/Input";
 import Modal from "./Modal"; // Assuming you have a Modal component already
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import Link from "next/link";
 import TermsAndConditionsModal from "./TermsAndConditionsModal";
+import PrivacyPolicyModal from "./PrivacyPolicyModal";
 import ForgotPasswordModal from "./ForgotPasswordModal"; // Import the Forgot Password modal
 import ResetPasswordModal from "./ResetPasswordModal"; // Import the Reset Password modal
 
@@ -24,11 +22,13 @@ const LoginModal: React.FC = () => {
   const registerModal = useRegisterModal();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [agreed, setAgreed] = useState(false);
+  const [agreedPolicy, setAgreedPolicy] = useState(false); // Track policy agreement
+  const [agreedTerms, setAgreedTerms] = useState(false); // Track terms agreement
   const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
+  const [isPolicyModalOpen, setPolicyModalOpen] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false); // State for Forgot Password modal
   const [showResetPassword, setShowResetPassword] = useState(false); // State for Reset Password modal
-  const [resetToken, setResetToken] = useState<string | null>(null); // State for reset token
+  const [resetToken, setResetToken] = useState<string | null>(null);
 
   const {
     register,
@@ -44,8 +44,10 @@ const LoginModal: React.FC = () => {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    if (!agreed) {
-      toast.error("You must agree to the Terms and Conditions.");
+    if (!(agreedPolicy && agreedTerms)) {
+      toast.error(
+        "You must agree to the Terms and Conditions and Privacy Policy."
+      );
       return;
     }
 
@@ -94,6 +96,14 @@ const LoginModal: React.FC = () => {
     setIsTermsModalOpen(false);
   };
 
+  const handleClosePolicyModal = () => {
+    setPolicyModalOpen(false);
+  };
+
+  const openPolicyModal = () => {
+    setPolicyModalOpen(true);
+  };
+
   const handleForgotPassword = () => {
     setShowForgotPassword(true);
   };
@@ -116,7 +126,7 @@ const LoginModal: React.FC = () => {
     <div className="flex flex-col gap-4">
       <Heading title="Welcome back" subTitle="Login to your account" center />
       <Input
-        label="Email"
+        label="Email : example@domain.com"
         id="email"
         disabled={isLoading}
         register={register}
@@ -163,19 +173,19 @@ const LoginModal: React.FC = () => {
         <input
           type="checkbox"
           id="agreement"
-          checked={agreed}
-          onChange={() => setAgreed((prev) => !prev)}
+          checked={agreedPolicy && agreedTerms} // Checkbox only checked if both are agreed
+          onChange={() => {}}
+          disabled={!(agreedPolicy && agreedTerms)} // Disable checkbox by default
           className="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
         />
         <label htmlFor="agreement" className="text-sm text-gray-600">
           I agree to the
-          <Link
-            href="/privacy-policy"
+          <button
+            onClick={openPolicyModal}
             className="text-green-600 hover:underline mx-1"
-            onClick={loginModal.onClose}
           >
             Privacy Policy
-          </Link>
+          </button>
           and
           <button
             onClick={handleOpenTermsModal}
@@ -200,7 +210,15 @@ const LoginModal: React.FC = () => {
         outline
         label="Continue with Google"
         icon={FcGoogle}
-        onClick={() => signIn("google")}
+        onClick={() => {
+          if (!(agreedPolicy && agreedTerms)) {
+            toast.error(
+              "You must agree to the Terms and Conditions and Privacy Policy."
+            );
+            return;
+          }
+          signIn("google"); // Proceed with Google sign-in only if agreed
+        }}
       />
       <div className="mt-4 font-light text-center text-neutral-500">
         <div className="flex items-center justify-center gap-2">
@@ -231,7 +249,12 @@ const LoginModal: React.FC = () => {
       <TermsAndConditionsModal
         isOpen={isTermsModalOpen}
         onClose={handleCloseTermsModal}
-        onAgree={() => setAgreed(true)} // Set agreed to true when user agrees
+        onAgree={() => setAgreedTerms(true)} // Set terms as agreed
+      />
+      <PrivacyPolicyModal
+        isOpen={isPolicyModalOpen}
+        onClose={handleClosePolicyModal}
+        onAgree={() => setAgreedPolicy(true)} // Set policy as agreed
       />
       <ForgotPasswordModal
         onClose={handleCloseForgotPassword} // Close Forgot Password modal

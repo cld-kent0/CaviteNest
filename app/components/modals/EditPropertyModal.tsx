@@ -1,7 +1,6 @@
 "use client";
 
 import { categories } from "@/app/constants/cetegories";
-import useEditPropertyModal from "@/app/hooks/useEditPropertyModal";
 import axios from "axios";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
@@ -12,7 +11,7 @@ import CategoryInput from "../CategoryInput";
 import Heading from "../Heading";
 import Counter from "../inputs/Counter";
 import CountrySelect from "../inputs/CountrySelect";
-import ImageUpload from "../inputs/ImageUpload";
+import EditImageUpload from "../inputs/EditImageUpload";
 import Input from "../inputs/Input";
 import Modal from "./Modal";
 import { amenities } from "@/app/constants/amenities";
@@ -43,8 +42,7 @@ const EditPropertyModal: React.FC<EditPropertyModalProps> = ({
   onClose,
 }) => {
   const router = useRouter();
-  const editPropertyModal = useEditPropertyModal();
-
+  const [images, setImages] = useState<string[]>([]); // Define images state
   const [step, setStep] = useState(STEPS.RENTAL_TYPE);
   const [isLoading, setIsLoading] = useState(false);
   const [allowSecurityDeposit, setAllowSecurityDeposit] = useState(false);
@@ -100,6 +98,13 @@ const EditPropertyModal: React.FC<EditPropertyModalProps> = ({
       }),
     []
   );
+
+  // Update the state with the form's imageSrc when the component mounts
+  useEffect(() => {
+    if (listingData?.imageSrc) {
+      setImages(listingData.imageSrc); // Set images from the listing data when the modal opens
+    }
+  }, [listingData]);
 
   useEffect(() => {
     if (listingData) {
@@ -326,9 +331,15 @@ const EditPropertyModal: React.FC<EditPropertyModalProps> = ({
               title="Upload images of your property"
               subTitle="Showcase your place"
             />
-            <ImageUpload
-              onChange={(value) => setCustomValue("imageSrc", value)}
-              value={imageSrc}
+            {/* RentImageUpload Component */}
+            <EditImageUpload
+              onImageUpload={(newImages) => {
+                // Update images in local state and the form with the new ones
+                setImages(newImages); // Set the images in local state
+                setCustomValue("imageSrc", newImages); // Set the images in the form state
+                console.log("Updated images:", newImages);
+              }}
+              currentImages={images} // Pass current images to the RentImageUpload component
             />
           </div>
         );

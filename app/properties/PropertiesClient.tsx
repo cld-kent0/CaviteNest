@@ -23,9 +23,9 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
   const router = useRouter();
   const [deletingId, setDeletingId] = useState("");
   const [archivingId, setArchivingId] = useState("");
-  const [selectedListingData, setSelectedListingData] = useState<SafeListing | null>(null); // To hold the data of the listing to be edited
+  const [selectedListingData, setSelectedListingData] =
+    useState<SafeListing | null>(null); // To hold the data of the listing to be edited
   const [isEditModalOpen, setIsEditModalOpen] = useState(false); // To control the visibility of the modal
-
 
   // Edit Property
   const onEdit = useCallback(
@@ -73,32 +73,34 @@ const PropertiesClient: React.FC<PropertiesClientProps> = ({
   // Delete Property
   const onCancel = useCallback(
     (id: string) => {
-    // Show a confirmation prompt before proceeding with the deletion
-    const isConfirmed = window.confirm("Are you sure you want to delete this property?");
-    
-    if (isConfirmed) {
-      setDeletingId(id);
+      // Show a confirmation prompt before proceeding with the deletion
+      const isConfirmed = window.confirm(
+        "Are you sure you want to delete this property?"
+      );
 
-      axios
-        .delete(`/api/listings/${id}`)
-        .then(() => {
-          toast.success("Listing Deleted");
-          window.location.reload();
-          router.refresh();
-        })
-        .catch((error) => {
-          toast.error(error?.response?.data?.error);
-        })
-        .finally(() => {
-          setDeletingId("");
-        });
-    } else {
-      toast.error("Deletion cancelled");
-    }
-  },
-  [router]
+      if (isConfirmed) {
+        setDeletingId(id);
+
+        axios
+          .delete(`/api/listings/${id}`)
+          .then(() => {
+            toast.success("Listing Deleted");
+            window.location.reload();
+            router.refresh();
+          })
+          .catch((error) => {
+            toast.error(error?.response?.data?.error);
+          })
+          .finally(() => {
+            setDeletingId("");
+          });
+      } else {
+        toast.error("Deletion cancelled");
+      }
+    },
+    [router]
   );
-  
+
   // Filter out archived listings
   const activeListings = listings.filter((listing) => !listing.is_archived);
 

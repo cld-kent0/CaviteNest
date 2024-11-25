@@ -16,7 +16,6 @@ const useFavorite = ({ listingId, currentUser }: IUseFavorites) => {
 
   const hasFavorited = useMemo(() => {
     const list = currentUser?.favoriteIds || [];
-
     return list.includes(listingId);
   }, [currentUser, listingId]);
 
@@ -39,7 +38,13 @@ const useFavorite = ({ listingId, currentUser }: IUseFavorites) => {
 
         await request();
         router.refresh();
-        toast.success("Save to favorites!");
+
+        // Show appropriate toast messages
+        if (hasFavorited) {
+          toast.error("Removed from favorites!");
+        } else {
+          toast.success("Saved to favorites!");
+        }
       } catch (error) {
         toast.error("Something went wrong.");
       }

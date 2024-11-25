@@ -11,6 +11,9 @@ import Heading from "../Heading";
 import Input from "../inputs/Input";
 import Modal from "./Modal";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { MdHelpOutline } from "react-icons/md";
+import TermsAndConditionsModal from "./TermsAndConditionsModal";
+import PrivacyPolicyModal from "./PrivacyPolicyModal";
 
 const RegisterModal = () => {
   const registerModal = useRegisterModal();
@@ -18,6 +21,11 @@ const RegisterModal = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showInfoBox, setShowInfoBox] = useState(false);
+  const [agreedPolicy, setAgreedPolicy] = useState(false); // Privacy Policy Agreement
+  const [agreedTerms, setAgreedTerms] = useState(false); // Terms Agreement
+  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
+  const [isPolicyModalOpen, setPolicyModalOpen] = useState(false);
 
   const {
     register,
@@ -36,13 +44,20 @@ const RegisterModal = () => {
   const password = watch("password");
   const confirmPassword = watch("confirmPassword");
 
-  // Password validation rules
-  const passwordValidation = {
-    minLength: password?.length >= 8,
-    hasUpperCase: /[A-Z]/.test(password || ""),
-    hasLowerCase: /[a-z]/.test(password || ""),
-    hasNumber: /[0-9]/.test(password || ""),
-    hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password || ""),
+  const handleOpenTermsModal = () => {
+    setIsTermsModalOpen(true);
+  };
+
+  const handleCloseTermsModal = () => {
+    setIsTermsModalOpen(false);
+  };
+
+  const handleClosePolicyModal = () => {
+    setPolicyModalOpen(false);
+  };
+
+  const openPolicyModal = () => {
+    setPolicyModalOpen(true);
   };
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
@@ -52,10 +67,11 @@ const RegisterModal = () => {
       return;
     }
 
-    // Ensure password meets all requirements
-    const validPassword = Object.values(passwordValidation).every((v) => v);
-    if (!validPassword) {
-      toast.error("Password does not meet the requirements.");
+    // Ensure user agrees to the terms
+    if (!(agreedPolicy && agreedTerms)) {
+      toast.error(
+        "You must agree to the Privacy Policy and Terms and Conditions."
+      );
       return;
     }
 
@@ -88,13 +104,14 @@ const RegisterModal = () => {
         center
       />
       <Input
-        label="Email"
+        label="Email : example@domain.com"
         id="email"
         disabled={isLoading}
         register={register}
         errors={errors}
         required
       />
+
       <Input
         label="Name"
         id="name"
@@ -103,6 +120,7 @@ const RegisterModal = () => {
         errors={errors}
         required
       />
+
       <div className="relative">
         <Input
           type={showPassword ? "text" : "password"}
@@ -125,49 +143,6 @@ const RegisterModal = () => {
           )}
         </button>
       </div>
-
-      <ul className="text-xs text-gray-500">
-        <li
-          className={
-            passwordValidation.minLength ? "text-green-500" : "text-red-500"
-          }
-        >
-          {passwordValidation.minLength ? "✔" : "✖"} At least 8 characters
-        </li>
-        <li
-          className={
-            passwordValidation.hasUpperCase ? "text-green-500" : "text-red-500"
-          }
-        >
-          {passwordValidation.hasUpperCase ? "✔" : "✖"} At least one uppercase
-          letter
-        </li>
-        <li
-          className={
-            passwordValidation.hasLowerCase ? "text-green-500" : "text-red-500"
-          }
-        >
-          {passwordValidation.hasLowerCase ? "✔" : "✖"} At least one lowercase
-          letter
-        </li>
-        <li
-          className={
-            passwordValidation.hasNumber ? "text-green-500" : "text-red-500"
-          }
-        >
-          {passwordValidation.hasNumber ? "✔" : "✖"} At least one number
-        </li>
-        <li
-          className={
-            passwordValidation.hasSpecialChar
-              ? "text-green-500"
-              : "text-red-500"
-          }
-        >
-          {passwordValidation.hasSpecialChar ? "✔" : "✖"} At least one special
-          character
-        </li>
-      </ul>
 
       <div className="relative">
         <Input
@@ -192,22 +167,32 @@ const RegisterModal = () => {
         </button>
       </div>
 
-      {/* Dynamic Password Match/Do not Match Message */}
-      <p
-        className={`text-sm ${
-          password && confirmPassword
-            ? password === confirmPassword
-              ? "text-green-500"
-              : "text-red-500"
-            : "text-gray-500"
-        }`}
-      >
-        {password && confirmPassword
-          ? password === confirmPassword
-            ? "Passwords match!"
-            : "Passwords do not match."
-          : " "}
-      </p>
+      <div className="flex items-center">
+        <input
+          type="checkbox"
+          id="agreement"
+          checked={agreedPolicy && agreedTerms} // Enabled only if both are agreed
+          onChange={() => {}}
+          disabled={!(agreedPolicy && agreedTerms)} // Disabled until both agreements
+          className="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+        />
+        <label htmlFor="agreement" className="text-sm text-gray-600">
+          I agree to the
+          <button
+            onClick={openPolicyModal}
+            className="text-green-600 hover:underline mx-1"
+          >
+            Privacy Policy
+          </button>
+          and
+          <button
+            onClick={handleOpenTermsModal}
+            className="text-green-600 hover:underline mx-1"
+          >
+            Terms and Conditions
+          </button>
+        </label>
+      </div>
     </div>
   );
 
@@ -218,7 +203,15 @@ const RegisterModal = () => {
         outline
         label="Continue with Google"
         icon={FcGoogle}
-        onClick={() => signIn("google")}
+        onClick={() => {
+          if (!(agreedPolicy && agreedTerms)) {
+            toast.error(
+              "You must agree to the Privacy Policy and Terms and Conditions."
+            );
+            return;
+          }
+          signIn("google"); // Proceed only if agreements are confirmed
+        }}
       />
       <div className="mt-4 font-light text-center text-neutral-500">
         <div className="flex items-center justify-center gap-2">
@@ -235,16 +228,28 @@ const RegisterModal = () => {
   );
 
   return (
-    <Modal
-      disabled={isLoading}
-      isOpen={registerModal.isOpen}
-      title="Register"
-      actionLabel="Continue"
-      onClose={registerModal.onClose}
-      onSubmit={handleSubmit(onSubmit)}
-      body={bodyContent}
-      footer={footerContent}
-    />
+    <>
+      <Modal
+        disabled={isLoading}
+        isOpen={registerModal.isOpen}
+        title="Register"
+        actionLabel="Continue"
+        onClose={registerModal.onClose}
+        onSubmit={handleSubmit(onSubmit)}
+        body={bodyContent}
+        footer={footerContent}
+      />
+      <TermsAndConditionsModal
+        isOpen={isTermsModalOpen}
+        onClose={handleCloseTermsModal}
+        onAgree={() => setAgreedTerms(true)} // Set terms as agreed
+      />
+      <PrivacyPolicyModal
+        isOpen={isPolicyModalOpen}
+        onClose={handleClosePolicyModal}
+        onAgree={() => setAgreedPolicy(true)} // Set policy as agreed
+      />
+    </>
   );
 };
 

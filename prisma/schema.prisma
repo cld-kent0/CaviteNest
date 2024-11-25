@@ -193,7 +193,7 @@ model Conversation {
 model Message {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
   body         String?
-  image        String?
+  image        String[]
   createdAt    DateTime @default(now())
   listingId    String?  @db.ObjectId
   listingOwner String?  @db.ObjectId
@@ -220,7 +220,7 @@ model Listing {
   id                     String   @id @default(auto()) @map("_id") @db.ObjectId
   title                  String
   description            String
-  imageSrc               String
+  imageSrc               String[]
   createdAt              DateTime @default(now())
   category               String
   roomCount              Int

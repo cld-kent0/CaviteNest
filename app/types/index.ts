@@ -50,6 +50,8 @@ export type SafeReservation = Omit<
 export type FullMessageType = Message & {
   sender: User;  // The user who sent the message
   seen: User[];  // The list of users who have seen the message
+  image:string | null;
+  images: string[];
 };
 
 // FullConversationType extends the Conversation model and includes users and messages

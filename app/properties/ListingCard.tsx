@@ -1,11 +1,11 @@
-"use client";
+"use client"; // Ensure client-side rendering
 
 import useCountries from "@/app/hooks/useCountries";
 import { SafeListing, SafeReservation, SafeUser } from "@/app/types";
 import { format } from "date-fns";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Button from "../components/Button";
 import DeleteButton from "../properties/DeleteButton";
 import HeartButton from "../components/HeartButton";
@@ -47,6 +47,8 @@ const ListingCard: React.FC<ListingCardProps> = ({
 }) => {
   const router = useRouter();
   const { getByValue } = useCountries();
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0); // Track current image index
+  const images = data.imageSrc ?? []; // Fallback to an empty array if no images exist
 
   const location =
     typeof data.locationValue === "string"
@@ -99,23 +101,77 @@ const ListingCard: React.FC<ListingCardProps> = ({
     return `${format(start, "PP")} - ${format(end, "PP")}`;
   }, [reservation]);
 
+  // Function to go to the next image
+  const goToNextImage = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevents opening the listing
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  // Function to go to the previous image
+  const goToPreviousImage = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevents opening the listing
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
+  };
+
+  // Function to set the current image when a dot is clicked
+  const handleDotClick = (index: number) => {
+    setCurrentImageIndex(index);
+  };
+
   return (
     <div
       onClick={() => router.push(`/listings/${data.id}`)} // 'id' here is fine since it’s the listingUnique
       className="col-span-1 cursor-pointer group"
     >
       <div className="flex flex-col w-full gap-2">
-        <div className="relative w-full overflow-hidden aspect-square rounded-xl">
+        {/* Image Carousel */}
+        <div className="relative w-full overflow-hidden aspect-square rounded-xl group-hover:opacity-100 opacity-90 transition-all duration-300">
+          {/* Fallback image in case imageSrc is empty */}
           <Image
             fill
-            src={data.imageSrc || "/public/images/noImgEx.png"} // Provide a fallback image URL
+            src={images[currentImageIndex] || "/images/no-img-placeholder.jpg"}
             alt="Listing"
-            className="object-cover w-full h-full transition group-hover:scale-110"
+            className="object-cover w-full h-full transition-all duration-500 ease-in-out"
           />
           <div className="absolute top-3 right-3">
             <HeartButton listingId={data.id} currentUser={currentUser} />
           </div>
+
+          {/* Carousel Navigation Buttons */}
+          <button
+            onClick={goToPreviousImage}
+            className="absolute top-1/2 left-5 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all"
+          >
+            &#8592;
+          </button>
+          <button
+            onClick={goToNextImage}
+            className="absolute top-1/2 right-5 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all"
+          >
+            &#8594;
+          </button>
+
+          {/* Dot Indicators Inside the Image */}
+          {images.length > 1 && (
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+              {images.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleDotClick(index)}
+                  className={`w-3 h-3 rounded-full ${
+                    index === currentImageIndex ? "bg-black" : "bg-neutral-300"
+                  } transition-all duration-300`}
+                />
+              ))}
+            </div>
+          )}
         </div>
+
+        {/* Listing Info */}
         <div className="text-lg font-semibold">
           {location?.region}, {location?.label}
         </div>
@@ -126,6 +182,8 @@ const ListingCard: React.FC<ListingCardProps> = ({
           <div className="font-semibold">{formatPrice(price)}</div>
           {!reservation && <div className="font-semibold">/ Night</div>}
         </div>
+
+        {/* Action Buttons */}
         {onEdit && editLabel && (
           <Button
             disabled={disabled}

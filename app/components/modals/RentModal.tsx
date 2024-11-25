@@ -17,6 +17,7 @@ import Modal from "./Modal";
 import { categories } from "@/app/constants/cetegories";
 import { amenities } from "@/app/constants/amenities";
 import AmenityInput from "../AmenityInput";
+import RentImageUpload from "../inputs/RentImageUpload";
 
 enum STEPS {
   RENTAL_TYPE = 0,
@@ -57,6 +58,7 @@ const RentModal: React.FC<RentModalProps> = ({ user }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [existingListings, setExistingListings] = useState(0); // State to store the number of existing listings
   const [allowSecurityDeposit, setAllowSecurityDeposit] = useState(false);
+  const [images, setImages] = useState<string[]>([]);
 
   const {
     register,
@@ -73,7 +75,7 @@ const RentModal: React.FC<RentModalProps> = ({ user }) => {
       guestCount: 1,
       roomCount: 1,
       bathroomCount: 1,
-      imageSrc: "",
+      imageSrc: [],
       rentalPrice: "",
       bookingPrice: "",
       title: "",
@@ -109,7 +111,7 @@ const RentModal: React.FC<RentModalProps> = ({ user }) => {
       guestCount: 1,
       roomCount: 1,
       bathroomCount: 1,
-      imageSrc: "",
+      imageSrc: [],
       rentalPrice: "",
       bookingPrice: "",
       title: "",
@@ -143,6 +145,11 @@ const RentModal: React.FC<RentModalProps> = ({ user }) => {
       shouldTouch: true,
       shouldValidate: true,
     });
+  };
+
+  const handleImageUpload = (newImages: string[]) => {
+    setImages((prevImages) => [...prevImages, ...newImages]);
+    console.log("Uploaded images:", [...images, ...newImages]);
   };
 
   // Fetch existing listings and set the limit based on the user's subscription plan
@@ -197,6 +204,13 @@ const RentModal: React.FC<RentModalProps> = ({ user }) => {
     if (step === STEPS.LOCATION && !location) {
       toast.error("Please select a location before proceeding.");
       return;
+    }
+    if (step === STEPS.IMAGES) {
+      if (images.length === 0) {
+        toast.error("Please upload at least one image before proceeding.");
+        return;
+      }
+      setCustomValue("imageSrc", images); // Persist images before proceeding
     }
     setStep((prevStep) => prevStep + 1); // Proceed to next step
   };
@@ -411,9 +425,13 @@ const RentModal: React.FC<RentModalProps> = ({ user }) => {
               title="Upload images of your property"
               subTitle="Showcase your place"
             />
-            <ImageUpload
-              onChange={(value) => setCustomValue("imageSrc", value)}
-              value={imageSrc}
+            {/* RentImageUpload Component */}
+            <RentImageUpload
+              images={images} // Pass the current images state
+              onImageUpload={(updatedImages) => {
+                setImages(updatedImages); // Update the local images state
+                setCustomValue("imageSrc", updatedImages); // Update the form value with the new image list
+              }}
             />
           </div>
         );
