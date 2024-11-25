@@ -119,14 +119,27 @@ const MessageBox: React.FC<MessageBoxProps> = ({
           </div>
         </div>
         <div className={message}>
+          <ImageModal
+            src={data.image}
+            isOpen={imageModalOpen}
+            onClose={() => setImageModalOpen(false)}
+          />
           {data.image ? (
-            <div className="flex justify-center items-center">
-              <Image alt="Image" height="288" width="288" src={data.image} />
-            </div>
+            <Image
+              onClick={() => setImageModalOpen(true)}
+              alt="Image"
+              height="288"
+              width="288"
+              src={data.image}
+              className="object-cover cursor-pointer hover:scale-110 transition translate"
+            />
           ) : (
-            <div dangerouslySetInnerHTML={{ __html: messageBody }} />
+            <div
+              dangerouslySetInnerHTML={{
+                __html: messageBody, // Inject the formatted text here
+              }}
+            />
           )}
-
           <div className="text-center">
             {isOwnerOfListing && (
               <button
