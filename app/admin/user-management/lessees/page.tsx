@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image'; // Import the Next.js Image component
-import SearchInput from '../../components/SearchInput';
-import ActionButton from '../../components/ActionButton';
-import Pagination from '../../components/Pagination';
-import LesseeDetailsModal from '../../components/modals/LesseeDetailsModal';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import Image from "next/image"; // Import the Next.js Image component
+import SearchInput from "../../components/SearchInput";
+import ActionButton from "../../components/ActionButton";
+import Pagination from "../../components/Pagination";
+import LesseeDetailsModal from "../../components/modals/LesseeDetailsModal";
 
 interface Lessee {
   id: string;
@@ -22,7 +22,7 @@ interface Lessee {
 const LesseeList = () => {
   const [lessees, setLessees] = useState<Lessee[]>([]);
   const [showArchived, setShowArchived] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [selectedLessee, setSelectedLessee] = useState<Lessee | null>(null); // Track selected Lessee
@@ -35,26 +35,28 @@ const LesseeList = () => {
 
   const fetchLessees = () => {
     axios
-      .get('/api/admin/users/lessees')
+      .get("/api/admin/users/lessees")
       .then((response) => setLessees(response.data))
-      .catch((error) => console.error('Error fetching lessees:', error));
+      .catch((error) => console.error("Error fetching lessees:", error));
   };
 
   const archiveLessee = (id: string) => {
-    const confirmed = window.confirm('Are you sure you want to archive this lessee?');
+    const confirmed = window.confirm(
+      "Are you sure you want to archive this lessee?"
+    );
     if (confirmed) {
       axios
-        .post(`/api/admin/archiving/archive`, { id, type: 'lessee' })
+        .post(`/api/admin/archiving/archive`, { id, type: "lessee" })
         .then(() => fetchLessees())
-        .catch((error) => console.error('Error archiving lessee:', error));
+        .catch((error) => console.error("Error archiving lessee:", error));
     }
   };
 
   const unarchiveLessee = (id: string) => {
     axios
-      .post(`/api/admin/archiving/unarchive`, { id, type: 'lessee' })
+      .post(`/api/admin/archiving/unarchive`, { id, type: "lessee" })
       .then(() => fetchLessees())
-      .catch((error) => console.error('Error unarchiving lessee:', error));
+      .catch((error) => console.error("Error unarchiving lessee:", error));
   };
 
   const openModal = (lessee: Lessee) => {
@@ -70,10 +72,11 @@ const LesseeList = () => {
   // Filter lessees based on search query and archive status
   const filteredLessees = lessees
     .filter((lessee) => lessee.is_archived === showArchived)
-    .filter((lessee) =>
-      lessee.id.includes(searchQuery) ||
-      lessee.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      lessee.email.toLowerCase().includes(searchQuery.toLowerCase())
+    .filter(
+      (lessee) =>
+        lessee.id.includes(searchQuery) ||
+        lessee.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        lessee.email.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
   // Paginate filtered results
@@ -84,15 +87,20 @@ const LesseeList = () => {
 
   return (
     <div className="p-6">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6">Users Management / Lessee</h2>
+      <h2 className="text-3xl font-bold text-gray-800 mb-6">
+        Users Management / Lessee
+      </h2>
       <div className="flex justify-between mb-4">
         <button
           onClick={() => setShowArchived(!showArchived)}
           className="bg-sky-900 hover:bg-sky-950 text-white px-4 py-2 rounded-md"
         >
-          {showArchived ? 'Show Active Lessees' : 'Show Archived Lessees'}
+          {showArchived ? "Show Active Lessees" : "Show Archived Lessees"}
         </button>
-        <SearchInput searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        <SearchInput
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+        />
       </div>
       <div className="bg-white rounded-lg shadow-md">
         <table className="min-w-full table-auto text-gray-700">
@@ -119,7 +127,9 @@ const LesseeList = () => {
                 <tr key={lessee.id} className="hover:bg-gray-50">
                   <td className="px-4 py-2 border-b">
                     <Image
-                      src={lessee.image ? lessee.image: '/images/placeholder.jpg'}
+                      src={
+                        lessee.image ? lessee.image : "/images/placeholder.jpg"
+                      }
                       alt={lessee.name}
                       className="rounded-full"
                       width={48} // Adjust width as needed
@@ -128,7 +138,9 @@ const LesseeList = () => {
                     />
                   </td>
                   <td className="px-4 py-2 border-b">{lessee.id}</td>
-                  <td className="px-4 py-2 border-b whitespace-nowrap">{lessee.name}</td>
+                  <td className="px-4 py-2 border-b whitespace-nowrap">
+                    {lessee.name}
+                  </td>
                   <td className="px-4 py-2 border-b">{lessee.email}</td>
                   <td className="px-4 py-2 border-b whitespace-nowrap">
                     {lessee.idStatus
@@ -137,7 +149,9 @@ const LesseeList = () => {
                           .replace(/^\w/, (c) => c.toUpperCase()) // Capitalize the first letter
                       : ""}
                   </td>
-                  <td className="px-4 py-2 border-b">{new Date(lessee.createdAt).toLocaleDateString()}</td>
+                  <td className="px-4 py-2 border-b">
+                    {new Date(lessee.createdAt).toLocaleDateString()}
+                  </td>
                   <td className="px-4 py-2 border-b">
                     <ActionButton
                       itemId={lessee.id}
@@ -145,22 +159,18 @@ const LesseeList = () => {
                         showArchived
                           ? [
                               {
-                                label: 'Unarchive',
+                                label: "Unarchive",
                                 onClick: unarchiveLessee,
                               },
                             ]
                           : [
                               {
-                                label: 'View',
+                                label: "View",
                                 onClick: () => openModal(lessee), // Open modal when View is clicked
                               },
                               {
-                                label: 'Archive',
+                                label: "Archive",
                                 onClick: archiveLessee,
-                              },
-                              {
-                                label: 'Block',
-                                onClick: (id) => alert(`Blocking lessee with ID: ${id}`),
                               },
                             ]
                       }

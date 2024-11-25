@@ -30,24 +30,24 @@ enum SubscriptionPeriod {
   yearly
 }
 
-enum IdType{
+enum IdType {
   passport
   drivers_license
   identity
 }
 
-enum IdStatus{
-  verified 
+enum IdStatus {
+  verified
   pending
   unverified
   rejected
 }
 
 enum SubscriptionStatus {
-  NONE        // No subscription yet
-  ACTIVE      //CANCELLED, PAUSED, ARCHIVED
-  CANCELLED   //ACTIVE, ARCHIVED
-  EXPIRED     //ACTIVE, ARCHIVED
+  NONE // No subscription yet
+  ACTIVE //CANCELLED, PAUSED, ARCHIVED
+  CANCELLED //ACTIVE, ARCHIVED
+  EXPIRED //ACTIVE, ARCHIVED
   UNDER_REVIEW
 }
 
@@ -66,7 +66,6 @@ enum PaymentMethodType {
   GCASH
   OTHER
 }
-
 
 model User {
   id                 String    @id @default(auto()) @map("_id") @db.ObjectId
@@ -88,13 +87,13 @@ model User {
   resetPasswordToken String?
   is_archived        Boolean   @default(false) // New field to mark account as archived
 
-  plan               Plan     @default(free)
-  customerId         String?  //@unique //unqueness is remove bacause upon registration it will ecounter error // Stripe customer ID, this will be important when we need to delete the subscription
+  plan         Plan           @default(free)
+  customerId   String? //@unique //unqueness is remove bacause upon registration it will ecounter error // Stripe customer ID, this will be important when we need to delete the subscription
   //subscriptionStatus  SubscriptionStatus? @default(NONE) // Status for subscriptions
-  Subscription       Subscription? @relation
-  GcashPayment       GcashPayment[]
+  Subscription Subscription?  @relation
+  GcashPayment GcashPayment[]
 
-  role UserRole     @default(LESSEE) // Default role is 'LESSEE'
+  role UserRole @default(LESSEE) // Default role is 'LESSEE'
 
   conversationIds String[]       @db.ObjectId
   conversations   Conversation[] @relation(fields: [conversationIds], references: [id])
@@ -108,55 +107,53 @@ model User {
   profile      Profile[]
   reservations Reservation[]
   verification VerificationToken[]
-
 }
 
 model Subscription {
-  id     String             @id @default(cuid()) @map("_id") // this is use for prisma (cuid()) @map("_id") not auto
-  userId String             @unique @db.ObjectId
-  plan   Plan
-  period SubscriptionPeriod
-  priceId   String?             // Stripe Price ID to track the specific plan
-  subscriptionStatus  SubscriptionStatus? // Status for subscriptions - kapag nag subscribe si user then mag aactivate ito sa webhook - dars
-  paymentMethodType    PaymentMethodType? @default(STRIPE)
-  
+  id                 String              @id @default(cuid()) @map("_id") // this is use for prisma (cuid()) @map("_id") not auto
+  userId             String              @unique @db.ObjectId
+  plan               Plan
+  period             SubscriptionPeriod
+  priceId            String? // Stripe Price ID to track the specific plan
+  subscriptionStatus SubscriptionStatus? // Status for subscriptions - kapag nag subscribe si user then mag aactivate ito sa webhook - dars
+  paymentMethodType  PaymentMethodType?  @default(STRIPE)
+
   startDate DateTime @default(now())
   endDate   DateTime
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   gcashpayment GcashPayment[]
 }
 
 model GcashPayment {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId        String   @db.ObjectId
-  subscriptionId String? 
-  plan          Plan 
-  billingPeriod String
-  receiptFile   String // URL to the uploaded receipt file
-  referenceNo  String?
-  price         String  // Payment amount
-  status        PaymentStatus? @default(PENDING)  // Status specific to payments
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId
+  userId         String         @db.ObjectId
+  subscriptionId String?
+  plan           Plan
+  billingPeriod  String
+  receiptFile    String // URL to the uploaded receipt file
+  referenceNo    String?
+  price          String // Payment amount
+  status         PaymentStatus? @default(PENDING) // Status specific to payments
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
 
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  subscription  Subscription?   @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subscription Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
 }
 
 model QRCode {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  qrCodeData  String?   // Stores the QR Code Data (text or string)
-  qrCodeImage String?  // Stores the image URL if you upload an image
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  qrCodeData    String? // Stores the QR Code Data (text or string)
+  qrCodeImage   String? // Stores the image URL if you upload an image
   accountNumber String
-  accountName String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  accountName   String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
-
 
 model Account {
   id                String  @id @default(auto()) @map("_id") @db.ObjectId
@@ -281,33 +278,32 @@ model Reservation {
   listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
 }
 
-
 model AboutUs {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  vision  String
-  mission String
-  heroImageSrc     String   // URL of the hero image
-  heroTitle        String   // Title like "Rent unique properties around Cavite City"
-  heroDescription  String   // Description text
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  vision          String
+  mission         String
+  heroImageSrc    String // URL of the hero image
+  heroTitle       String // Title like "Rent unique properties around Cavite City"
+  heroDescription String // Description text
 }
 
 model CarouselItem {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  title     String
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
   description String
-  image  String
+  image       String
 }
 
 model Profile {
-  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId              String   @unique @db.ObjectId
-  interest            String[]
-  contactNo           String?  @unique
-  location            String?
-  description         String?
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @default(now()) @updatedAt
-  imageSrc            String? //tatagaling to
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @unique @db.ObjectId
+  interest    String[]
+  contactNo   String?  @unique
+  location    String?
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+  imageSrc    String? //tatagaling to
 
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

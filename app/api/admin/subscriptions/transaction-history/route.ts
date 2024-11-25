@@ -27,20 +27,30 @@ export async function GET() {
         status: payment.status,
         createdAt: payment.createdAt,
       })),
-      ...subscriptions.map((subscription) => ({
-        id: subscription.id,
-        type: 'Subscription',
-        user: subscription.user.name,
-        plan: subscription.plan,
-        period: subscription.period,
-        price: null, // No price for subscriptions in this schema
-        status: subscription.subscriptionStatus,
-        createdAt: subscription.createdAt,
-      })),
+      ...subscriptions.map((subscription) => {
+        // Calculate the subscription price based on the plan and period
+        let price = null;
+        if (subscription.plan === 'premium') {
+          price = subscription.period === 'quarterly' ? 699 : subscription.period === 'yearly' ? 1249 : null;
+        } else if (subscription.plan === 'business') {
+          price = subscription.period === 'quarterly' ? 999 : subscription.period === 'yearly' ? 1849 : null;
+        }
+
+        return {
+          id: subscription.id,
+          type: 'Subscription',
+          user: subscription.user.name,
+          plan: subscription.plan,
+          period: subscription.period,
+          price, // Assign the calculated price
+          status: subscription.subscriptionStatus,
+          createdAt: subscription.createdAt,
+        };
+      }),
     ];
 
-     // Sort transactions by createdAt in descending order (most recent first)
-     transactions.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    // Sort transactions by createdAt in descending order (most recent first)
+    transactions.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
     return NextResponse.json(transactions);
   } catch (error) {

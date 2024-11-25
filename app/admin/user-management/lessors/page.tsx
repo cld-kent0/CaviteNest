@@ -215,10 +215,6 @@ const LessorList = () => {
                                 label: "Archive",
                                 onClick: archiveLessor,
                               },
-                              {
-                                label: "Block",
-                                onClick: (id) => alert(`Blocking lessor...`),
-                              },
                             ]
                       }
                     />
