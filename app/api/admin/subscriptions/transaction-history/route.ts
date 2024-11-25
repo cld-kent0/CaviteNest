@@ -52,7 +52,7 @@ export async function GET() {
           user: subscription.user.name,
           plan: subscription.plan,
           period: subscription.period,
-          price, // Assign the calculated price
+          price: price ? `₱ ${price}.00` : "N/A", // Assign the calculated price
           status: subscription.subscriptionStatus,
           createdAt: subscription.createdAt,
         };

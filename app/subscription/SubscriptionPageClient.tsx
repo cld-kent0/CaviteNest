@@ -13,7 +13,7 @@ const SubscriptionPageClient = () => {
     {
       date: string;
       amount: string;
-      plan: string
+      plan: string;
       status: string;
       start: string;
       end: string;

@@ -75,7 +75,7 @@ export async function GET(req: Request) {
 
       return {
         date: subscription.createdAt.toISOString(),
-        amount: price ? ` ${price}` : "N/A", //₱
+        amount: price ? `₱ ${price}.00` : "N/A", //₱
         plan: subscription.plan,
         status: subscription.subscriptionStatus || "N/A", // Include status
         start: subscription.startDate?.toISOString() || "N/A", // Include start date
