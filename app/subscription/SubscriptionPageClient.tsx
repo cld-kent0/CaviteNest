@@ -1,10 +1,10 @@
-"use client";
+'use client'
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Heading from "./Heading";
-import SubscriptionCard from "./SubscriptionCard";
-import Container from "../components/Container";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Heading from './Heading';
+import SubscriptionCard from './SubscriptionCard';
+import Container from '../components/Container';
 
 const SubscriptionPageClient = () => {
   const router = useRouter();
@@ -17,7 +17,7 @@ const SubscriptionPageClient = () => {
   // Fetch user's subscription plan
   const getUserSubscription = async () => {
     try {
-      const res = await fetch("/api/subscription"); // Call the API route
+      const res = await fetch('/api/subscription'); // Call the API route
       const data = await res.json();
       if (res.ok) {
         setUserPlan(data.plan); // Set the user's subscription plan
@@ -25,20 +25,20 @@ const SubscriptionPageClient = () => {
         console.error(data.message);
       }
     } catch (error) {
-      console.error("Error fetching user subscription:", error);
+      console.error('Error fetching user subscription:', error);
     }
   };
 
   // Fetch user's payment history
   const getPaymentHistory = async () => {
     try {
-      const res = await fetch("/api/subscription/payment-history");
+      const res = await fetch('/api/subscription/payment-history');
       const data = await res.json();
       if (res.ok && Array.isArray(data.history)) {
         setPaymentHistory(data.history);
       }
     } catch (error) {
-      console.error("Error fetching payment history:", error);
+      console.error('Error fetching payment history:', error);
     }
   };
 
@@ -68,11 +68,11 @@ const SubscriptionPageClient = () => {
       title: plan.title,
       description: plan.description,
       price: plan.price,
-      features: plan.features.join(","),
+      features: plan.features.join(','),
       borderColor: plan.borderColor,
       lineColor: plan.lineColor,
       hoverColor: plan.hoverColor,
-      planType: plan.planType,
+      planType: plan.planType
     }).toString();
     router.push(`/subscription/subscriptionNext?${queryParams}`);
   };
@@ -127,9 +127,7 @@ const SubscriptionPageClient = () => {
             priceDesc={
               <>
                 ₱ 1,249.00 when you&nbsp;
-                <span
-                  style={{ textDecoration: "underline", fontWeight: "bold" }}
-                >
+                <span style={{ textDecoration: "underline", fontWeight: "bold" }}>
                   pay yearly
                 </span>
               </>
@@ -141,8 +139,7 @@ const SubscriptionPageClient = () => {
             onSubscribe={() =>
               handleGoTo({
                 title: "Premium Plan",
-                description:
-                  "Manage 3-5 properties with full access to all features.",
+                description: "Manage 3-5 properties with full access to all features.",
                 price: "₱ 699.00",
                 features: [
                   "Upload 3-5 Property Listings",
@@ -173,9 +170,7 @@ const SubscriptionPageClient = () => {
             priceDesc={
               <>
                 ₱ 1,849.00 when you&nbsp;
-                <span
-                  style={{ textDecoration: "underline", fontWeight: "bold" }}
-                >
+                <span style={{ textDecoration: "underline", fontWeight: "bold" }}>
                   pay yearly
                 </span>
               </>
@@ -187,8 +182,7 @@ const SubscriptionPageClient = () => {
             onSubscribe={() =>
               handleGoTo({
                 title: "Business Plan",
-                description:
-                  "Manage > 5 properties with full access to all features.",
+                description: "Manage > 5 properties with full access to all features.",
                 price: "₱ 999.00",
                 features: [
                   "Upload 5 or more Property Listings",
@@ -233,9 +227,8 @@ const SubscriptionPageClient = () => {
                 {paymentHistory.map((payment, index) => (
                   <tr
                     key={index}
-                    className={`border-t ${
-                      index % 2 === 0 ? "bg-gray-100" : "bg-white"
-                    }`}
+                    className={`border-t ${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'
+                      }`}
                   >
                     <td className="px-4 py-2">{payment.date}</td>
                     <td className="px-4 py-2">{payment.amount}</td>

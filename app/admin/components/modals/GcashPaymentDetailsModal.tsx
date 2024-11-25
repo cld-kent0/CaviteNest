@@ -163,7 +163,7 @@ const GcashPaymentDetailsModal: React.FC<GcashPaymentDetailsModalProps> = ({
             <strong>Receipt:</strong> <span className="text-gray-600">Available</span>
           </div>
           <div className="flex justify-center mb-4">
-            <Image
+            <img
               src={payment.receiptFile}
               alt="Receipt"
               className="w-50 h-80 border rounded-lg"
