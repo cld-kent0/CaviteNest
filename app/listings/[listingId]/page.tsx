@@ -27,6 +27,7 @@ const ListingPage = async ({ params }: { params: IParams }) => {
       interest: true,
       contactNo: true,
       description: true,
+      location: true,
     },
   });
 
@@ -45,7 +46,7 @@ const ListingPage = async ({ params }: { params: IParams }) => {
       <ClientOnly>
         <ListingClient
           listing={listing}
-          profile={profile || undefined}
+          profile={profile}
           currentUser={currentUser}
           reservations={reservations}
         />
