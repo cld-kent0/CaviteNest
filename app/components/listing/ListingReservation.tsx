@@ -176,7 +176,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
         checkInTime: modalData.checkInTime || "Not Specified",
         checkOutTime: modalData.checkOutTime || "Not Specified",
         paymentMethod: modalData.paymentMethod || "Not Specified",
-        listingImg: modalData.listingImg?.[0] || "Not Specified", // Use only the first image or default
+        listingImg: modalData.listingImg[0] || "Not Specified", // Use only the first image or default
       };
 
       // Send the sanitized modal data to the API to create a conversation or message
