@@ -29,6 +29,20 @@ const LoginModal: React.FC = () => {
   const [showForgotPassword, setShowForgotPassword] = useState(false); // State for Forgot Password modal
   const [showResetPassword, setShowResetPassword] = useState(false); // State for Reset Password modal
   const [resetToken, setResetToken] = useState<string | null>(null);
+  const [manualChecked, setManualChecked] = useState(false); // Tracks manual state
+
+  const handleCheckboxChange = () => {
+    if (!manualChecked) {
+      // If being checked manually, set agreements to true
+      setAgreedPolicy(true);
+      setAgreedTerms(true);
+    } else {
+      // If being unchecked, reset agreements
+      setAgreedPolicy(false);
+      setAgreedTerms(false);
+    }
+    setManualChecked(!manualChecked); // Toggle manual checkbox state
+  };
 
   const {
     register,
@@ -36,6 +50,7 @@ const LoginModal: React.FC = () => {
     formState: { errors },
     watch,
     setValue, // Add setValue for controlled input
+    reset, // Reset function to clear form fields
   } = useForm<FieldValues>({
     defaultValues: {
       email: "",
@@ -44,7 +59,7 @@ const LoginModal: React.FC = () => {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    if (!(agreedPolicy && agreedTerms)) {
+    if (!(manualChecked || (agreedPolicy && agreedTerms))) {
       toast.error(
         "You must agree to the Terms and Conditions and Privacy Policy."
       );
@@ -74,7 +89,7 @@ const LoginModal: React.FC = () => {
         });
 
         router.refresh();
-        loginModal.onClose();
+        loginModal.onClose(); // Close the login modal
       }
 
       if (callback?.error) {
@@ -84,9 +99,13 @@ const LoginModal: React.FC = () => {
   };
 
   const toggle = useCallback(() => {
+    reset();
     loginModal.onClose();
     registerModal.onOpen();
-  }, [loginModal, registerModal]);
+    setManualChecked(false);
+    setAgreedPolicy(false); // Reset policy agreement
+    setAgreedTerms(false); // Reset terms agreement
+  }, [loginModal, registerModal, reset]);
 
   const handleOpenTermsModal = () => {
     setIsTermsModalOpen(true);
@@ -122,11 +141,19 @@ const LoginModal: React.FC = () => {
     }
   }, []);
 
+  const handleCloseLoginModal = () => {
+    loginModal.onClose();
+    reset(); // Reset form fields
+    setManualChecked(false); // Reset the checkbox state
+    setAgreedPolicy(false); // Reset policy agreement
+    setAgreedTerms(false); // Reset terms agreement
+  };
+
   const bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading title="Welcome back" subTitle="Login to your account" center />
       <Input
-        label="Email : example@domain.com"
+        label="Email"
         id="email"
         disabled={isLoading}
         register={register}
@@ -160,46 +187,45 @@ const LoginModal: React.FC = () => {
           )}
         </button>
       </div>
-      <div className="flex justify-end">
+      <div className="flex flex-row justify-between items-center">
+        <div className="flex items-center gap-1.5 ml-1">
+          <input
+            type="checkbox"
+            id="agreement"
+            checked={manualChecked || (agreedPolicy && agreedTerms)} // Checkbox checked if manually checked or agreements are true
+            onChange={handleCheckboxChange} // Handle manual changes
+            className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+          />
+          <label htmlFor="agreement" className="text-sm text-gray-600">
+            I agree to the
+            <button
+              onClick={openPolicyModal}
+              className="text-green-600 hover:underline mx-1"
+            >
+              Privacy Policy
+            </button>
+            and
+            <button
+              onClick={handleOpenTermsModal}
+              className="text-green-600 hover:underline mx-1"
+            >
+              Terms and Conditions
+            </button>
+          </label>
+
+          {errors.agreement && (
+            <span className="text-red-600 text-sm">
+              You must agree to the terms.
+            </span>
+          )}
+        </div>
         <button
-          className="text-green-600 hover:underline"
+          className="text-green-600 hover:underline mr-1.5"
           onClick={handleForgotPassword} // Open Forgot Password modal
         >
           Forgot your password?
         </button>
       </div>
-
-      <div className="flex items-center mb-0 pb-0">
-        <input
-          type="checkbox"
-          id="agreement"
-          checked={agreedPolicy && agreedTerms} // Checkbox only checked if both are agreed
-          onChange={() => {}}
-          disabled={!(agreedPolicy && agreedTerms)} // Disable checkbox by default
-          className="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-        />
-        <label htmlFor="agreement" className="text-sm text-gray-600">
-          I agree to the
-          <button
-            onClick={openPolicyModal}
-            className="text-green-600 hover:underline mx-1"
-          >
-            Privacy Policy
-          </button>
-          and
-          <button
-            onClick={handleOpenTermsModal}
-            className="text-green-600 hover:underline mx-1"
-          >
-            Terms and Conditions
-          </button>
-        </label>
-      </div>
-      {errors.agreement && (
-        <span className="text-red-600 text-sm">
-          You must agree to the terms.
-        </span>
-      )}
     </div>
   );
 
@@ -241,7 +267,7 @@ const LoginModal: React.FC = () => {
         isOpen={loginModal.isOpen}
         title="Login"
         actionLabel="Continue"
-        onClose={loginModal.onClose}
+        onClose={handleCloseLoginModal} // Reset form and close modal
         onSubmit={handleSubmit(onSubmit)}
         body={bodyContent}
         footer={footerContent}

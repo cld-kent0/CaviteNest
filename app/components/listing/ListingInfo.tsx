@@ -5,7 +5,12 @@ import dynamic from "next/dynamic";
 import ProfileAvatar from "../ProfileAvatar"; // Assuming Avatar component is here
 import ListingCategory from "./ListingCategory";
 import { FaUserFriends, FaBed, FaBath } from "react-icons/fa"; // Importing icons
-import { AiOutlineCheck, AiOutlineMail, AiOutlinePhone } from "react-icons/ai"; // Icon for amenities
+import {
+  AiOutlineCheck,
+  AiOutlineFieldTime,
+  AiOutlineMail,
+  AiOutlinePhone,
+} from "react-icons/ai"; // Icon for amenities
 import {
   differenceInYears,
   differenceInMonths,
@@ -59,12 +64,12 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
   }
 
   return (
-    <div className="flex flex-col col-span-4 gap-8">
-      <div className="flex items-center space-x-8">
+    <div className="flex flex-col col-span-4 gap-8 mt-1">
+      <div className="flex justify-center space-x-8">
         {" "}
         {/* space-x-4 will add some space between elements */}
         {/* Profile Box */}
-        <div className="flex items-center p-5 border border-neutral-300 rounded-lg bg-white shadow-md w-68">
+        <div className="flex items-center py-6 px-14 border border-neutral-300 rounded-lg bg-white shadow-md w-68 gap-16">
           <div className="flex flex-col items-center">
             <ProfileAvatar src={user?.image} key={user?.id} />
             <span className="text-neutral-700 mt-3 text-lg font-medium">
@@ -74,22 +79,18 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
               Owner
             </span>
           </div>
-          <p className="text-xs text-neutral-500 font-light ml-2">
-            {timeOnPlatform}
-          </p>
-        </div>
-        <div className="flex flex-col items-start">
-          {" "}
-          {/* Stack email and phone number */}
-          <p className="flex items-center text-sm text-neutral-500 mb-2">
-            {" "}
-            {/* Added margin-bottom */}
-            <AiOutlineMail className="mr-2" /> {user?.email}
-          </p>
-          <p className="flex items-center text-sm text-neutral-500">
-            <AiOutlinePhone className="mr-2" />{" "}
-            {ownerContactNum ? ownerContactNum : "N/A"}
-          </p>
+          <div className="flex flex-col items-start text-neutral-500 text-sm">
+            <p className="flex items-center mb-2">
+              <AiOutlineFieldTime className="mr-2" /> {timeOnPlatform}
+            </p>
+            <p className="flex items-center mb-2">
+              <AiOutlineMail className="mr-2" /> {user?.email}
+            </p>
+            <p className="flex items-center mb-2">
+              <AiOutlinePhone className="mr-2" />{" "}
+              {ownerContactNum ? ownerContactNum : "N/A"}
+            </p>
+          </div>
         </div>
       </div>
 

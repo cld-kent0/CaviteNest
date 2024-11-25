@@ -31,9 +31,15 @@ const PropertiesPage = async () => {
     );
   }
   return (
-    <ClientOnly>
-      <PropertiesClient listings={listings} currentUser={currentUser} />
-    </ClientOnly>
+    <ClientLayout>
+      <div className="flex flex-col min-h-screen">
+        <ClientOnly>
+          <div className="flex-grow">
+            <PropertiesClient listings={listings} currentUser={currentUser} />
+          </div>
+        </ClientOnly>
+      </div>
+    </ClientLayout>
   );
 };
 

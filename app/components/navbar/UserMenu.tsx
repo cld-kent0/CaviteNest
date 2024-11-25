@@ -1,16 +1,15 @@
+import { useRouter } from "next/navigation";
+import { useCallback, useRef, useState, useEffect } from "react";
+import { AiOutlineMenu } from "react-icons/ai";
+import Avatar from "../Avatar";
+import MenuItem from "./MenuItem";
+import { signOut } from "next-auth/react";
 import GetVerifiedModal from "../modals/GetVerifiedModal";
 import useGetVerified from "@/app/hooks/useGetVerifiedModal";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useRentModal from "@/app/hooks/useRentModal";
 import { SafeUser } from "@/app/types";
-import { signOut } from "next-auth/react";
-
-import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
-import { AiOutlineMenu } from "react-icons/ai";
-import Avatar from "../Avatar";
-import MenuItem from "./MenuItem";
 
 interface UserMenuProps {
   currentUser?: SafeUser | null;
@@ -23,6 +22,24 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
   const loginModal = useLoginModal();
   const rentModal = useRentModal();
   const [isOpen, setIsOpen] = useState(false);
+
+  // Reference to the menu container with explicit typing
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  // Close the menu if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false); // Close the menu if clicked outside
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
@@ -58,7 +75,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
     currentUser?.plan !== "free"; // Replace with actual plan property
 
   return (
-    <div className="relative">
+    <div className="relative" ref={menuRef}>
       <div className="flex flex-row items-center gap-3">
         <div
           onClick={onRent}
@@ -120,7 +137,6 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                     {isEligibleForBillingPortal && (
                       <MenuItem
                         onClick={() => {
-                          // Redirects to the Stripe customer portal URL
                           window.location.href =
                             process.env
                               .NEXT_PUBLIC_STRIPE_CUSTOMER_PORTAL_URL || "/";

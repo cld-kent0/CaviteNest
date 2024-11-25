@@ -3,8 +3,8 @@
 [![Contributors][contributors-shield]][contributors-url]
 [![MIT License][license-shield]][license-url]
 
-
 <a id="readme-top"></a>
+
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -38,54 +38,58 @@
 </details>
 
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
+
 [![CaviteNest][product-gif]](https://cavite-nest.vercel.app)
 
-**CaviteNest** is an online rental and booking platform focused on properties in Cavite City. 
+**CaviteNest** is an online rental and booking platform focused on properties in Cavite City.
 
 The platform allows users to list their properties for rent, search for available rentals, and easily book accommodations. It aims to provide a seamless experience for both property owners and renters, with a user-friendly interface and reliable backend.
 
 **Features:**
-* User account management (registration, login, and profile)
-* Property listing, booking, and rental system
-* Search filters for finding the right property
-* Interactive property details page with photos, descriptions, and booking or rental prices
-* ...
+
+- User account management (registration, login, and profile)
+- Property listing, booking, and rental system
+- Search filters for finding the right property
+- Interactive property details page with photos, descriptions, and booking or rental prices
+- ...
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 ### Built With
 
-* [![Next][Next.js]][Next-url] **Next.js**: A React framework for building server-side rendered and statically generated web apps.  
-* [![React][React.js]][React-url] **React**: A JavaScript library for building user interfaces with a component-based architecture.  
-* [![Prisma][Prisma]][Prisma-url] **Prisma**: An ORM that simplifies database access with type-safe queries.  
-* [![TypeScript][TypeScript]][TypeScript-url] **TypeScript**: A superset of JavaScript that adds static typing for better maintainability and fewer errors.  
-* [![Node][Node.js]][Node.js-url] **Node.js**: A JavaScript runtime for building fast, scalable server-side applications.  
-* [![Vercel][Vercel]][Vercel-url] **Vercel**: A deployment platform that offers easy scaling, serverless functions, and fast global CDN.
-
-
+- [![Next][Next.js]][Next-url] **Next.js**: A React framework for building server-side rendered and statically generated web apps.
+- [![React][React.js]][React-url] **React**: A JavaScript library for building user interfaces with a component-based architecture.
+- [![Prisma][Prisma]][Prisma-url] **Prisma**: An ORM that simplifies database access with type-safe queries.
+- [![TypeScript][TypeScript]][TypeScript-url] **TypeScript**: A superset of JavaScript that adds static typing for better maintainability and fewer errors.
+- [![Node][Node.js]][Node.js-url] **Node.js**: A JavaScript runtime for building fast, scalable server-side applications.
+- [![Vercel][Vercel]][Vercel-url] **Vercel**: A deployment platform that offers easy scaling, serverless functions, and fast global CDN.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
 <!-- ROADMAP -->
+
 ## Roadmap
-- [ ] Error Trapping
-  - [ ] First Batch
+
+- [x] Error Trapping
+  - [x] First Batch
   - [ ] Second Batch
-- [ ] Design Improvements
-  - [ ] First Batch
+- [x] Design Improvements
+  - [x] First Batch
   - [ ] Second Batch
 - [x] Stripe Payments - Integrating Stripe for plan subscription payments
   - [x] Deployed
 - [x] Multiple Images Upload in Listing Property - Allow property owners to upload multiple images per listing
-  - [ ] Deployed
+  - [x] Deployed
+- [ ] Limit Locations - Limit the location to only be around Cavite City
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTRIBUTORS -->
+
 ## Contributors
+
 <a href="https://github.com/cld-kent0/CaviteNest/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=cld-kent0/CaviteNest" alt="img" />
 </a>
@@ -93,23 +97,27 @@ The platform allows users to list their properties for rent, search for availabl
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTACT -->
+
 ## Contact
+
 CaviteNest - cavitenest.platform@gmail.com
 
 Project Link: [https://github.com/cld-kent0/CaviteNest](https://github.com/cld-kent0/CaviteNest)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
 <!-- ACKNOWLEDGMENTS -->
+
 ## Acknowledgments
-* Special thanks to the open-source community for their libraries and frameworks that made this project possible.
-* Gratitude to the group who came up with testing, design suggestions, and feedback during development.
-* ...
+
+- Special thanks to the open-source community for their libraries and frameworks that made this project possible.
+- Gratitude to the group who came up with testing, design suggestions, and feedback during development.
+- ...
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
+
 [product-gif]: https://github.com/cld-kent0/CaviteNest/blob/master/public/images/gif.gif
 [contributors-shield]: https://img.shields.io/github/contributors/cld-kent0/CaviteNest.svg?style=for-the-badge
 [contributors-url]: https://github.com/cld-kent0/CaviteNest/graphs/contributors
