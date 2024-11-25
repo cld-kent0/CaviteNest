@@ -74,15 +74,16 @@ The platform allows users to list their properties for rent, search for availabl
 
 - [x] Error Trapping
   - [x] First Batch
-  - [ ] Second Batch
+  - [ ] Final Batch
 - [x] Design Improvements
   - [x] First Batch
-  - [ ] Second Batch
+  - [ ] Final Batch
 - [x] Stripe Payments - Integrating Stripe for plan subscription payments
   - [x] Deployed
 - [x] Multiple Images Upload in Listing Property - Allow property owners to upload multiple images per listing
   - [x] Deployed
 - [ ] Limit Locations - Limit the location to only be around Cavite City
+- [ ] Pre-defense Release (1.0)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
