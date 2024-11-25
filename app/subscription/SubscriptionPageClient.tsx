@@ -210,7 +210,7 @@ const SubscriptionPageClient = () => {
           />
         </div>
         {/* Payment history */}
-        <div className="mt-12">
+        <div className="mt-12 mb-12">
           <Heading title="Payment History" center />
           {loading ? (
             <p className="text-center mt-4">Loading...</p>

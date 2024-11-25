@@ -49,7 +49,7 @@ export async function GET(req: Request) {
     // Format GCash payment data
     const formattedPayments = gcashPayments.map((payment) => ({
       date: payment.createdAt.toISOString(),
-      amount: `₱ ${payment.price}`,
+      amount: `₱ ${payment.price}`, //₱
       plan: payment.plan,
     }));
 
@@ -68,7 +68,7 @@ export async function GET(req: Request) {
 
       return {
         date: subscription.createdAt.toISOString(),
-        amount: price ? `₱ ${price}` : "N/A",
+        amount: price ? `₱ ${price}` : "N/A", //₱
         plan: subscription.plan,
       };
     });

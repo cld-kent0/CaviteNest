@@ -35,6 +35,7 @@ export async function POST(
         userId: payment.userId,
         plan: payment.plan,
         period: payment.billingPeriod === "yearly" ? "yearly" : "quarterly",
+        priceId: payment.price, // Include the priceId from payment
         startDate: new Date(),
         endDate:
           payment.billingPeriod === "yearly"

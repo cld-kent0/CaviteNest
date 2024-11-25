@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
-import prisma from '@/app/libs/prismadb';
+import { NextResponse } from "next/server";
+import prisma from "@/app/libs/prismadb";
 
 export async function GET() {
   try {
@@ -19,7 +19,7 @@ export async function GET() {
     const transactions = [
       ...gcashPayments.map((payment) => ({
         id: payment.id,
-        type: 'Gcash Payment',
+        type: "Gcash Payment",
         user: payment.user.name,
         plan: payment.plan,
         billingPeriod: payment.billingPeriod,
@@ -30,15 +30,25 @@ export async function GET() {
       ...subscriptions.map((subscription) => {
         // Calculate the subscription price based on the plan and period
         let price = null;
-        if (subscription.plan === 'premium') {
-          price = subscription.period === 'quarterly' ? 699 : subscription.period === 'yearly' ? 1249 : null;
-        } else if (subscription.plan === 'business') {
-          price = subscription.period === 'quarterly' ? 999 : subscription.period === 'yearly' ? 1849 : null;
+        if (subscription.plan === "premium") {
+          price =
+            subscription.period === "quarterly"
+              ? 699
+              : subscription.period === "yearly"
+              ? 1249
+              : null;
+        } else if (subscription.plan === "business") {
+          price =
+            subscription.period === "quarterly"
+              ? 999
+              : subscription.period === "yearly"
+              ? 1849
+              : null;
         }
 
         return {
           id: subscription.id,
-          type: 'Subscription',
+          type: "Subscription",
           user: subscription.user.name,
           plan: subscription.plan,
           period: subscription.period,
@@ -50,11 +60,17 @@ export async function GET() {
     ];
 
     // Sort transactions by createdAt in descending order (most recent first)
-    transactions.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    transactions.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
 
     return NextResponse.json(transactions);
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: 'Failed to fetch transactions' }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch transactions" },
+      { status: 500 }
+    );
   }
 }
