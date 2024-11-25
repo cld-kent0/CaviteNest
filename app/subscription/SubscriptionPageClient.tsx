@@ -10,7 +10,14 @@ const SubscriptionPageClient = () => {
   const router = useRouter();
   const [userPlan, setUserPlan] = useState<string | null>(null);
   const [paymentHistory, setPaymentHistory] = useState<
-    { date: string; amount: string; plan: string }[]
+    {
+      date: string;
+      amount: string;
+      plan: string
+      status: string;
+      start: string;
+      end: string;
+    }[]
   >([]);
   const [loading, setLoading] = useState(true);
 
@@ -221,6 +228,9 @@ const SubscriptionPageClient = () => {
                   <th className="px-4 py-2 text-left">Date</th>
                   <th className="px-4 py-2 text-left">Amount</th>
                   <th className="px-4 py-2 text-left">Plan</th>
+                  <th className="px-4 py-2 text-left">Status</th>
+                  <th className="px-4 py-2 text-left">Start Period</th>
+                  <th className="px-4 py-2 text-left">End Period</th>
                 </tr>
               </thead>
               <tbody>
@@ -233,6 +243,9 @@ const SubscriptionPageClient = () => {
                     <td className="px-4 py-2">{payment.date}</td>
                     <td className="px-4 py-2">{payment.amount}</td>
                     <td className="px-4 py-2">{payment.plan}</td>
+                    <td className="px-4 py-2">{payment.status}</td>
+                    <td className="px-4 py-2">{payment.start}</td>
+                    <td className="px-4 py-2">{payment.end}</td>
                   </tr>
                 ))}
               </tbody>
