@@ -30,21 +30,26 @@ const Form = () => {
   };
 
   const handleUpload = (result: any) => {
-    axios.post("/api/messages", {
-      image: result?.info?.secure_url,
-      conversationId,
-    });
+    // Validate that the URL is not empty and is a proper URL
+    if (result?.info?.secure_url) {
+      const imageUrl = result?.info?.secure_url;
+      // Make sure the URL starts with "http://" or "https://"
+      if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
+        axios.post("/api/messages", {
+          image: imageUrl,
+          conversationId,
+        });
+      } else {
+        console.error("Invalid image URL:", imageUrl);
+        // You might want to show an error to the user in this case
+      }
+    } else {
+      console.error("No image URL found in upload result.");
+    }
   };
 
   return (
     <div className="py-4 px-4 bg-white border-t flex items-center gap-2 lg:gap-4 w-full">
-      <CldUploadButton
-        options={{ maxFiles: 1 }}
-        onUpload={handleUpload}
-        uploadPreset="fsvzne6s"
-      >
-        <HiPhoto size={30} className="text-emerald-600" />
-      </CldUploadButton>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex items-center gap-2 lg:gap-4 w-full"
