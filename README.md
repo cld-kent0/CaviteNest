@@ -77,8 +77,10 @@ The platform allows users to list their properties for rent, search for availabl
 - [ ] Design Improvements
   - [ ] First Batch
   - [ ] Second Batch
-- [ ] Stripe Payments - Integrating Stripe for plan subscription payments
-- [ ] Multiple Images Upload in Listing Property - Allow property owners to upload multiple images per listing
+- [x] Stripe Payments - Integrating Stripe for plan subscription payments
+  - [x] Deployed
+- [x] Multiple Images Upload in Listing Property - Allow property owners to upload multiple images per listing
+  - [ ] Deployed
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
