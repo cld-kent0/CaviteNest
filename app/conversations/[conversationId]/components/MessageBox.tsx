@@ -121,7 +121,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({
         <div className={message}>
           {data.image ? (
             <div className="flex justify-center items-center">
-              <Image alt="Image" height="288" width="288" src={data.image[0]} />
+              <Image alt="Image" height="288" width="288" src={data.image} />
             </div>
           ) : (
             <div dangerouslySetInnerHTML={{ __html: messageBody }} />
