@@ -190,6 +190,7 @@ const GcashPaymentModal: React.FC<GcashPaymentModalProps> = ({
           onChange={(url) => setReceiptUrl(url)}
           value={receiptUrl || ""}
         />
+        <div className="text-gray-500 text-sm mt-1">You can upload images in JPEG, PNG, or SVG formats. Max size: 5 MB.</div>
         {receiptUrl && (
           <p className="mt-2 text-sm text-green-500 overflow-hidden">
             Uploaded File: {receiptUrl}

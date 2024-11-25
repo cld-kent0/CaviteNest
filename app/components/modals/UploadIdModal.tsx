@@ -63,12 +63,12 @@ const UploadIdModal = () => {
     if (step !== STEPS.UPLOAD) {
       return onNext();
     }
-  
+
     if (!idImages.front || !idImages.back) {
       toast.error("Please upload both front and back images of your ID.");
       return;
     }
-  
+
     setIsLoading(true);
     try {
       // Log the payload to ensure it's correct
@@ -78,10 +78,10 @@ const UploadIdModal = () => {
         back: idImages.back
       };
       console.log("Sending request with payload:", payload);
-  
+
       // Send the request to the backend
       await axios.put(`/api/profiles/uploadId`, payload, { withCredentials: true });
-  
+
       toast.success("ID images uploaded successfully!");
       router.refresh(); // Refresh the page if necessary
       reset(); // Reset form state
@@ -94,7 +94,7 @@ const UploadIdModal = () => {
       setIsLoading(false);
     }
   };
-  
+
   const actionLabel = step === STEPS.UPLOAD ? "Submit" : "Next";
   const secondaryActionLabel = step === STEPS.IDTYPE ? undefined : "Back";
 
@@ -124,6 +124,7 @@ const UploadIdModal = () => {
       <div className="flex flex-col gap-8">
         <Heading title="Upload your ID" subTitle="Please upload a clear image of your selected ID type" />
         <IdUpload value={idImages} onChange={handleImageChange} />
+        <div className="text-gray-500 text-sm">You can upload images in JPEG, PNG, or SVG formats. Max size: 5 MB.</div>
       </div>
     );
   }
