@@ -53,6 +53,7 @@ export async function PUT(request: Request) {
     bookingSecurityDeposit,
     cancellationPolicy,
     rentalPrice,
+    bookingPrice,
   } = body;
 
   // Ensure a listing ID is provided
@@ -205,6 +206,12 @@ export async function PUT(request: Request) {
     addIfChanged(
       existingListing.price,
       rentalPrice ? parseInt(rentalPrice, 10) : existingListing.price,
+      "price",
+      dataToUpdate
+    );
+    addIfChanged(
+      existingListing.price,
+      bookingPrice ? parseInt(bookingPrice, 10) : existingListing.price,
       "price",
       dataToUpdate
     );
