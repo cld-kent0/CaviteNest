@@ -181,7 +181,9 @@ const ListingCard: React.FC<ListingCardProps> = ({
         </div>
         {/* Listing Info */}
         <div className="text-lg font-semibold mt-1 -mb-2">
-          {location ? `${location.label}` : "Location Not Available"}, Cavite
+          {location
+            ? `${location.label}, ${location.region}`
+            : "Location Not Available"}
         </div>
         <div className="font-light text-neutral-600">
           {reservationDate || data?.category || "No category available"}

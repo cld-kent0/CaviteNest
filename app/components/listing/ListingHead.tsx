@@ -47,8 +47,14 @@ const ListingHead: React.FC<ListingHeadProps> = ({
 
   return (
     <>
-      <Heading title={title} subTitle={`${location?.label}`} />
-
+      <Heading
+        title={title}
+        subTitle={
+          location
+            ? `${location.label}, ${location.region}`
+            : "Location Not Available"
+        }
+      />
       <div className="w-full h-[60vh] overflow-hidden rounded-xl shadow-lg shadow-gray-400 relative group image-container">
         <Image
           alt="image"
