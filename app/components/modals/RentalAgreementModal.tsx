@@ -15,8 +15,8 @@ interface RentalAgreementModalProps {
 }
 
 const formatPrice = (price: number): string => {
-  return `₱ ${price.toLocaleString("en-PH", {
-    minimumFractionDigits: 2,
+  return `₱${price.toLocaleString("en-PH", {
+    minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   })}`;
 };
@@ -44,7 +44,7 @@ const RentalAgreementModal: React.FC<RentalAgreementModalProps> = ({
   };
 
   const content = (
-    <div>
+    <div className="mr-4">
       <h2 className="font-bold text-lg mb-2">RENTAL AGREEMENT</h2>
       <div className="text-justify">
         <p className="mb-4">
