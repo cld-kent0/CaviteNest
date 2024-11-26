@@ -65,7 +65,7 @@ const About = () => {
           {/* Content */}
           <div className="relative z-10 flex flex-col justify-start items-start h-full p-[60px] md:p-[110px] pt-[80px] md:pt-[150px]">
             {/* Title */}
-            <h1 className="text-6xl md:text-7xl font-bold text-white">
+            <h1 className="text-2xl md:text-7xl font-bold text-white">
               {heroTitle}
             </h1>
 
