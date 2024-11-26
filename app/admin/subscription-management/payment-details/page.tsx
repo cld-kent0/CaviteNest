@@ -8,6 +8,7 @@ import ActionButton from '../../components/ActionButton';
 import Pagination from '../../components/Pagination';
 import GcashPaymentDetailsModal from '../../components/modals/GcashPaymentDetailsModal';
 import EditQRCodeModal from '../../components/modals/EditQRCodeModal';
+import printContent from '../../components/printReport'; // Import printContent function
 
 interface GcashPayment {
   id: string;
@@ -92,9 +93,90 @@ const GcashPaymentList = () => {
     setIsQRCodeModalOpen(true); // Open the QR Code modal
   };
 
+  const handlePrint = () => {
+    const tableContent = `
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 20px;
+          line-height: 1.6;
+        }
+        h1 {
+          text-align: center;
+          margin-bottom: 20px;
+          font-size: 24px;
+          color: #333;
+        }
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 20px;
+        }
+        th, td {
+          border: 1px solid #ddd;
+          padding: 8px 12px;
+          text-align: left;
+          white-space: nowrap;
+        }
+        th {
+          background-color: #f4f4f4;
+          color: #333;
+          font-weight: bold;
+        }
+        tr:nth-child(even) {
+          background-color: #f9f9f9;
+        }
+        tr:hover {
+          background-color: #f1f1f1;
+        }
+      </style>
+      <h1>GCash Payments Report</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Plan</th>
+            <th>Billing Period</th>
+            <th>Customer ID</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Created At</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${gcashPayments
+        .map(
+          (payment) => `
+              <tr>
+                <td>${payment.id}</td>
+                <td>${payment.user.name}</td>
+                <td>${payment.plan}</td>
+                <td>${payment.billingPeriod}</td>
+                <td>${payment.user.customerId}</td>
+                <td>${payment.price}</td>
+                <td>${payment.status}</td>
+                <td>${new Date(payment.createdAt).toLocaleDateString()}</td>
+              </tr>`
+        )
+        .join('')}
+        </tbody>
+      </table>
+    `;
+    printContent(tableContent);
+  };
+
   return (
     <div className="p-6">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6">Payment Management / GCash Payments</h2>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-3xl font-bold text-gray-800 mb-6">Payment Management / GCash Payments</h2>
+        <button
+          onClick={handlePrint}
+          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+        >
+          Print Report
+        </button>
+      </div>
 
       {/* Search Input and Edit QR Code Button */}
       <div className="flex justify-between mb-4">

@@ -6,6 +6,7 @@ import SubscriptionActions from './SubscriptionActions';
 import Pagination from '../components/Pagination';
 import axios from 'axios';
 import SubscriptionDetailsModal from '../components/modals/SubscriptionDetailsModal';
+import printContent from '../components/printReport'; // Import the print utility
 
 
 interface Subscription {
@@ -79,9 +80,88 @@ const SubscriptionManagement = () => {
     setIsModalOpen(false);
   };
 
+  const handlePrint = () => {
+    const tableContent = `
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 20px;
+          line-height: 1.6;
+        }
+        h1 {
+          text-align: center;
+          margin-bottom: 20px;
+          font-size: 24px;
+          color: #333;
+        }
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 20px;
+        }
+        th, td {
+          border: 1px solid #ddd;
+          padding: 8px 12px;
+          text-align: left;
+          white-space: nowrap;
+        }
+        th {
+          background-color: #f4f4f4;
+          color: #333;
+          font-weight: bold;
+        }
+        tr:nth-child(even) {
+          background-color: #f9f9f9;
+        }
+        tr:hover {
+          background-color: #f1f1f1;
+        }
+      </style>
+      <h1>Subscription Management Report</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>User ID</th>
+            <th>Plan</th>
+            <th>Period</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${subscriptions
+        .map(
+          (sub) => `
+                <tr>
+                  <td>${sub.id}</td>
+                  <td>${sub.userId}</td>
+                  <td>${sub.plan}</td>
+                  <td>${sub.period}</td>
+                  <td>${new Date(sub.startDate).toLocaleDateString()}</td>
+                  <td>${new Date(sub.endDate).toLocaleDateString()}</td>
+                  <td>${sub.subscriptionStatus}</td>
+                </tr>`
+        )
+        .join('')}
+        </tbody>
+      </table>
+    `;
+    printContent(tableContent);
+  };
+
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Subscription Management</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">Subscription Management</h1>
+        <button
+          onClick={handlePrint}
+          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+        >
+          Print Report
+        </button>
+      </div>
       <div className="bg-white rounded-lg shadow-md">
         <table className="min-w-full table-auto text-gray-700">
           <thead className="bg-gray-100">
@@ -101,8 +181,8 @@ const SubscriptionManagement = () => {
                 <td className="px-4 py-2 border-b">{subscription.userId}</td>
                 <td className="px-4 py-2 border-b">{subscription.plan}</td>
                 <td className="px-4 py-2 border-b">{subscription.period}</td>
-                <td className="px-4 py-2 border-b">{subscription.startDate}</td>
-                <td className="px-4 py-2 border-b">{subscription.endDate}</td>
+                <td className="px-4 py-2 border-b whitespace-nowrap">{subscription.startDate}</td>
+                <td className="px-4 py-2 border-b whitespace-nowrap">{subscription.endDate}</td>
                 <td
                   className={`px-4 py-2 border-b ${subscription.subscriptionStatus === 'Canceled'
                     ? 'text-red-500'

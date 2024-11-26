@@ -26,7 +26,7 @@ const SubscriptionActions: React.FC<SubscriptionActionsProps> = ({
       {/* Dots Button */}
       <div
         onClick={toggleOpen}
-        className="border border-neutral-300 rounded-full cursor-pointer hover:shadow-md transition bg-gray-100 flex items-center justify-center p-2"
+        className="border border-neutral-300 rounded-full cursor-pointer hover:shadow-md transition bg-gray-100 flex items-center justify-center "
       >
         <BiDotsHorizontal size={20} />
       </div>
@@ -42,10 +42,9 @@ const SubscriptionActions: React.FC<SubscriptionActionsProps> = ({
                 key={index}
                 onClick={() => action.onClick(itemId)}
                 className={`block px-4 py-2 text-center hover:bg-gray-200 transition 
-                  ${
-                    action.label === "View"
-                      ? "bg-sky-900 hover:bg-sky-950 text-white"
-                      : "bg-red-600 hover:bg-red-700 text-white"
+                  ${action.label === "View"
+                    ? "bg-sky-900 hover:bg-sky-950 text-white"
+                    : "bg-red-600 hover:bg-red-700 text-white"
                   }`}
               >
                 {action.label}

@@ -8,6 +8,7 @@ import ActionButton from "../../components/ActionButton";
 import Pagination from "../../components/Pagination";
 import LessorDetailsModal from "../../components/modals/LessorDetailsModal";
 import Image from "next/image"; // Import Image component
+import printContent from "../../components/printReport"; // Import the print utility
 
 interface Lessor {
   id: string;
@@ -94,11 +95,100 @@ const LessorList = () => {
     currentPage * itemsPerPage
   );
 
+
+  // Print report logic with all lessor data
+  const handlePrint = () => {
+    const tableContent = `
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        line-height: 1.6;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #333;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th, td {
+        border: 1px solid #ddd;
+        padding: 8px 12px;
+        text-align: left;
+        white-space: nowrap;
+      }
+      th {
+        background-color: #f4f4f4;
+        color: #333;
+        font-weight: bold;
+      }
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+      tr:hover {
+        background-color: #f1f1f1;
+      }
+    </style>
+    <h1>Lessor Management Report</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>ID Verified</th>
+          <th>Created At</th>
+          <th>Subscription Plan</th>
+          <th>Subscription Period</th>
+          <th>Subscription Status</th>
+          <th>Subscription Start</th>
+          <th>Subscription End</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${paginatedLessors
+        .map(
+          (lessor) => `
+              <tr>
+                <td>${lessor.id}</td>
+                <td>${lessor.name}</td>
+                <td>${lessor.email}</td>
+                <td>${lessor.idStatus}</td>
+                <td>${new Date(lessor.createdAt).toLocaleDateString()}</td>
+                <td>${lessor.Subscription ? lessor.Subscription.plan : 'N/A'}</td>
+                <td>${lessor.Subscription ? lessor.Subscription.period : 'N/A'}</td>
+                <td>${lessor.Subscription ? lessor.Subscription.subscriptionStatus : 'N/A'}</td>
+                <td>${lessor.Subscription ? new Date(lessor.Subscription.startDate).toLocaleDateString() : 'N/A'}</td>
+                <td>${lessor.Subscription ? new Date(lessor.Subscription.endDate).toLocaleDateString() : 'N/A'}</td>
+                <td>${lessor.is_archived ? 'Archived' : 'Active'}</td>
+              </tr>`
+        )
+        .join('')}
+      </tbody>
+    </table>
+  `;
+    printContent(tableContent);
+  };
+
   return (
     <div className="p-6">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6">
-        Users Management / Lessor
-      </h2>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-3xl font-bold text-gray-800 mb-6">
+          Users Management / Lessor
+        </h2>
+        <button
+          onClick={handlePrint}
+          className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md"
+        >
+          Print Report
+        </button>
+      </div>
       <div className="flex justify-between mb-4">
         <button
           onClick={() => setShowArchived(!showArchived)}
@@ -158,8 +248,8 @@ const LessorList = () => {
                   <td className="px-4 py-2 border-b whitespace-nowrap">
                     {lessor.idStatus
                       ? lessor.idStatus
-                          .toLowerCase() // Convert all to lowercase
-                          .replace(/^\w/, (c) => c.toUpperCase()) // Capitalize the first letter
+                        .toLowerCase() // Convert all to lowercase
+                        .replace(/^\w/, (c) => c.toUpperCase()) // Capitalize the first letter
                       : ""}
                   </td>
                   <td className="px-4 py-2 border-b">
@@ -201,21 +291,21 @@ const LessorList = () => {
                       actions={
                         showArchived
                           ? [
-                              {
-                                label: "Unarchive",
-                                onClick: unarchiveLessor,
-                              },
-                            ]
+                            {
+                              label: "Unarchive",
+                              onClick: unarchiveLessor,
+                            },
+                          ]
                           : [
-                              {
-                                label: "View",
-                                onClick: () => openModal(lessor),
-                              },
-                              {
-                                label: "Archive",
-                                onClick: archiveLessor,
-                              },
-                            ]
+                            {
+                              label: "View",
+                              onClick: () => openModal(lessor),
+                            },
+                            {
+                              label: "Archive",
+                              onClick: archiveLessor,
+                            },
+                          ]
                       }
                     />
                   </td>

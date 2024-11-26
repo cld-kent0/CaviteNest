@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import SearchInput from '../../components/SearchInput';
 import Pagination from '../../components/Pagination';
+import printContent from '../../components/printReport';
 
 interface Transaction {
   id: string;
@@ -77,9 +78,90 @@ const TransactionHistory = () => {
     currentPage * itemsPerPage
   );
 
+  const handlePrint = () => {
+    const tableContent = `
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 20px;
+          line-height: 1.6;
+        }
+        h1 {
+          text-align: center;
+          margin-bottom: 20px;
+          font-size: 24px;
+          color: #333;
+        }
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 20px;
+        }
+        th, td {
+          border: 1px solid #ddd;
+          padding: 8px 12px;
+          text-align: left;
+          white-space: nowrap;
+        }
+        th {
+          background-color: #f4f4f4;
+          color: #333;
+          font-weight: bold;
+        }
+        tr:nth-child(even) {
+          background-color: #f9f9f9;
+        }
+        tr:hover {
+          background-color: #f1f1f1;
+        }
+      </style>
+      <h1>Transaction History Report</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>User</th>
+            <th>Plan</th>
+            <th>Billing Period</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Created At</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${transactions
+        .map(
+          (transaction) => `
+              <tr>
+                <td>${transaction.id}</td>
+                <td>${transaction.type}</td>
+                <td>${transaction.user}</td>
+                <td>${transaction.plan}</td>
+                <td>${transaction.billingPeriod || transaction.period || '-'}</td>
+                <td>${transaction.price || '-'}</td>
+                <td>${transaction.status}</td>
+                <td>${new Date(transaction.createdAt).toLocaleDateString()}</td>
+              </tr>`
+        )
+        .join('')}
+        </tbody>
+      </table>
+    `;
+    printContent(tableContent);
+  };
+
   return (
     <div className="p-6">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6">Transaction History</h2>
+      <div className='flex justify-between items-center'>
+        <h2 className="text-3xl font-bold text-gray-800 mb-6">Transaction History</h2>
+        <button
+          onClick={handlePrint}
+          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+        >
+          Print Report
+        </button>
+      </div>
 
       <div className="flex justify-between items-center mb-4">
 
@@ -88,7 +170,7 @@ const TransactionHistory = () => {
           onChange={(e) => setFilterStatus(e.target.value || null)}
           className="border p-2 rounded"
         >
-          <option value="">All Statuses</option>
+          <option value="">All Status</option>
           <option value="ACTIVE">Active</option>
           <option value="PENDING">Pending</option>
           <option value="CANCELLED">Cancelled</option>
@@ -157,7 +239,7 @@ const TransactionHistory = () => {
         onPageChange={setCurrentPage}
         onItemsPerPageChange={setItemsPerPage}
       />
-      <div className='flex'>
+      {/* <div className='flex'>
         <div className="mt-4 text-gray-500 ">
           Page {currentPage} of {Math.ceil(totalItems / itemsPerPage)}
         </div>
@@ -172,7 +254,7 @@ const TransactionHistory = () => {
             </option>
           ))}
         </select>
-      </div>
+      </div> */}
     </div>
   );
 };
