@@ -44,7 +44,7 @@ const About = () => {
   return (
     <ClientLayout>
       <div>
-        <hr className="md:w-[100px] md:h-[8px] w-[70px] h-[8px] bg-emerald-700 rounded ml-[35px] md:ml-[85px] mt-16 mb-6" />
+        <hr className="md:w-[100px] md:h-[8px] w-[70px] h-[8px] bg-emerald-700 rounded ml-[35px] md:ml-[85px] mt-16 md:mt-24 mb-6" />
         <h2 className="text-4xl md:text-5xl font-bold ml-[35px] md:ml-[85px] mb-9">
           About CaviteNest
         </h2>
@@ -54,17 +54,25 @@ const About = () => {
 
         {/* Hero Section */}
         <section className="relative h-[65vh]">
+          {/* Background Overlay */}
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{
-              backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${heroImageSrc})`,
+              backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${heroImageSrc})`,
             }}
           />
-          <div className="relative z-10 flex flex-col justify-start items-start h-full text-left pl-[50px] md:pl-[100px] pt-[120px]">
-            <h1 className="text-6xl md:text-7xl font-bold text-white">
+
+          {/* Content */}
+          <div className="relative z-10 flex flex-col justify-start items-start h-full p-[60px] md:p-[110px] pt-[80px] md:pt-[150px]">
+            {/* Title */}
+            <h1 className="text-2xl md:text-7xl font-bold text-white">
               {heroTitle}
             </h1>
-            <p className="mt-6 text-lg text-white">{heroDescription}</p>
+
+            {/* Description */}
+            <p className="mt-6 text-sm md:text-lg text-white">
+              {heroDescription}
+            </p>
           </div>
         </section>
 
@@ -84,14 +92,23 @@ const About = () => {
                 <h2 className="text-3xl font-bold text-gray-900">
                   WHAT CaviteNest IS?
                 </h2>
-                <div className="mt-4 mr-5 text-gray-600 text-justify">
+                <div className="mt-4 md:mr-4 text-gray-600 text-justify p-4">
                   {vision.split("\n").map((paragraph, index) => (
                     <p
                       key={index}
                       style={index === 0 ? { textIndent: "2em" } : {}}
                       className="mb-4"
                     >
-                      {paragraph}
+                      CaviteNest is a platform that makes finding rental
+                      properties in Cavite easy and hassle-free. Whether you’re
+                      a property owner or a renter, we connect you with a
+                      variety of options—apartments, family homes, or private
+                      rooms. We focus on convenience, transparency, and
+                      reliability, offering detailed listings and smooth
+                      communication tools to simplify the rental process.
+                      CaviteNest is more than just a platform—it’s your gateway
+                      to finding the perfect home or tenant, built on trust and
+                      accessibility.
                     </p>
                   ))}
                 </div>
@@ -120,14 +137,27 @@ const About = () => {
                 <h2 className="text-3xl font-bold text-gray-900">
                   WHAT CaviteNest DOES?
                 </h2>
-                <div className="mt-4 ml-5 text-gray-600 text-justify">
+                <div className="mt-4 md:ml-4 text-gray-600 text-justify p-4">
                   {mission.split("\n").map((paragraph, index) => (
                     <p
                       key={index}
                       style={index === 0 ? { textIndent: "2em" } : {}}
                       className="mb-4"
                     >
-                      {paragraph}
+                      CaviteNest connects property seekers with rental
+                      opportunities in Cavite City, simplifying the process of
+                      finding, renting, and managing properties. Our
+                      user-friendly platform offers verified listings, ensuring
+                      all properties meet high-quality standards. Users can
+                      filter options by location, price, size, and amenities to
+                      quickly find the perfect match. In addition to long-term
+                      rentals, CaviteNest also offers short-term stay options
+                      for travelers and those in need of temporary housing.
+                      Listings are updated in real-time, ensuring transparency
+                      and accurate availability. With strict property
+                      verification and dedicated customer support, CaviteNest
+                      provides a seamless, secure, and hassle-free rental
+                      experience for everyone.
                     </p>
                   ))}
                 </div>
@@ -149,7 +179,7 @@ const About = () => {
               <h3 className="text-2xl font-bold text-gray-900">
                 Need help with your questions?
               </h3>
-              <p className="mt-4 text-gray-600">
+              <p className="mt-4 text-gray-600 px-4">
                 If you have any questions or need support, feel free to visit
                 our{" "}
                 <button

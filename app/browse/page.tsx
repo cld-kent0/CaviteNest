@@ -37,7 +37,7 @@ const Home = async ({ searchParams }: HomeProps) => {
               <EmptyState showReset />
             ) : (
               <Container>
-                <hr className="md:w-[100px] md:h-[8px] w-[70px] h-[8px] bg-emerald-700 rounded ml-[20px] md:ml-[10px] mt-16 mb-6" />
+                <hr className="md:w-[100px] md:h-[8px] w-[70px] h-[8px] bg-emerald-700 rounded ml-[20px] md:ml-[10px] mt-16 md:mt-24 mb-6" />
                 <h2 className="text-4xl md:text-5xl font-bold ml-[20px] md:ml-[10px] mb-9">
                   Properties
                 </h2>
