@@ -39,7 +39,7 @@ interface ListingReservationProps {
 
 const formatPrice = (price: number): string => {
   return `₱ ${price.toLocaleString("en-PH", {
-    minimumFractionDigits: 2,
+    minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   })}`;
 };
@@ -154,6 +154,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
           modalData.utilitiesAndMaintenance || "Not Specified",
         bookingAddress: modalData.bookingAddress || "Not Specified",
         bookingFee: modalData.bookingFee ?? "Not Specified",
+        bookingPrice: modalData.bookingPrice ?? "Not Specified",
         bookingSecurityDeposit:
           modalData.bookingSecurityDeposit ?? "Not Specified",
         cancellationPolicy: modalData.cancellationPolicy || "Not Specified",
@@ -169,9 +170,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
             }`
           : "Not Specified",
         startDate: modalData.startDate
-          ? `${new Date(modalData.startDate).toLocaleDateString()} at ${
-              modalData.startDate || "Not Specified"
-            }`
+          ? new Date(modalData.startDate).toLocaleDateString() // Display only the date
           : "Not Specified",
         checkInTime: modalData.checkInTime || "Not Specified",
         checkOutTime: modalData.checkOutTime || "Not Specified",
@@ -213,7 +212,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
       if (sanitizedModalData.rentalAmount !== "Not Specified") {
         // Rental Inquiry Message
         tailwindStyledMessage = `
-        You have sent a latest inquiry (note: this replaces the previous inquiry for that property)
+        Hi! I've sent you a rental inquiry on your property.
         <div class"flex flex-row gap-14">
           <div class="rounded-lg overflow-hidden">
             <div class="p-6">
@@ -226,9 +225,9 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
                 <div>
                   <h2 class="text-2xl font-semibold mb-3">Rental Inquiry Details</h2>
                   <p class="text-lg mt-1"><strong class="font-medium">Address:</strong> ${sanitizedModalData.rentalAddress}</p>
-                  <p class="text-lg mt-2"><strong class="font-medium">Total Amount:</strong> ₱${sanitizedModalData.rentalAmount}</p>
+                  <p class="text-lg mt-1"><strong class="font-medium">Ideal Date:</strong> ${sanitizedModalData.startDate}</p>
+                  <p class="text-lg mt-2"><strong class="font-medium">Amount:</strong> ₱${sanitizedModalData.rentalAmount}</p>
                   <p class="text-lg mt-2"><strong class="font-medium">Security Deposit:</strong> ₱${sanitizedModalData.rentalSecurityDeposit}</p>
-                  <p class="text-lg mt-2"><strong class="font-medium">Utilities and Maintenance:</strong> ${sanitizedModalData.utilitiesAndMaintenance}</p>
                 </div>
               </div>
             </div>
@@ -238,7 +237,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
       } else if (sanitizedModalData.bookingFee !== "Not Specified") {
         // Booking Inquiry Message
         tailwindStyledMessage = `
-        You have sent a latest inquiry (note: this replaces the previous inquiry for that property)
+       Hi! I've sent you a booking inquiry on your property.
         <div class"flex flex-row gap-14">
           <div class="rounded-lg overflow-hidden">
             <div class="p-6">
@@ -251,11 +250,11 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
                 <div>
                   <h2 class="text-2xl font-semibold mb-3">Booking Inquiry Details</h2>
                   <p class="text-lg mt-1"><strong class="font-medium">Address:</strong> ${sanitizedModalData.bookingAddress}</p>
-                  <p class="text-lg mt-2"><strong class="font-medium">Amount:</strong> ₱${sanitizedModalData.bookingFee}</p>
+                  <p class="text-lg mt-2"><strong class="font-medium">Fee:</strong> ₱${sanitizedModalData.bookingFee}</p>
+                  <p class="text-lg mt-2"><strong class="font-medium">Total Amount:</strong> ₱${sanitizedModalData.bookingPrice}</p>
                   <p class="text-lg mt-2"><strong class="font-medium">Check-In:</strong> ${sanitizedModalData.checkInDate}</p>
                   <p class="text-lg mt-2"><strong class="font-medium">Check-Out:</strong> ${sanitizedModalData.checkOutDate}</p>
                   <p class="text-lg mt-2"><strong class="font-medium">Payment Method:</strong> ${sanitizedModalData.paymentMethod}</p>
-                  <p class="text-lg mt-2"><strong class="font-medium">Cancellation Policy:</strong> ${sanitizedModalData.cancellationPolicy}</p>
                 </div>
               </div>
             </div>
@@ -391,7 +390,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
             </div>
             <hr className="my-4" />
             <div className="flex justify-between text-lg font-semibold">
-              <div>Total Per Night</div>
+              <div>Total Amount</div>
               <div>{formatPrice(totalPrice)}</div>
             </div>
           </div>
@@ -522,14 +521,14 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
                     </div>
                   </div>
                   <p className="text-neutral-600 text-justify">
-                    Click the <strong>&quot;Inquire&quot;</strong> button below
+                    Click the <strong>&quot;Reserve&quot;</strong> button below
                     to see the full details of the property and the agreement
                     set by the owner!
                   </p>
                   <br></br>
                   <Button
                     disabled={disabled || isOwner} // Disabled if any condition is true
-                    label="Inquire"
+                    label="Reserve"
                     onClick={handleInquireClick}
                   />
                 </div>
@@ -579,6 +578,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
             conversationId,
             bookingAddress,
             bookingFee,
+            bookingPrice: totalPrice,
             bookingSecurityDeposit,
             cancellationPolicy,
             checkInDate: dateRange.startDate ?? null,
@@ -593,6 +593,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
         conversationId={conversationId}
         bookingAddress={bookingAddress}
         bookingFee={bookingFee}
+        bookingPrice={totalPrice}
         bookingSecurityDeposit={bookingSecurityDeposit}
         cancellationPolicy={cancellationPolicy}
         checkInDate={dateRange.startDate ?? null}

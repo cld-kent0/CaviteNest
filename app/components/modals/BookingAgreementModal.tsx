@@ -9,6 +9,7 @@ interface BookingAgreementModalProps {
   onAcceptAndInquire: (conversationId: string) => void;
   bookingAddress: string;
   bookingFee: number;
+  bookingPrice: number;
   bookingSecurityDeposit: number;
   cancellationPolicy: string;
   checkInDate: Date | null;
@@ -19,8 +20,8 @@ interface BookingAgreementModalProps {
 }
 
 const formatPrice = (price: number): string => {
-  return `₱ ${price.toLocaleString("en-PH", {
-    minimumFractionDigits: 2,
+  return `₱${price.toLocaleString("en-PH", {
+    minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   })}`;
 };
@@ -32,6 +33,7 @@ const BookingAgreementModal: React.FC<BookingAgreementModalProps> = ({
   onAcceptAndInquire,
   bookingAddress,
   bookingFee,
+  bookingPrice,
   bookingSecurityDeposit,
   cancellationPolicy,
   checkInDate,
@@ -52,7 +54,7 @@ const BookingAgreementModal: React.FC<BookingAgreementModalProps> = ({
   };
 
   const content = (
-    <div>
+    <div className="mr-4">
       <h2 className="font-bold text-lg mb-2">BOOKING AGREEMENT</h2>
       <div className="text-justify">
         <p className="mb-4">
@@ -73,9 +75,13 @@ const BookingAgreementModal: React.FC<BookingAgreementModalProps> = ({
         <p className="mb-4">
           <strong>Booking Fees and Security Deposit:</strong>
           <br />
-          The total booking fee for this accommodation is{" "}
+          The total amount for this accommodation is{" "}
           <strong>
             {" "}
+            {bookingPrice ? formatPrice(bookingPrice) : "Not Specified"}
+          </strong>{" "}
+          with a booking fee of{" "}
+          <strong>
             {bookingFee ? formatPrice(bookingFee) : "Not Specified"}
           </strong>
           , which is payable by{" "}

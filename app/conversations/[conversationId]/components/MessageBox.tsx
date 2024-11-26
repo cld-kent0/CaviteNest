@@ -1,7 +1,7 @@
 import Profile from "@/app/components/Profile";
 import { FullMessageType } from "@/app/types";
 import clsx from "clsx";
-import { format } from "date-fns";
+import { format, differenceInDays } from "date-fns"; // Import date-fns for date difference
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useState, useEffect, useMemo } from "react";
@@ -9,6 +9,7 @@ import Modal from "@/app/components/modals/Modal";
 import toast from "react-hot-toast";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import Heading from "@/app/components/Heading";
+import { read } from "fs";
 
 enum STEPS {
   LISTING_INFO = 0,
@@ -56,8 +57,28 @@ const MessageBox: React.FC<MessageBoxProps> = ({
   const messageStyle = clsx(
     "text-md py-2 px-5 text-justify rounded-2xl",
     isOwn ? "bg-emerald-600 text-white" : "bg-gray-100 text-black",
-    !listingId && !isOwnerOfListing ? "max-w-[40%]" : "max-w-full"
+    !listingId && !isOwnerOfListing ? "max-w-[40%]" : "max-w-full",
+    !listingId ? "max-w-full" : ""
   );
+
+  // Calculate the total price based on the startDate, endDate, and price per night
+  const calculateTotalPrice = () => {
+    const startDate = reservationDetails?.startDate
+      ? new Date(reservationDetails.startDate)
+      : null;
+    const endDate = reservationDetails?.endDate
+      ? new Date(reservationDetails.endDate)
+      : null;
+    const pricePerNight = reservationDetails?.listing?.price || 0;
+
+    if (startDate && endDate) {
+      const numberOfNights = differenceInDays(endDate, startDate);
+      return numberOfNights * pricePerNight;
+    }
+    return 0;
+  };
+
+  const totalPrice = calculateTotalPrice();
 
   const handleConfirmReservationStatus = async () => {
     try {
@@ -226,6 +247,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({
               ) : (
                 "No images available"
               )}
+              {reservationDetails.listing.rentalType}
             </p>
           </div>
         );
@@ -237,22 +259,50 @@ const MessageBox: React.FC<MessageBoxProps> = ({
               title="Reservation Details"
               subTitle="Currently viewing this lessee's reservation details:"
             />
-            <p>
-              <strong>Start Date:</strong>{" "}
-              {reservationDetails?.startDate
-                ? format(new Date(reservationDetails?.startDate), "MM/dd/yyyy")
-                : "N/A"}
+
+            {/* Ideal Start Date */}
+            {/* Dates - Start Date and End Date displayed side by side */}
+            <p className="flex flex-row">
+              <span>
+                <strong>Date(s):</strong>{" "}
+                {reservationDetails?.startDate
+                  ? format(
+                      new Date(reservationDetails?.startDate),
+                      "MM/dd/yyyy"
+                    )
+                  : "N/A"}{" "}
+              </span>
+
+              {/* End Date - Render only if it's not the Unix Epoch (1970-01-01) */}
+              {reservationDetails?.endDate &&
+                new Date(reservationDetails?.endDate).getTime() !== 0 && (
+                  <span>
+                    -{" "}
+                    {format(
+                      new Date(reservationDetails?.endDate),
+                      "MM/dd/yyyy"
+                    )}
+                  </span>
+                )}
             </p>
-            <p>
-              <strong>End Date:</strong>{" "}
-              {reservationDetails?.endDate
-                ? format(new Date(reservationDetails?.endDate), "MM/dd/yyyy")
-                : "N/A"}
-            </p>
-            <p>
-              <strong>Total Price:</strong> ₱
-              {reservationDetails?.totalPrice || "N/A"}
-            </p>
+            {/* Total Amount - Render only if there's rentalAmount and endDate is valid */}
+            {reservationDetails?.listing?.price &&
+              reservationDetails?.endDate &&
+              new Date(reservationDetails?.endDate).getTime() !== 0 && (
+                <p>
+                  <strong>Total Amount:</strong> ₱{totalPrice}
+                </p>
+              )}
+
+            {/* Rental Amount - Render only if rentalAmount exists and endDate is 1/1/1970 */}
+            {reservationDetails?.listing?.rentalAmount &&
+              reservationDetails?.endDate &&
+              new Date(reservationDetails?.endDate).getTime() === 0 && (
+                <p>
+                  <strong>Rental Amount:</strong> ₱
+                  {reservationDetails?.listing?.rentalAmount}
+                </p>
+              )}
           </div>
         );
 
@@ -263,12 +313,25 @@ const MessageBox: React.FC<MessageBoxProps> = ({
               title="Lessee Information"
               subTitle="Currently viewing this lessee's contact information:"
             />
-            <p>
-              <strong>Name:</strong> {reservationDetails?.user?.name || "N/A"}
-            </p>
-            <p>
-              <strong>Email:</strong> {reservationDetails?.user?.email || "N/A"}
-            </p>
+            <div className="flex flex-row justify-center gap-9 mx-auto">
+              <Image
+                src={reservationDetails?.user?.image}
+                alt="Listing Image"
+                width={100}
+                height={100}
+                className="object-cover rounded-full shadow-md"
+              />
+              <div className="flex flex-col gap-3 justify-center">
+                <p>
+                  <strong>Name:</strong>{" "}
+                  {reservationDetails?.user?.name || "N/A"}
+                </p>
+                <p>
+                  <strong>Email:</strong>{" "}
+                  {reservationDetails?.user?.email || "N/A"}
+                </p>
+              </div>
+            </div>
           </div>
         );
 
