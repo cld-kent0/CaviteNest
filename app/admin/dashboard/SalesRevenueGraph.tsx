@@ -12,7 +12,7 @@ import {
 
 interface Transaction {
   createdAt: string;
-  price: number;
+  price: string | number;
   status: string;
 }
 
@@ -39,58 +39,52 @@ const SalesRevenueGraph = () => {
 
   const processChartData = useCallback(
     (data: Transaction[]) => {
-      console.log("Processing chart data...");
-      console.log("Transactions Data: ", data);
+      // Utility function to convert price string to number
+      const convertPriceToNumber = (price: string | number): number => {
+        if (typeof price === 'string') {
+          return parseFloat(price.replace('₱', '').replace(',', '').trim());
+        }
+        return price;
+      };
 
-      // Filter data for the specified date range and status (active or completed)
       const filteredData = data.filter(
         (transaction) =>
           new Date(transaction.createdAt) >= new Date(startDate) &&
           new Date(transaction.createdAt) <= new Date(endDate) &&
-          (transaction.status === "COMPLETED" ||
-            transaction.status === "ACTIVE")
+          (transaction.status === "COMPLETED" || transaction.status === "ACTIVE")
       );
-      console.log("Filtered Data: ", filteredData);
 
-      // Create an object to track revenue and user count by date
-      const groupedData: Record<string, { total: number; count: number }> =
-        filteredData.reduce((acc, transaction) => {
-          const date = new Date(transaction.createdAt)
-            .toISOString()
-            .split("T")[0]; // Get the date in YYYY-MM-DD format
+      const groupedData: Record<string, { total: number; count: number }> = filteredData.reduce(
+        (acc, transaction) => {
+          const date = new Date(transaction.createdAt).toISOString().split("T")[0];
 
-          console.log(
-            `Processing transaction: ${transaction.createdAt} -> Date: ${date}, Price: ${transaction.price}`
-          );
-
-          // Initialize the entry for this date if it doesn't exist
           if (!acc[date]) {
             acc[date] = { total: 0, count: 0 };
           }
 
-          // If the transaction is a subscription, check if the price is valid
-          if (transaction.price) {
-            // Add the price to the total for valid subscriptions
-            acc[date].total += transaction.price;
-          }
+          const price = convertPriceToNumber(transaction.price);
 
-          // Increment the user count for any valid transaction (both active and completed)
+          if (price) acc[date].total += price;
           acc[date].count += 1;
 
           return acc;
-        }, {} as Record<string, { total: number; count: number }>);
+        },
+        {} as Record<string, { total: number; count: number }>
+      );
 
-      console.log("Grouped Data by Date: ", groupedData);
+      const allDates: string[] = [];
+      let currentDate = new Date(startDate);
+      const end = new Date(endDate);
+      while (currentDate <= end) {
+        allDates.push(currentDate.toISOString().split("T")[0]);
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
 
-      // Convert the grouped data into an array to be used for charting
-      const chartData: ChartData[] = Object.entries(groupedData)
-        .map(([date, { total, count }]) => ({
-          date,
-          total,
-          count,
-        }))
-        .reverse(); // Reversing for chronological order
-      console.log("Chart Data to be displayed: ", chartData);
+      const chartData: ChartData[] = allDates.map((date) => ({
+        date,
+        total: groupedData[date]?.total || 0,
+        count: groupedData[date]?.count || 0,
+      }));
 
       setChartData(chartData);
     },
@@ -98,50 +92,92 @@ const SalesRevenueGraph = () => {
   );
 
   useEffect(() => {
-    console.log("Fetching transaction history...");
     axios
       .get<Transaction[]>("/api/admin/subscriptions/transaction-history")
       .then((response) => {
-        console.log("Fetched Transactions: ", response.data);
         setTransactions(response.data);
         processChartData(response.data);
       })
       .catch((error) => console.error("Error fetching transactions:", error));
-  }, [processChartData]); // Add processChartData as a dependency
+  }, [processChartData]);
+
+  const totalSubscribers = chartData.reduce((acc, data) => acc + data.count, 0);
+  const totalPayments = chartData.reduce((acc, data) => acc + data.total, 0);
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-6">History Chart</h2>
-      <div className="flex items-center space-x-4 mb-4">
+      <h2 className="text-2xl font-bold mb-6">Revenue & Subscriptions Overview</h2>
+
+      {/* Date Range Filters */}
+      <div className="flex items-center space-x-4 mb-6">
         <input
           type="date"
           value={startDate}
-          onChange={(e) => {
-            console.log("Start Date changed:", e.target.value);
-            setStartDate(e.target.value);
-          }}
+          onChange={(e) => setStartDate(e.target.value)}
           className="border p-2 rounded"
         />
         <input
           type="date"
           value={endDate}
-          onChange={(e) => {
-            console.log("End Date changed:", e.target.value);
-            setEndDate(e.target.value);
-          }}
+          onChange={(e) => setEndDate(e.target.value)}
           className="border p-2 rounded"
         />
         <button
-          onClick={() => {
-            console.log("Applying date filter...");
-            processChartData(transactions);
-          }}
+          onClick={() => processChartData(transactions)}
           className="bg-blue-500 text-white px-4 py-2 rounded"
         >
           Apply
         </button>
       </div>
+
+      {/* Summary Card */}
+      <div className="bg-white rounded-lg shadow-md p-4 mb-6">
+        <h3 className="text-xl font-semibold mb-4">Summary</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="flex gap-2 items-center">
+            <span className="font-medium">Total Subscribers :</span>
+            <span className="font-bold text-lg">{totalSubscribers}</span>
+          </div>
+          <div className="flex gap-2 items-center">
+            <span className="font-medium">Total Payments :</span>
+            <span className="font-bold text-lg">₱{totalPayments.toFixed(2)}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Subscribed Users Graph */}
+      <div className="bg-white rounded-lg shadow-md p-4 mb-6">
+        <h3 className="text-xl font-semibold mb-4">Subscribed Users</h3>
+        <ResponsiveContainer width="100%" height={400}>
+          <LineChart data={chartData}>
+            <CartesianGrid stroke="#e0e0e0" strokeDasharray="5 5" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip
+              labelFormatter={(value) => `Date: ${value}`}
+              formatter={(value, name) => {
+                if (name === "count") {
+                  return [value, "Subscribers"];
+                }
+                return [value, name];
+              }}
+            />
+            <Line
+              type="monotone"
+              dataKey="count"
+              stroke="#8884d8"
+              strokeWidth={3}
+              dot={{ r: 5, fill: "#8884d8" }}
+              activeDot={{ r: 8 }}
+              connectNulls
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* Payment Accumulated Graph */}
       <div className="bg-white rounded-lg shadow-md p-4">
+        <h3 className="text-xl font-semibold mb-4">Payment Accumulated</h3>
         <ResponsiveContainer width="100%" height={400}>
           <LineChart data={chartData}>
             <CartesianGrid stroke="#e0e0e0" strokeDasharray="5 5" />
@@ -152,8 +188,6 @@ const SalesRevenueGraph = () => {
               formatter={(value, name) => {
                 if (name === "total") {
                   return [`₱${value}`, "Payments Accumulated"];
-                } else if (name === "count") {
-                  return [value, "Subscribers"];
                 }
                 return [value, name];
               }}
@@ -164,15 +198,6 @@ const SalesRevenueGraph = () => {
               stroke="#82ca9d"
               strokeWidth={3}
               dot={{ r: 5, fill: "#82ca9d" }}
-              activeDot={{ r: 8 }}
-              connectNulls
-            />
-            <Line
-              type="monotone"
-              dataKey="count"
-              stroke="#8884d8"
-              strokeWidth={3}
-              dot={{ r: 5, fill: "#8884d8" }}
               activeDot={{ r: 8 }}
               connectNulls
             />
