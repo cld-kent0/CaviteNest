@@ -112,6 +112,7 @@ const BookingAgreementModal: React.FC<BookingAgreementModalProps> = ({
         </p>
         <p className="mb-4">
           <strong>Liability and Indemnity:</strong>
+          <br />
           The Lessor will not be responsible for any loss or damage to the
           Lessee’s personal belongings. The Lessee agrees to indemnify and hold
           harmless the Host from any claims, damages, or liabilities arising

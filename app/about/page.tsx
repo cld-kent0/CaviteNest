@@ -46,7 +46,7 @@ const About = () => {
       <div>
         <hr className="md:w-[100px] md:h-[8px] w-[70px] h-[8px] bg-emerald-700 rounded ml-[35px] md:ml-[85px] mt-16 mb-6" />
         <h2 className="text-4xl md:text-5xl font-bold ml-[35px] md:ml-[85px] mb-9">
-          About Us
+          About CaviteNest
         </h2>
 
         {/* Error message */}
@@ -55,24 +55,16 @@ const About = () => {
         {/* Hero Section */}
         <section className="relative h-[65vh]">
           <div
-            className="absolute inset-0 bg-cover bg-center shadow-md"
-            style={{ backgroundImage: `url(${heroImageSrc})` }}
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${heroImageSrc})`,
+            }}
           />
-          <div className="relative z-10 flex flex-col justify-start items-start h-full text-left px-6 md:px-[100px] pt-[100px]">
-            <h1 className="text-4xl md:text-7xl font-bold text-white">
+          <div className="relative z-10 flex flex-col justify-start items-start h-full text-left pl-[50px] md:pl-[100px] pt-[120px]">
+            <h1 className="text-6xl md:text-7xl font-bold text-white">
               {heroTitle}
             </h1>
-            <div className="mt-6 md:mt-11 max-w-full md:max-w-7xl text-sm md:text-lg text-white">
-              {heroDescription.split("\n").map((paragraph, index) => (
-                <p
-                  key={index}
-                  className="text-justify break-words mb-4 font-semibold"
-                  style={index === 0 ? { textIndent: "2em" } : {}}
-                >
-                  {paragraph}
-                </p>
-              ))}
-            </div>
+            <p className="mt-6 text-lg text-white">{heroDescription}</p>
           </div>
         </section>
 

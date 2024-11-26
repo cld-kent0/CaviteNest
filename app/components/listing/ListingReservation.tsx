@@ -210,56 +210,55 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
 
       // Conditional message generation based on modal type
       let tailwindStyledMessage = "";
-
       if (sanitizedModalData.rentalAmount !== "Not Specified") {
         // Rental Inquiry Message
         tailwindStyledMessage = `
-          Hi, I'm interested in this property
-          <div class="px-12 py-4">
-          <img 
-            src="${sanitizedModalData.listingImg}" 
-            alt="Listing Image" 
-            style="
-              height: 200px; 
-              width: auto;
-              object-fit: cover; 
-              vertical-align: middle;
-              margin-right: 8px;
-              border-radius: 4px;" 
-          />
-          <h2 class="mt-2 text-xl font-semibold text-blue-600">Rental Inquiry Details</h2>
-          <p class="text-lg"><strong class="font-bold">Address:</strong> ${sanitizedModalData.rentalAddress}</p>
-          <p class="text-lg"><strong class="font-bold">Total Amount:</strong> ₱${sanitizedModalData.rentalAmount}</p>
-          <p class="text-lg"><strong class="font-bold">Security Deposit:</strong> ₱${sanitizedModalData.rentalSecurityDeposit}</p>
-          <p class="text-lg"><strong class="font-bold">Utilities and Maintenance:</strong> ${sanitizedModalData.utilitiesAndMaintenance}</p>
+          <div class="rounded-lg overflow-hidden">
+            <div class="p-6">
+              <p class="text-lg mb-4">Hi, I'm interested in this property</p>
+              <div class="flex items-center">
+                <img 
+                  src="${sanitizedModalData.listingImg}" 
+                  alt="Listing Image" 
+                  class="h-32 w-32 object-cover rounded-md mr-6"
+                />
+                <div>
+                  <h2 class="text-2xl font-semibold">Rental Inquiry Details</h2>
+                  <p class="text-lg mt-1"><strong class="font-semibold">Address:</strong> ${sanitizedModalData.rentalAddress}</p>
+                  <p class="text-lg mt-2"><strong class="font-semibold">Total Amount:</strong> ₱${sanitizedModalData.rentalAmount}</p>
+                  <p class="text-lg mt-2"><strong class="font-semibold">Security Deposit:</strong> ₱${sanitizedModalData.rentalSecurityDeposit}</p>
+                  <p class="text-lg mt-2"><strong class="font-semibold">Utilities and Maintenance:</strong> ${sanitizedModalData.utilitiesAndMaintenance}</p>
+                </div>
+              </div>
+            </div>
           </div>
         `;
       } else if (sanitizedModalData.bookingFee !== "Not Specified") {
         // Booking Inquiry Message
         tailwindStyledMessage = `
-          Hi, I'm interested in this property
-          <div class="px-12 py-4">
-          <img 
-            src="${sanitizedModalData.listingImg}" 
-            alt="Listing Image" 
-            style="
-              height: 200px; 
-              width: auto;
-              object-fit: cover; 
-              vertical-align: middle;
-              margin-right: 8px;
-              border-radius: 4px;"
-          />
-          <h2 class="mt-2 text-xl font-semibold text-blue-600">Booking Inquiry Details</h2>
-          <p class="text-lg"><strong class="font-bold">Address:</strong> ${sanitizedModalData.bookingAddress}</p>
-          <p class="text-lg"><strong class="font-bold">Amount:</strong> ₱${sanitizedModalData.bookingFee}</p>
-          <p class="text-lg"><strong class="font-bold">Check-In:</strong> ${sanitizedModalData.checkInDate}</p>
-          <p class="text-lg"><strong class="font-bold">Check-Out:</strong> ${sanitizedModalData.checkOutDate}</p>
-          <p class="text-lg"><strong class="font-bold">Payment Method:</strong> ${sanitizedModalData.paymentMethod}</p>
-          <p class="text-lg"><strong class="font-bold">Cancellation Policy:</strong> ${sanitizedModalData.cancellationPolicy}</p>
+          <div class="rounded-lg overflow-hidden">
+            <div class="p-6">
+              <p class="text-lg mb-4">Hi, I'm interested in this property</p>
+              <div class="flex items-center">
+                <img 
+                  src="${sanitizedModalData.listingImg}" 
+                  alt="Listing Image" 
+                  class="h-32 w-32 object-cover rounded-md mr-6"
+                />
+                <div>
+                  <h2 class="text-2xl font-semibold">Booking Inquiry Details</h2>
+                  <p class="text-lg mt-1"><strong class="font-semibold">Address:</strong> ${sanitizedModalData.bookingAddress}</p>
+                  <p class="text-lg mt-2"><strong class="font-semibold">Amount:</strong> ₱${sanitizedModalData.bookingFee}</p>
+                  <p class="text-lg mt-2"><strong class="font-semibold">Check-In:</strong> ${sanitizedModalData.checkInDate}</p>
+                  <p class="text-lg mt-2"><strong class="font-semibold">Check-Out:</strong> ${sanitizedModalData.checkOutDate}</p>
+                  <p class="text-lg mt-2"><strong class="font-semibold">Payment Method:</strong> ${sanitizedModalData.paymentMethod}</p>
+                  <p class="text-lg mt-2"><strong class="font-semibold">Cancellation Policy:</strong> ${sanitizedModalData.cancellationPolicy}</p>
+                </div>
+              </div>
+            </div>
+          </div>
         `;
       }
-
       // Send the Tailwind styled message to the API
       await axios.post(`/api/messages`, {
         conversationId: newConversationId,

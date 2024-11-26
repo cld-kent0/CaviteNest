@@ -93,10 +93,12 @@ const OptionSection: React.FC = () => {
           />
         </div>
         <h3 className="text-xl font-bold mt-4 text-center">Rent a property</h3>
-        <p className="text-justify text-gray-600 my-2 text-sm md:text-base">
-          Renting a property presents a convenient option by affording
-          flexibility and alleviating the obligations associated with ownership.
+        <p className="text-center text-gray-600 my-2 text-sm md:text-base">
+          Renting a property offers flexibility and reduces the responsibilities
+          of homeownership, making it an attractive option for those seeking
+          convenience.
         </p>
+
         <button
           onClick={handleFindPropertyClick} // Use onClick to handle navigation
           className="mt-4 bg-emerald-600 text-white px-6 py-2 rounded-full hover:bg-emerald-800 text-sm md:text-base"
@@ -127,11 +129,12 @@ const OptionSection: React.FC = () => {
           />
         </div>
         <h3 className="text-xl font-bold mt-4 text-center">Become a Host</h3>
-        <p className="text-justify text-gray-600 my-2 text-sm md:text-base">
-          Listing a property for rent on a website offers convenience by
-          providing a platform to reach potential tenants, streamline the rental
-          process, and manage inquiries and bookings efficiently.
+        <p className="text-center text-gray-600 my-2 text-sm md:text-base">
+          Listing a property for rent online provides a convenient platform to
+          reach potential tenants, simplify the rental process, and efficiently
+          manage inquiries and bookings.
         </p>
+
         <button
           onClick={onRent} // Use onRent to handle verification and open modals
           className="mt-4 bg-yellow-500 text-white px-6 py-2 rounded-full hover:bg-yellow-600 text-sm md:text-base"

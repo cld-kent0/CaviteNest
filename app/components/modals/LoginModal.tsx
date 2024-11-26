@@ -187,45 +187,50 @@ const LoginModal: React.FC = () => {
           )}
         </button>
       </div>
-      <div className="flex flex-row justify-between items-center">
-        <div className="flex items-center gap-1.5 ml-1">
-          <input
-            type="checkbox"
-            id="agreement"
-            checked={manualChecked || (agreedPolicy && agreedTerms)} // Checkbox checked if manually checked or agreements are true
-            onChange={handleCheckboxChange} // Handle manual changes
-            className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-          />
-          <label htmlFor="agreement" className="text-sm text-gray-600">
-            I agree to the
-            <button
-              onClick={openPolicyModal}
-              className="text-green-600 hover:underline mx-1"
-            >
-              Privacy Policy
-            </button>
-            and
-            <button
-              onClick={handleOpenTermsModal}
-              className="text-green-600 hover:underline mx-1"
-            >
-              Terms and Conditions
-            </button>
-          </label>
-
-          {errors.agreement && (
-            <span className="text-red-600 text-sm">
-              You must agree to the terms.
-            </span>
-          )}
-        </div>
+      <div className="flex justify-end">
         <button
-          className="text-green-600 hover:underline mr-1.5"
+          className="text-green-600 hover:underline"
           onClick={handleForgotPassword} // Open Forgot Password modal
         >
           Forgot your password?
         </button>
       </div>
+
+      <div className="flex items-center mb-0 pb-0">
+        <input
+          type="checkbox"
+          id="agreement"
+          checked={agreedPolicy && agreedTerms} // Checkbox is checked when both are agreed
+          onChange={() => {
+            // If clicked manually, toggle both agreements
+            setAgreedPolicy(!agreedPolicy);
+            setAgreedTerms(!agreedTerms);
+          }}
+          className="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+        />
+        <label htmlFor="agreement" className="text-sm text-gray-600">
+          I agree to the
+          <button
+            onClick={openPolicyModal}
+            className="text-green-600 hover:underline mx-1"
+          >
+            Privacy Policy
+          </button>
+          and
+          <button
+            onClick={handleOpenTermsModal}
+            className="text-green-600 hover:underline mx-1"
+          >
+            Terms and Conditions
+          </button>
+        </label>
+      </div>
+
+      {errors.agreement && (
+        <span className="text-red-600 text-sm">
+          You must agree to the terms.
+        </span>
+      )}
     </div>
   );
 

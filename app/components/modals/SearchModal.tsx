@@ -134,26 +134,36 @@ const SearchModal = () => {
       <div className="grid grid-cols-1 gap-4">
         <button
           onClick={() => setRentalType("rent")}
-          className={`w-full p-4 text-left ${
-            rentalType === "rent" ? "bg-green-500 text-white" : "bg-white"
-          }`}
+          className={`w-full p-4 flex items-center justify-start text-left rounded-xl transition-all duration-300 ${
+            rentalType === "rent"
+              ? "bg-[#12264d] text-white" // Dark green for Rent
+              : "bg-gray-100 text-black"
+          } hover:bg-[#456fb3] hover:text-white`}
         >
+          <i className="mr-2 fas fa-home"></i> {/* Home icon for Rent */}
           Rent
         </button>
         <button
           onClick={() => setRentalType("booking")}
-          className={`w-full p-4 text-left ${
-            rentalType === "booking" ? "bg-green-500 text-white" : "bg-white"
-          }`}
+          className={`w-full p-4 flex items-center justify-start text-left rounded-xl transition-all duration-300 ${
+            rentalType === "booking"
+              ? "bg-[#12264d] text-white"
+              : "bg-gray-100 text-black"
+          } hover:bg-[#456fb3] hover:text-white`}
         >
+          <i className="mr-2 fas fa-calendar-check"></i>{" "}
+          {/* Calendar icon for Booking */}
           Booking
         </button>
         <button
           onClick={() => setRentalType("both")}
-          className={`w-full p-4 text-left ${
-            rentalType === "both" ? "bg-green-500   00 text-white" : "bg-white"
-          }`}
+          className={`w-full p-4 flex items-center justify-start text-left rounded-xl transition-all duration-300 ${
+            rentalType === "both"
+              ? "bg-[#12264d] text-white"
+              : "bg-gray-100 text-black"
+          } hover:bg-[#456fb3] hover:text-white`}
         >
+          <i className="mr-2 fas fa-home"></i> {/* Home icon for Both */}
           Both
         </button>
       </div>

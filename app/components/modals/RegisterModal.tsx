@@ -290,9 +290,12 @@ const RegisterModal = ({}) => {
         <input
           type="checkbox"
           id="agreement"
-          checked={agreedPolicy && agreedTerms} // Enabled only if both are agreed
-          onChange={() => {}}
-          disabled={!(agreedPolicy && agreedTerms)} // Disabled until both agreements
+          checked={agreedPolicy && agreedTerms} // Checkbox is checked when both are agreed
+          onChange={() => {
+            // If clicked manually, toggle both agreements
+            setAgreedPolicy(!agreedPolicy);
+            setAgreedTerms(!agreedTerms);
+          }}
           className="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
         />
         <label htmlFor="agreement" className="text-sm text-gray-600">

@@ -81,7 +81,7 @@ const CategoriesSection: React.FC = () => {
     {
       title: "Houses",
       description:
-        "A house is a self-contained housing unit that occupies only part of a larger building.",
+        "A standalone building offering privacy, space, and often outdoor areas like gardens and yards.",
       image: "/images/Houses.png",
       label: "Houses",
       onClick: () => handleCategoryClick("House"),
@@ -89,7 +89,7 @@ const CategoriesSection: React.FC = () => {
     {
       title: "Apartments",
       description:
-        "An apartment is a self-contained housing unit that occupies only part of a larger building.",
+        "Self-contained units within larger buildings, offering various sizes and shared amenities.",
       image: "/images/Apartments.png",
       label: "Apartments",
       onClick: () => handleCategoryClick("Apartment"),
@@ -97,7 +97,7 @@ const CategoriesSection: React.FC = () => {
     {
       title: "Rooms",
       description:
-        "A room is a self-contained housing unit that occupies only part of a larger building.",
+        "Smaller, affordable spaces within shared housing, ideal for independent or shared living.",
       image: "/images/Rooms.png",
       label: "Rooms",
       onClick: () => handleCategoryClick("Room"),

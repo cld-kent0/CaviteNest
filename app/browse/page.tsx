@@ -37,7 +37,11 @@ const Home = async ({ searchParams }: HomeProps) => {
               <EmptyState showReset />
             ) : (
               <Container>
-                <div className="grid grid-cols-1 gap-8 pt-24 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+                <hr className="md:w-[100px] md:h-[8px] w-[70px] h-[8px] bg-emerald-700 rounded ml-[20px] md:ml-[10px] mt-16 mb-6" />
+                <h2 className="text-4xl md:text-5xl font-bold ml-[20px] md:ml-[10px] mb-9">
+                  Properties
+                </h2>
+                <div className="grid grid-cols-1 gap-8 pt-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
                   {activeListings.map((item: SafeListing) => (
                     <div key={item.id}>
                       <ListingCard data={item} currentUser={currentUser} />
