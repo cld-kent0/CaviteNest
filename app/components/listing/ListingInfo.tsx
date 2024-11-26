@@ -4,21 +4,38 @@ import { Category } from "@/app/types/categories";
 import dynamic from "next/dynamic";
 import ProfileAvatar from "../ProfileAvatar"; // Assuming Avatar component is here
 import ListingCategory from "./ListingCategory";
-import { FaUserFriends, FaBed, FaBath } from "react-icons/fa"; // Importing icons
-import { AiOutlineCheck, AiOutlineMail, AiOutlinePhone } from "react-icons/ai"; // Icon for amenities
+import { FaUserFriends, FaBed, FaBath, FaLocationArrow } from "react-icons/fa"; // Importing icons
+import {
+  AiOutlineCheck,
+  AiOutlineFieldTime,
+  AiOutlineMail,
+  AiOutlinePhone,
+} from "react-icons/ai"; // Icon for amenities
 import {
   differenceInYears,
   differenceInMonths,
   differenceInDays,
 } from "date-fns";
+import useCaviteMunicipalities from "@/app/hooks/useCountries";
 
 const Map = dynamic(() => import("../Map"), {
   ssr: false,
 });
 
+type Profile = {
+  id: string;
+  userId: string;
+  contactNo: string | null;
+  location: string | null;
+  description: string | null;
+  interest: string[] | null;
+};
+
 interface ListingInfoProps {
+  profile: Profile | null;
   user: SafeUser | null;
   ownerContactNum: string | null | undefined;
+  ownerLoc: string | null | undefined;
   category: Category | undefined;
   description: string;
   roomCount: number;
@@ -29,20 +46,21 @@ interface ListingInfoProps {
 }
 
 const ListingInfo: React.FC<ListingInfoProps> = ({
+  profile,
   user,
-  ownerContactNum,
   category,
   description,
   roomCount,
   guestCount,
   bathroomCount,
   locationValue,
-  amenities, // Destructure amenities from props
+  amenities,
 }) => {
-  const { getByValue } = useCountries();
-  const coordinates = getByValue(locationValue)?.latlng;
+  const { getByValue } = useCaviteMunicipalities(); // Adjust to the correct hook
+  const locationDetails = getByValue(locationValue); // Ensure this returns an object with full details
+  const coordinates = locationDetails?.latlng; // Get coordinates if needed
 
-  // Calculate the time on platform (similar to ProfileClient)
+  // Calculate the time on platform
   const currentDate = new Date();
   const userJoinedDate = new Date(user?.createdAt || "");
   const years = differenceInYears(currentDate, userJoinedDate);
@@ -59,12 +77,10 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
   }
 
   return (
-    <div className="flex flex-col col-span-4 gap-8">
-      <div className="flex items-center space-x-8">
-        {" "}
-        {/* space-x-4 will add some space between elements */}
+    <div className="flex flex-col col-span-4 gap-8 mt-1">
+      <div className="flex justify-center space-x-8">
         {/* Profile Box */}
-        <div className="flex items-center p-5 border border-neutral-300 rounded-lg bg-white shadow-md w-68">
+        <div className="flex items-center py-6 px-14 border border-neutral-300 rounded-lg bg-white shadow-md w-68 gap-20">
           <div className="flex flex-col items-center">
             <ProfileAvatar src={user?.image} key={user?.id} />
             <span className="text-neutral-700 mt-3 text-lg font-medium">
@@ -74,26 +90,29 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
               Owner
             </span>
           </div>
-          <p className="text-xs text-neutral-500 font-light ml-2">
-            {timeOnPlatform}
-          </p>
-        </div>
-        <div className="flex flex-col items-start">
-          {" "}
-          {/* Stack email and phone number */}
-          <p className="flex items-center text-sm text-neutral-500 mb-2">
-            {" "}
-            {/* Added margin-bottom */}
-            <AiOutlineMail className="mr-2" /> {user?.email}
-          </p>
-          <p className="flex items-center text-sm text-neutral-500">
-            <AiOutlinePhone className="mr-2" />{" "}
-            {ownerContactNum ? ownerContactNum : "N/A"}
-          </p>
+          <div className="flex flex-col items-start text-neutral-500 text-sm mt-1">
+            <p className="flex items-center mb-3">
+              <AiOutlineFieldTime className="mr-2" /> {timeOnPlatform}
+            </p>
+            <p className="flex items-center mb-3">
+              <AiOutlineMail className="mr-2" /> {user?.email}
+            </p>
+            <p className="flex items-center mb-3">
+              <AiOutlinePhone className="mr-2" />{" "}
+              {profile?.contactNo ? profile?.contactNo : "N/A"}
+            </p>
+            <p className="flex items-center mb-3">
+              <FaLocationArrow className="mr-2" />
+              {locationDetails
+                ? `${locationDetails.label}, ${locationDetails.region}`
+                : "Location not available"}
+            </p>
+          </div>
         </div>
       </div>
 
       <hr />
+
       {/* Listing Details */}
       <div className="grid grid-cols-2 font-light text-neutral-500 gap-4">
         <div className="flex items-center">
@@ -135,7 +154,7 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
           <div className="grid grid-cols-2 gap-2">
             {amenities.map((amenity) => (
               <div key={amenity} className="flex items-center">
-                <AiOutlineCheck className="text-green-500 mr-2" />{" "}
+                <AiOutlineCheck className="text-green-500 mr-2" />
                 <span className="font-light text-neutral-600">{amenity}</span>
               </div>
             ))}

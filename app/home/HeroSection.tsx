@@ -118,7 +118,7 @@ const HeroSection = () => {
           {/* Loading spinner */}
         </div>
       ) : (
-        <div className="carousel-container shadow-xl rounded-lg overflow-visible">
+        <div className="carousel-container shadow-xl rounded-lg overflow-visible mt-6">
           {" "}
           {/* Fix overflow */}
           <Slider {...settings}>

@@ -5,7 +5,6 @@ import axios from "axios";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { HiPaperAirplane, HiPhoto } from "react-icons/hi2";
 import MessageInput from "./MessageInput";
-import { CldUploadButton } from "next-cloudinary";
 
 const Form = () => {
   const { conversationId } = useConversation();
@@ -27,25 +26,6 @@ const Form = () => {
       ...data,
       conversationId,
     });
-  };
-
-  const handleUpload = (result: any) => {
-    // Validate that the URL is not empty and is a proper URL
-    if (result?.info?.secure_url) {
-      const imageUrl = result?.info?.secure_url;
-      // Make sure the URL starts with "http://" or "https://"
-      if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
-        axios.post("/api/messages", {
-          image: imageUrl,
-          conversationId,
-        });
-      } else {
-        console.error("Invalid image URL:", imageUrl);
-        // You might want to show an error to the user in this case
-      }
-    } else {
-      console.error("No image URL found in upload result.");
-    }
   };
 
   return (

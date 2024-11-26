@@ -297,18 +297,30 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
                 htmlFor="startDate"
                 className="block text-neutral-700 font-medium mb-2"
               >
-                <strong>Ideal start date</strong>
+                <strong>Ideal start date</strong> (defaults to date today)
               </label>
               <input
                 type="date"
                 id="startDate"
-                className="w-full p-2 border border-neutral-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-200"
+                value={
+                  // Always display today's date by default if no date is selected
+                  dateRange.startDate
+                    ? dateRange.startDate.toISOString().split("T")[0] // Display the selected date
+                    : new Date().toISOString().split("T")[0] // Default to today's date
+                }
+                className="w-full p-2 border border-neutral-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-200 text-neutral-400"
                 onChange={(e) =>
                   onChangeDate({
                     ...dateRange,
-                    startDate: new Date(e.target.value),
+                    startDate: new Date(e.target.value), // Update the state when user selects a date
                   })
-                } // Replace with your event handler
+                }
+                onFocus={(e) => e.target.classList.remove("text-neutral-400")}
+                onBlur={(e) => {
+                  if (!e.target.value) {
+                    e.target.classList.add("text-neutral-400");
+                  }
+                }}
               />
             </div>
             <hr className="mt-4 mb-4" />
@@ -319,7 +331,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
             </p>
             <br></br>
             <Button
-              disabled={isOwner || !isLoggedIn} // Disabled if owner or not logged in
+              disabled={isOwner} // Disabled if owner or not logged in
               label="Inquire"
               onClick={handleInquireClick}
             />
@@ -368,7 +380,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
               </p>
               <br></br>
               <Button
-                disabled={disabled || isOwner || !isLoggedIn} // Disabled if any condition is true
+                disabled={disabled || isOwner} // Disabled if any condition is true
                 label="Reserve"
                 onClick={handleInquireClick}
               />
@@ -464,7 +476,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
                 </p>
                 <br></br>
                 <Button
-                  disabled={isOwner || !isLoggedIn} // Disabled if owner or not logged in
+                  disabled={isOwner} // Disabled if owner or not logged in
                   label="Inquire"
                   onClick={handleInquireClick}
                 />
@@ -505,8 +517,14 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
                       />
                     </div>
                   </div>
+                  <p className="text-neutral-600 text-justify">
+                    Click the <strong>&quot;Reserve&quot;</strong> button below
+                    to see the full details of the property and the agreement
+                    set by the owner!
+                  </p>
+                  <br></br>
                   <Button
-                    disabled={disabled || isOwner || !isLoggedIn} // Disabled if any condition is true
+                    disabled={disabled || isOwner} // Disabled if any condition is true
                     label="Inquire"
                     onClick={handleInquireClick}
                   />

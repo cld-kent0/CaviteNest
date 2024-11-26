@@ -29,6 +29,20 @@ const LoginModal: React.FC = () => {
   const [showForgotPassword, setShowForgotPassword] = useState(false); // State for Forgot Password modal
   const [showResetPassword, setShowResetPassword] = useState(false); // State for Reset Password modal
   const [resetToken, setResetToken] = useState<string | null>(null);
+  const [manualChecked, setManualChecked] = useState(false); // Tracks manual state
+
+  const handleCheckboxChange = () => {
+    if (!manualChecked) {
+      // If being checked manually, set agreements to true
+      setAgreedPolicy(true);
+      setAgreedTerms(true);
+    } else {
+      // If being unchecked, reset agreements
+      setAgreedPolicy(false);
+      setAgreedTerms(false);
+    }
+    setManualChecked(!manualChecked); // Toggle manual checkbox state
+  };
 
   const {
     register,
@@ -36,6 +50,7 @@ const LoginModal: React.FC = () => {
     formState: { errors },
     watch,
     setValue, // Add setValue for controlled input
+    reset, // Reset function to clear form fields
   } = useForm<FieldValues>({
     defaultValues: {
       email: "",
@@ -44,7 +59,7 @@ const LoginModal: React.FC = () => {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    if (!(agreedPolicy && agreedTerms)) {
+    if (!(manualChecked || (agreedPolicy && agreedTerms))) {
       toast.error(
         "You must agree to the Terms and Conditions and Privacy Policy."
       );
@@ -74,7 +89,7 @@ const LoginModal: React.FC = () => {
         });
 
         router.refresh();
-        loginModal.onClose();
+        loginModal.onClose(); // Close the login modal
       }
 
       if (callback?.error) {
@@ -84,9 +99,13 @@ const LoginModal: React.FC = () => {
   };
 
   const toggle = useCallback(() => {
+    reset();
     loginModal.onClose();
     registerModal.onOpen();
-  }, [loginModal, registerModal]);
+    setManualChecked(false);
+    setAgreedPolicy(false); // Reset policy agreement
+    setAgreedTerms(false); // Reset terms agreement
+  }, [loginModal, registerModal, reset]);
 
   const handleOpenTermsModal = () => {
     setIsTermsModalOpen(true);
@@ -122,11 +141,19 @@ const LoginModal: React.FC = () => {
     }
   }, []);
 
+  const handleCloseLoginModal = () => {
+    loginModal.onClose();
+    reset(); // Reset form fields
+    setManualChecked(false); // Reset the checkbox state
+    setAgreedPolicy(false); // Reset policy agreement
+    setAgreedTerms(false); // Reset terms agreement
+  };
+
   const bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading title="Welcome back" subTitle="Login to your account" center />
       <Input
-        label="Email : example@domain.com"
+        label="Email"
         id="email"
         disabled={isLoading}
         register={register}
@@ -245,7 +272,7 @@ const LoginModal: React.FC = () => {
         isOpen={loginModal.isOpen}
         title="Login"
         actionLabel="Continue"
-        onClose={loginModal.onClose}
+        onClose={handleCloseLoginModal} // Reset form and close modal
         onSubmit={handleSubmit(onSubmit)}
         body={bodyContent}
         footer={footerContent}

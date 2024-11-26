@@ -33,6 +33,7 @@ export async function GET(req: Request) {
         createdAt: true,
         price: true,
         plan: true,
+        status: true, // Add status field
       },
     });
 
@@ -43,14 +44,20 @@ export async function GET(req: Request) {
         createdAt: true,
         plan: true,
         period: true,
+        startDate: true, // Add start date field
+        endDate: true, // Add end date field
+        subscriptionStatus: true, // Add status field
       },
     });
 
     // Format GCash payment data
     const formattedPayments = gcashPayments.map((payment) => ({
       date: payment.createdAt.toISOString(),
-      amount: `₱ ${payment.price}`,
+      amount: ` ${payment.price}`, //₱
       plan: payment.plan,
+      status: payment.status || "N/A", // Include status
+      start: "N/A", // GCash payments don't have start dates
+      end: "N/A", // GCash payments don't have end dates
     }));
 
     // Format subscription data
@@ -68,8 +75,11 @@ export async function GET(req: Request) {
 
       return {
         date: subscription.createdAt.toISOString(),
-        amount: price ? `₱ ${price}` : "N/A",
+        amount: price ? `₱ ${price}.00` : "N/A", //₱
         plan: subscription.plan,
+        status: subscription.subscriptionStatus || "N/A", // Include status
+        start: subscription.startDate?.toISOString() || "N/A", // Include start date
+        end: subscription.endDate?.toISOString() || "N/A", // Include end date
       };
     });
 

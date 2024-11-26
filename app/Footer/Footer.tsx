@@ -40,13 +40,13 @@ const Footer = () => {
           height={100} // Adjust height as needed
           className="ml-0 sm:ml-16 -mt-2" // Adjust logo margin for small screens
         />
-        <span className="text-gray-700 ml-4 text-center sm:text-left">
+        <span className="text-gray-700 -ml-1 text-center sm:text-left">
           © 2024 CaviteNest
         </span>
         {/* Privacy Policy Link */}
         <span className="mx-2 text-gray-700">•</span>
         <a
-          href="/terms" // Replace with your actual Terms URL
+          href="/terms-and-conditions" // Replace with your actual Terms URL
           className="text-gray-600 hover:text-black hover:underline transition-colors duration-300"
         >
           Terms

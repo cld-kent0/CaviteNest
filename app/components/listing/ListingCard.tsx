@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
 import Button from "../Button";
 import HeartButton from "../HeartButton";
+import { usePathname } from "next/navigation";
 
 const formatPrice = (price: number): string => {
   return `₱ ${price.toLocaleString("en-PH", {
@@ -37,6 +38,9 @@ const ListingCard: React.FC<ListingCardProps> = ({
 }) => {
   const router = useRouter();
   const { getByValue } = useCountries();
+  const pathname = usePathname(); // Get the current route
+  const isTripsPage = pathname === "/trips"; // Check if the page is /trips
+  const isReservationsPage = pathname === "/reservations"; // Check if the page is /reservations
 
   // Default to an empty array if imageSrc is undefined
   const images = data?.imageSrc ?? []; // Fallback to an empty array
@@ -128,31 +132,35 @@ const ListingCard: React.FC<ListingCardProps> = ({
     >
       <div className="flex flex-col w-full gap-2">
         {/* Image Carousel */}
-        <div className="relative w-full overflow-hidden aspect-square rounded-xl group-hover:opacity-100 opacity-90 transition-all duration-300">
-          {/* Fallback image in case imageSrc is empty */}
+        <div className="relative w-full overflow-hidden aspect-square rounded-xl group-hover:opacity-100 opacity-90 transition-all duration-300 shadow-md shadow-gray-500">
+          {/* Fallback image */}
           <Image
             fill
             src={images[currentImageIndex] || "/images/no-img-placeholder.jpg"}
             alt="Listing"
-            className="object-cover w-full h-full transition-all duration-500 ease-in-out"
+            className="object-cover w-full h-full transition-transform duration-500 ease-in-out group-hover:scale-105"
           />
           <div className="absolute top-3 right-3">
             <HeartButton listingId={data.id} currentUser={currentUser} />
           </div>
 
           {/* Carousel Navigation Buttons */}
-          <button
-            onClick={goToPreviousImage}
-            className="absolute top-1/2 left-5 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all"
-          >
-            &#8592;
-          </button>
-          <button
-            onClick={goToNextImage}
-            className="absolute top-1/2 right-5 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all"
-          >
-            &#8594;
-          </button>
+          {images.length > 1 && (
+            <>
+              <button
+                onClick={goToPreviousImage}
+                className="absolute top-1/2 left-5 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all"
+              >
+                &#8592;
+              </button>
+              <button
+                onClick={goToNextImage}
+                className="absolute top-1/2 right-5 transform -translate-y-1/2 text-white bg-black bg-opacity-50 p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all"
+              >
+                &#8594;
+              </button>
+            </>
+          )}
 
           {/* Dot Indicators Inside the Image */}
           {images.length > 1 && (
@@ -161,27 +169,67 @@ const ListingCard: React.FC<ListingCardProps> = ({
                 <button
                   key={index}
                   onClick={() => handleDotClick(index)}
-                  className={`w-2 h-2 rounded-full ${
-                    index === currentImageIndex ? "bg-black" : "bg-neutral-300"
-                  } transition-all duration-300`}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    index === currentImageIndex
+                      ? "bg-black shadow-md shadow-gray-700"
+                      : "bg-neutral-300 shadow-inner shadow-gray-500"
+                  }`}
                 />
               ))}
             </div>
           )}
         </div>
-
         {/* Listing Info */}
-        <div className="text-lg font-semibold">
+        <div className="text-lg font-semibold mt-1 -mb-2">
           {location
-            ? `${location.region}, ${location.label}`
+            ? `${location.label}, ${location.region}`
             : "Location Not Available"}
         </div>
-        <div className="font-light text-neutral-500">
+        <div className="font-light text-neutral-600">
           {reservationDate || data?.category || "No category available"}
-        </div>
-        <div className="flex flex-row items-center gap-1">
-          <div className="font-semibold">{formatPrice(price)}</div>
-          {!reservation && <div className="font-semibold">/ Night</div>}
+          {!isTripsPage && !isReservationsPage && (
+            <>
+              {" ("}
+              {data?.rentalType === "rent"
+                ? "Rental"
+                : data?.rentalType === "booking"
+                ? "Booking"
+                : data?.rentalType === "both"
+                ? "Both"
+                : "Unknown"}
+              {")"}
+            </>
+          )}
+          {/* Price and Rental Type Inline */}
+          <div className="flex flex-row items-center gap-1 mt-1">
+            <div className="font-bold text-black">{formatPrice(price)}</div>
+
+            {/* Display per night or per month inline */}
+            {!reservation && data?.rentalType && (
+              <div className="font-normal text-neutral-500">
+                {data?.rentalType === "rent"
+                  ? "/ month"
+                  : data?.rentalType === "booking"
+                  ? "/ night"
+                  : data?.rentalType === "both"
+                  ? "/ night"
+                  : "Unknown"}
+              </div>
+            )}
+
+            {/* Display Rental Type inline on /trips page beside the price */}
+            {(isTripsPage || isReservationsPage) && data?.rentalType && (
+              <div className="font-normal text-neutral-500">
+                {data?.rentalType === "rent"
+                  ? "/ month"
+                  : data?.rentalType === "booking"
+                  ? "/ night"
+                  : data?.rentalType === "both"
+                  ? "/ night"
+                  : "Unknown"}
+              </div>
+            )}
+          </div>
         </div>
         {onAction && actionLabel && (
           <Button

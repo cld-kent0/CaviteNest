@@ -1,8 +1,8 @@
 import getCurrentUser from "../actions/getCurrentUser";
 import getFavorites from "../actions/getFavorites";
+import ClientLayout from "../client-layout";
 import ClientOnly from "../components/ClientOnly";
 import EmptyState from "../components/EmptyState";
-import ListingCard from "../components/listing/ListingCard";
 import FavoritesClient from "./FavoritesClient";
 
 const FavoritesPage = async () => {
@@ -18,9 +18,18 @@ const FavoritesPage = async () => {
   }
 
   return (
-    <ClientOnly>
-      <FavoritesClient favlistings={favlistings} currentUser={currentUser} />
-    </ClientOnly>
+    <ClientLayout>
+      <div className="flex flex-col min-h-screen">
+        <ClientOnly>
+          <div className="flex-grow">
+            <FavoritesClient
+              favlistings={favlistings}
+              currentUser={currentUser}
+            />
+          </div>
+        </ClientOnly>
+      </div>
+    </ClientLayout>
   );
 };
 

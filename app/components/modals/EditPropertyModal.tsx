@@ -64,6 +64,7 @@ const EditPropertyModal: React.FC<EditPropertyModalProps> = ({
       bathroomCount: 1,
       imageSrc: "",
       rentalPrice: 1,
+      price: "",
       bookingPrice: 1,
       title: "",
       description: "",
@@ -628,13 +629,13 @@ const EditPropertyModal: React.FC<EditPropertyModalProps> = ({
             )}
             {(rentalType === "booking" || rentalType === "both") && (
               <Input
-                id="bookingFee"
+                id="bookingPrice"
                 label="Booking Price"
                 disabled={isLoading}
                 register={register}
                 errors={errors}
                 required
-                value={watch("bookingFee")}
+                value={watch("price")}
                 onChange={(e) => {
                   const value = e.target.value.replace(/[^\d]/g, ""); // Only allow numbers
 
@@ -645,7 +646,7 @@ const EditPropertyModal: React.FC<EditPropertyModalProps> = ({
                     ); // Display a toast message if the value contains non-numeric characters
                   }
 
-                  setValue("bookingFee", value, {
+                  setValue("price", value, {
                     shouldDirty: true,
                     shouldValidate: true,
                   });

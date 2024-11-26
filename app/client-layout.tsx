@@ -29,10 +29,11 @@ export default function ClientLayout({
 
   return (
     <div className="flex flex-col min-h-screen">
-      {children}
-
-      {/* Conditionally render Footer based on the state */}
-      {showFooter && <Footer />}
+      <main className="flex-grow">
+        {children}
+        {/* Conditionally render Footer based on the state */}
+        {showFooter && <Footer />}
+      </main>
     </div>
   );
 }

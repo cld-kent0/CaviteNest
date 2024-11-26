@@ -3,6 +3,7 @@ import getReservations from "../actions/getReservations";
 import ClientOnly from "../components/ClientOnly";
 import EmptyState from "../components/EmptyState";
 import TripsClient from "./TripsClient";
+import ClientLayout from "../client-layout";
 
 const TripPage = async () => {
   const currentUser = await getCurrentUser();
@@ -31,14 +32,20 @@ const TripPage = async () => {
   }
 
   return (
-    <ClientOnly>
-      {/* Pass userId explicitly along with reservations and currentUser */}
-      <TripsClient
-        reservations={reservations}
-        currentUser={currentUser}
-        userId={currentUser.id} // Ensure userId is passed here
-      />
-    </ClientOnly>
+    <ClientLayout>
+      <div className="flex flex-col min-h-screen">
+        <ClientOnly>
+          <div className="flex-grow">
+            {/* Pass userId explicitly along with reservations and currentUser */}
+            <TripsClient
+              reservations={reservations}
+              currentUser={currentUser}
+              userId={currentUser.id} // Ensure userId is passed here
+            />
+          </div>
+        </ClientOnly>
+      </div>
+    </ClientLayout>
   );
 };
 

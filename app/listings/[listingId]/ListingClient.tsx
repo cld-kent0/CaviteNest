@@ -25,17 +25,18 @@ type Profile = {
   id: string;
   userId: string;
   contactNo: string | null;
+  location: string | null;
   description: string | null;
-  interest: string[];
+  interest: string[] | null;
 };
 
 interface ListingClientProps {
+  profile: Profile | null;
   reservations?: SafeReservation[];
   listing: SafeListing & {
     user: SafeUser; // Host user information
   };
   currentUser?: SafeUser | null;
-  profile?: Profile | null;
 }
 
 const ListingClient: React.FC<ListingClientProps> = ({
@@ -140,7 +141,9 @@ const ListingClient: React.FC<ListingClientProps> = ({
           <div className="grid grid-cols-1 mt-6 md:grid-cols-7 md:gap-10">
             <ListingInfo
               user={listing.user}
+              profile={profile}
               ownerContactNum={profile?.contactNo}
+              ownerLoc={profile?.location}
               bathroomCount={listing.bathroomCount}
               roomCount={listing.roomCount}
               guestCount={listing.guestCount}

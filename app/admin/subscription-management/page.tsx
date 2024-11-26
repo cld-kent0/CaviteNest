@@ -104,11 +104,10 @@ const SubscriptionManagement = () => {
                 <td className="px-4 py-2 border-b">{subscription.startDate}</td>
                 <td className="px-4 py-2 border-b">{subscription.endDate}</td>
                 <td
-                  className={`px-4 py-2 border-b ${
-                    subscription.subscriptionStatus === 'Canceled'
-                      ? 'text-red-500'
-                      : 'text-green-500'
-                  }`}
+                  className={`px-4 py-2 border-b ${subscription.subscriptionStatus === 'Canceled'
+                    ? 'text-red-500'
+                    : 'text-green-500'
+                    }`}
                 >
                   {subscription.subscriptionStatus}
                 </td>

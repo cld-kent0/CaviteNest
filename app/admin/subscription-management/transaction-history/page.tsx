@@ -11,6 +11,7 @@ interface Transaction {
   user: string;
   plan: string;
   billingPeriod?: string;
+  period?: string;
   price?: string;
   status: string;
   createdAt: string;
@@ -48,13 +49,13 @@ const TransactionHistory = () => {
   const sortedTransactions = [...transactions].sort((a, b) => {
     if (!sortConfig || !sortConfig.key) return 0; // Check for undefined sortConfig and key
     const { key, direction } = sortConfig;
-  
+
     const order = direction === 'asc' ? 1 : -1;
-  
+
     // Safely compare values, considering `undefined` cases
     const valueA = a[key] ?? '';
     const valueB = b[key] ?? '';
-  
+
     if (valueA > valueB) return order;
     if (valueA < valueB) return -order;
     return 0; // Equal case
@@ -81,7 +82,7 @@ const TransactionHistory = () => {
       <h2 className="text-3xl font-bold text-gray-800 mb-6">Transaction History</h2>
 
       <div className="flex justify-between items-center mb-4">
-        
+
         <select
           value={filterStatus || ''}
           onChange={(e) => setFilterStatus(e.target.value || null)}
@@ -134,7 +135,7 @@ const TransactionHistory = () => {
                   <td className="px-4 py-2 border-b whitespace-nowrap">{transaction.type}</td>
                   <td className="px-4 py-2 border-b whitespace-nowrap">{transaction.user}</td>
                   <td className="px-4 py-2 border-b">{transaction.plan}</td>
-                  <td className="px-4 py-2 border-b">{transaction.billingPeriod || '-'}</td>
+                  <td className="px-4 py-2 border-b">{transaction.billingPeriod || transaction.period}</td>
                   <td className="px-4 py-2 border-b whitespace-nowrap">
                     {transaction.price ? `${transaction.price}` : '-'}
                   </td>
@@ -157,20 +158,20 @@ const TransactionHistory = () => {
         onItemsPerPageChange={setItemsPerPage}
       />
       <div className='flex'>
-      <div className="mt-4 text-gray-500 ">
-        Page {currentPage} of {Math.ceil(totalItems / itemsPerPage)}
-      </div>
-      <select
-        value={itemsPerPage}
-        onChange={(e) => setItemsPerPage(parseInt(e.target.value, 10))}
-        className="border p-2 rounded mt-2 ml-auto"
-      >
-        {[10, 25, 50].map((count) => (
-          <option key={count} value={count}>
-            {count} per page
-          </option>
-        ))}
-      </select>
+        <div className="mt-4 text-gray-500 ">
+          Page {currentPage} of {Math.ceil(totalItems / itemsPerPage)}
+        </div>
+        <select
+          value={itemsPerPage}
+          onChange={(e) => setItemsPerPage(parseInt(e.target.value, 10))}
+          className="border p-2 rounded mt-2 ml-auto"
+        >
+          {[10, 25, 50].map((count) => (
+            <option key={count} value={count}>
+              {count} per page
+            </option>
+          ))}
+        </select>
       </div>
     </div>
   );

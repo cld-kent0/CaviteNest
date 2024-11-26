@@ -13,7 +13,6 @@ import {
   differenceInYears,
   differenceInDays,
 } from "date-fns";
-import ImageUpload from "../components/inputs/ImageUpload";
 import toast from "react-hot-toast";
 import useUploadIdModal from "../hooks/useUploadIdModal";
 
@@ -36,17 +35,16 @@ type User = {
 
 // Import profile values
 type Profile = {
-  id: string,
-  userId: string | null,
-  contactNo: string | null,
-  location: string | null,
-  interest: string[] | null,
-  description: string | null,
-  createdAt: Date,
-  updatedAt: Date | null,
+  id: string;
+  userId: string | null;
+  contactNo: string | null;
+  location: string | null;
+  interest: string[] | null;
+  description: string | null;
+  createdAt: Date;
+  updatedAt: Date | null;
   imageSrc: string | null;
 };
-
 
 // Pass values into props
 interface ProfileClientProps {
@@ -56,21 +54,17 @@ interface ProfileClientProps {
 
 // ProfileClient Function
 const ProfileClient: React.FC<ProfileClientProps> = ({ user, profile }) => {
-
-
   // Declarations
   const uploadIdModal = useUploadIdModal();
   const profileModal = useProfileModal();
   const editProfileModal = useEditProfileModal();
   const currentDate = new Date();
 
-    // If there's no user, display none
-    if (!user) {
-      return (
-        <p >No user detected!</p>
-      )
-    };
-  
+  // If there's no user, display none
+  if (!user) {
+    return <p>No user detected!</p>;
+  }
+
   const userJoinedDate = new Date(user.createdAt);
   const years = differenceInYears(currentDate, userJoinedDate);
   const months = differenceInMonths(currentDate, userJoinedDate);
@@ -89,22 +83,22 @@ const ProfileClient: React.FC<ProfileClientProps> = ({ user, profile }) => {
     timeOnPlatform = `${days} day${days > 1 ? "s" : ""} on CaviteNest`;
   }
 
-
   // Utility Function for Sentence casing all caps names...
   const toSentenceCase = (str: string) => {
-    if (!str) return ''; // Return empty string if no name provided
+    if (!str) return ""; // Return empty string if no name provided
     return str
       .toLowerCase()
       .replace(/(?:^|\s)\w/g, (match: string) => match.toUpperCase());
   };
 
-  const isPremiumOrBusiness = user.plan === "premium" || user.plan === "business";
+  const isPremiumOrBusiness =
+    user.plan === "premium" || user.plan === "business";
 
   // Display user's created profile (if there's any)
   const isThereAProfile = user.profileCreated ? (
     <span>
       <ProfileCard
-        header={toSentenceCase(user.name?.split(" ")[0] ?? '')}
+        header={toSentenceCase(user.name?.split(" ")[0] ?? "")}
         location={profile?.location || ""}
         email={user.email || ""}
         contactNo={profile?.contactNo || "n/a"}
@@ -114,7 +108,10 @@ const ProfileClient: React.FC<ProfileClientProps> = ({ user, profile }) => {
       {profile?.updatedAt && (
         <div className="flex justify-end mr-4">
           <p className="text-sm font-medium text-gray-600 items-center mt-12">
-            Last updated: {formatDistanceToNow(new Date(profile.updatedAt), { addSuffix: true })}
+            Last updated:{" "}
+            {formatDistanceToNow(new Date(profile.updatedAt), {
+              addSuffix: true,
+            })}
           </p>
         </div>
       )}
@@ -123,7 +120,7 @@ const ProfileClient: React.FC<ProfileClientProps> = ({ user, profile }) => {
     <span>
       <h1 className="text-4xl font-bold">You have no profile created yet...</h1>
     </span>
-  )
+  );
 
   // Check if user's email is verified (status text update)
   const isEmailVerified = user.emailVerified ? (
@@ -133,20 +130,23 @@ const ProfileClient: React.FC<ProfileClientProps> = ({ user, profile }) => {
   );
 
   // Check if user's ID has been verified (status text update)
-  const isIdVerified = user.idStatus === "verified" ? (
-    <span className="font-bold text-green-600">✓ Identity verified</span>
-  ) : (
-    <span className="text-gray-800">
-      Before you book or host on CaviteNest, you’ll need to complete this step.
-    </span>
-  );
+  const isIdVerified =
+    user.idStatus === "verified" ? (
+      <span className="font-bold text-green-600">✓ Identity verified</span>
+    ) : (
+      <span className="text-gray-800">
+        Before you book or host on CaviteNest, you’ll need to complete this
+        step.
+      </span>
+    );
 
   // Check if user has created a profile (status text update)
   const isProfileCreated = user.profileCreated ? (
     <span className="font-bold text-green-600">
       ✓ Profile created
       <div className="flex justify-center">
-        <button onClick={() => editProfileModal.onOpen()}
+        <button
+          onClick={() => editProfileModal.onOpen()}
           className="
             border-2
             border-black
@@ -159,15 +159,16 @@ const ProfileClient: React.FC<ProfileClientProps> = ({ user, profile }) => {
             hover:bg-green-700
             hover:text-white 
             transition duration-300
-            ">
+            "
+        >
           Edit Profile
         </button>
       </div>
     </span>
   ) : (
     <span className="text-gray-800">
-      Your CaviteNest profile is an important part of every reservation.
-      Create yours to help other Hosts and guests get to know you.
+      Your CaviteNest profile is an important part of every reservation. Create
+      yours to help other Hosts and guests get to know you.
     </span>
   );
 
@@ -197,34 +198,6 @@ const ProfileClient: React.FC<ProfileClientProps> = ({ user, profile }) => {
     }
   };
 
-  // const handleImageUpload = async (url: string) => {
-  //   if (!profile?.id) {
-  //     console.error("Profile ID is missing!");
-  //     return;  // Exit the function if profile.id is undefined
-  //   }
-  //   try {
-  //     const response = await fetch(`/api/profiles/${profile?.id}`, {
-  //       method: "PUT",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ imageSrc: url }),
-  //     });
-
-  //     if (response.ok) {
-  //       alert("Image uploaded successfully!");
-  //     } else {
-  //       // Check if the response is an error page (HTML)
-  //       const textResponse = await response.text();
-  //       console.error('Error Response:', textResponse);
-  //       alert('Error uploading image, please try again.');
-  //     }
-  //   } catch (error) {
-  //     console.error("Error saving image:", error);
-  //     alert("Error uploading image, please try again.");
-  //   }
-  // };
-  // Return
   return (
     <div className="flex flex-wrap justify-center items-center gap-28 min-h-screen bg-gray-100 ">
       <div className="bg-white shadow-2xl shadow-slate-700 rounded-2xl p-11 w-full max-w-md pb-12 border-2 border-gray-100">
@@ -291,7 +264,8 @@ const ProfileClient: React.FC<ProfileClientProps> = ({ user, profile }) => {
         </div>
         <div className="text-center">
           {!user.emailVerified && (
-            <button onClick={handleResendVerification}
+            <button
+              onClick={handleResendVerification}
               className="
               border-2
               border-black
@@ -304,7 +278,8 @@ const ProfileClient: React.FC<ProfileClientProps> = ({ user, profile }) => {
               hover:bg-blue-800
               hover:text-white 
               transition duration-300
-              ">
+              "
+            >
               Resend Verification Email
             </button>
           )}
@@ -314,23 +289,31 @@ const ProfileClient: React.FC<ProfileClientProps> = ({ user, profile }) => {
           <h3 className="text-xl font-semibold">Identity Verification</h3>
           <p className="text-gray-800">
             {user?.idStatus === "verified" ? (
-              <span className="font-bold text-green-600">✓ Identity verified</span>
+              <span className="font-bold text-green-600">
+                ✓ Identity verified
+              </span>
             ) : (
               <>
                 <span className="text-gray-800">
-                  Before you book or host on CaviteNest, you’ll need to complete this step.
+                  Before you book or host on CaviteNest, you’ll need to complete
+                  this step.
                 </span>
                 {/* <div className="text-black text-center mt-2"> <strong>Status:</strong> {user.idStatus} </div> */}
-                <div className="flex text-center justify-center mt-4 gap-2">
-                  <div className="font-bold text-black"> Status: </div>
-                  <div className="text-gray-800"> {user.idStatus}</div>
-                </div>
-              </>
-            )}
-          </p>
-          <div className="text-center mt-2">
-            <button onClick={() => uploadIdModal.onOpen()}
-              className="
+                <div className="flex flex-col">
+                  <div className="flex flex-row gap-2 mt-5 -mb-1 justify-center">
+                    <div className="font-bold text-black"> Status: </div>
+                    <div className="text-gray-800">
+                      {user.idStatus === "unverified"
+                        ? "Unverified"
+                        : user.idStatus === "pending"
+                        ? "Pending"
+                        : "N/A"}
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <button
+                      onClick={() => uploadIdModal.onOpen()}
+                      className="
                     border-2
                     border-black
                     w-72 
@@ -342,22 +325,26 @@ const ProfileClient: React.FC<ProfileClientProps> = ({ user, profile }) => {
                     hover:bg-green-700
                     hover:text-white 
                     transition duration-300
-                  ">
-              Upload Government ID
-            </button>
-          </div>
+                  "
+                    >
+                      Upload Government ID
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+          </p>
         </div>
 
         <hr className="h-[1px] my-7 mx-auto rounded bg-gray-600"></hr>
 
         <div className="mt-6">
           <h3 className="text-xl font-semibold">CaviteNest Profile</h3>
-          <p className="text-gray-600">
-            {isProfileCreated}
-          </p>
+          <p className="text-gray-600">{isProfileCreated}</p>
           <div className="text-center">
             {!user.profileCreated && (
-              <button onClick={() => profileModal.onOpen()}
+              <button
+                onClick={() => profileModal.onOpen()}
                 className="
                     border-2
                     border-black
@@ -370,17 +357,17 @@ const ProfileClient: React.FC<ProfileClientProps> = ({ user, profile }) => {
                     hover:bg-green-700
                     hover:text-white 
                     transition duration-300
-                    ">
+                    "
+              >
                 Setup your profile
-              </button>)}
+              </button>
+            )}
           </div>
         </div>
       </div>
-      <div>
-        {isThereAProfile}
-      </div>
+      <div>{isThereAProfile}</div>
     </div>
   );
-}
+};
 
 export default ProfileClient;
