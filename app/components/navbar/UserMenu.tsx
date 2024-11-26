@@ -72,7 +72,8 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
   const isEligibleForBillingPortal =
     currentUser?.role === "LESSOR" &&
     currentUser?.idStatus &&
-    currentUser?.plan !== "free"; // Replace with actual plan property
+    currentUser?.plan !== "free" && // Replace with actual plan property
+    currentUser?.Subscription?.paymentMethodType === "STRIPE"; // Check for STRIPE payment method
 
   return (
     <div className="relative" ref={menuRef}>
