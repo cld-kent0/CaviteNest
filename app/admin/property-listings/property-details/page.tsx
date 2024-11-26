@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import toast, { Toaster } from "react-hot-toast";
 import SearchInput from "../../components/SearchInput";
 import ActionButton from "../../components/ActionButton";
 import Pagination from "../../components/Pagination";
@@ -35,22 +36,53 @@ const PropertyList = () => {
   };
 
   const archiveProperty = (id: string) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to archive this property?"
+    toast(
+      (t) => (
+        <div>
+          <p>Are you sure you want to archive this property?</p>
+          <div className="mt-2 flex justify-end gap-2">
+            <button
+              onClick={() => {
+                toast.dismiss(t.id);
+                axios
+                  .post(`/api/admin/archiving/archive`, { id, type: "listing" })
+                  .then(() => {
+                    fetchProperties();
+                    toast.success("Property archived successfully!");
+                  })
+                  .catch((error) => {
+                    console.error("Error archiving property:", error);
+                    toast.error("Failed to archive property.");
+                  });
+              }}
+              className="bg-red-600 text-white px-4 py-2 rounded"
+            >
+              Confirm
+            </button>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="bg-gray-300 text-black px-4 py-2 rounded"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+      { duration: Infinity }
     );
-    if (confirmed) {
-      axios
-        .post(`/api/admin/archiving/archive`, { id, type: "listing" })
-        .then(() => fetchProperties())
-        .catch((error) => console.error("Error archiving property:", error));
-    }
   };
 
   const unarchiveProperty = (id: string) => {
     axios
       .post(`/api/admin/archiving/unarchive`, { id, type: "listing" })
-      .then(() => fetchProperties())
-      .catch((error) => console.error("Error unarchiving property:", error));
+      .then(() => {
+        fetchProperties();
+        toast.success("Property unarchived successfully!");
+      })
+      .catch((error) => {
+        console.error("Error unarchiving property:", error);
+        toast.error("Failed to unarchive property.");
+      });
   };
 
   const filteredProperties = properties
@@ -82,6 +114,7 @@ const PropertyList = () => {
 
   return (
     <div className="p-6">
+      <Toaster />
       <h2 className="text-3xl font-bold text-gray-800 mb-6">
         Property Management / Property Listings
       </h2>
@@ -130,23 +163,23 @@ const PropertyList = () => {
                       actions={
                         showArchived
                           ? [
-                              {
-                                label: "Unarchive",
-                                onClick: unarchiveProperty,
-                              },
-                            ]
+                            {
+                              label: "View Unarchive",
+                              onClick: unarchiveProperty,
+                            },
+                          ]
                           : [
-                              {
-                                label: "Archive",
-                                onClick: archiveProperty,
+                            {
+                              label: "Archive",
+                              onClick: archiveProperty,
+                            },
+                            {
+                              label: "View",
+                              onClick: () => {
+                                window.location.href = `/listings/${property.id}`;
                               },
-                              {
-                                label: "View",
-                                onClick: () => {
-                                  window.location.href = `/listings/${property.id}`;
-                                },
-                              },
-                            ]
+                            },
+                          ]
                       }
                     />
                   </td>

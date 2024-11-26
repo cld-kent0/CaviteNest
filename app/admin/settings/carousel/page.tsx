@@ -44,7 +44,7 @@ const CarouselAdmin = () => {
       if (!confirmed) {
         return; // Exit if the user cancels
       }
-  
+
       // Update an existing carousel item
       const response = await fetch(`/api/carousel/${currentItemId}`, {
         method: "PUT",
@@ -53,7 +53,7 @@ const CarouselAdmin = () => {
         },
         body: JSON.stringify({ title, description, image }),
       });
-  
+
       if (response.ok) {
         const updatedItem = await response.json();
         setCarouselItems((prev) =>
@@ -69,7 +69,7 @@ const CarouselAdmin = () => {
       if (!confirmed) {
         return; // Exit if the user cancels
       }
-  
+
       // Create a new carousel item
       const response = await fetch("/api/carousel", {
         method: "POST",
@@ -78,7 +78,7 @@ const CarouselAdmin = () => {
         },
         body: JSON.stringify({ title, description, image }),
       });
-  
+
       if (response.ok) {
         const newItem = await response.json();
         setCarouselItems((prev) => [...prev, newItem]); // Add new item to the list
@@ -92,17 +92,17 @@ const CarouselAdmin = () => {
   const handleDelete = async (id: string) => {
     // Display a confirmation prompt to the user
     const confirmed = window.confirm("Are you sure you want to delete this carousel item?");
-  
+
     if (!confirmed) {
       // If the user clicks "Cancel", do nothing
       return;
     }
-  
+
     // If the user confirms, proceed with the delete action
     const response = await fetch(`/api/carousel/${id}`, {
       method: "DELETE",
     });
-  
+
     if (response.ok) {
       // Remove the deleted item from the carouselItems state
       setCarouselItems((prev) => prev.filter((item) => item.id !== id));
@@ -182,9 +182,8 @@ const CarouselAdmin = () => {
         <div className="space-x-4">
           <button
             type="submit"
-            className={`bg-emerald-800 text-white p-2 rounded ${
-              carouselItems.length >= MAX_ITEMS && !isEditing ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+            className={`bg-emerald-800 text-white p-2 rounded ${carouselItems.length >= MAX_ITEMS && !isEditing ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             disabled={carouselItems.length >= MAX_ITEMS && !isEditing}
           >
             {isEditing ? "Update Carousel Item" : "Add Carousel Item"}

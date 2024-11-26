@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 import { IoMdClose } from 'react-icons/io'; // Assuming you are using react-icons
 
 export interface GcashPayment {
@@ -95,11 +96,13 @@ const GcashPaymentDetailsModal: React.FC<GcashPaymentDetailsModalProps> = ({
         method: "POST",
       });
       if (!response.ok) throw new Error("Failed to decline payment");
-      alert("Payment declined successfully");
+      // alert("Payment declined successfully");
+      toast.success("Payment declined successfully");
       handleClose(); // Close modal after declining
     } catch (error) {
       console.error("Error declining payment:", error);
-      alert("Failed to decline payment. Please try again.");
+      // alert("Failed to decline payment. Please try again.");
+      toast.error("Failed to decline payment. Please try again.");
     }
   };
 
@@ -126,17 +129,20 @@ const GcashPaymentDetailsModal: React.FC<GcashPaymentDetailsModalProps> = ({
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error updating plan:", errorData.error);
-        alert("Failed to update the plan. Please try again.");
+        // alert("Failed to update the plan. Please try again.");
+        toast.error("Failed to update the plan. Please try again.");
         return;
       }
 
       const result = await response.json();
       console.log("Plan updated successfully:", result);
-      alert("Plan updated successfully!");
+      // alert("Plan updated successfully!");
+      toast.success("Plan updated successfully!");
       handleClose(); // Close the modal
     } catch (error) {
       console.error("Error updating plan:", error);
-      alert("An error occurred while updating the plan. Please try again.");
+      // alert("An error occurred while updating the plan. Please try again.");
+      toast.error("An error occurred while updating the plan. Please try again.");
     }
   };
 

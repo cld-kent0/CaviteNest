@@ -1,5 +1,6 @@
 import ImageUpload from '@/app/components/inputs/ImageUpload';
 import { FC, useState } from 'react';
+import toast from 'react-hot-toast';
 
 interface EditQRCodeModalProps {
   isOpen: boolean;
@@ -53,11 +54,13 @@ const EditQRCodeModal: FC<EditQRCodeModalProps> = ({ isOpen, onClose, qrCodeId }
       }
 
       const data = await response.json();
-      alert('QR Code saved successfully!');
+      // alert('QR Code saved successfully!');
+      toast.success('QR Code saved successfully!');
       onClose();
     } catch (error) {
       console.error(error);
-      alert('Error saving QR Code');
+      // alert('Error saving QR Code');
+      toast.error('Error saving QR Code');
     } finally {
       setIsSaving(false);
     }

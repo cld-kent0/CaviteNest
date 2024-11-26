@@ -10,30 +10,32 @@ import Header from './components/NavbarHeader';
 import Sidebar from './components/Sidebar';
 import MainContent from './components/MainContent';
 import NavbarHeader from './components/NavbarHeader';
+import ToasterProvider from '../providers/ToasterProvider';
 
 const font = Nunito({
   subsets: ['latin'],
 });
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-    // Fetch the current user
-    const currentUser = await getCurrentUser();
-    const isAdmin = currentUser?.role === 'ADMIN'; // Check if the user is an admin
-   
-    return (
- 
-      <html lang="en">
+  // Fetch the current user
+  const currentUser = await getCurrentUser();
+  const isAdmin = currentUser?.role === 'ADMIN'; // Check if the user is an admin
+
+  return (
+
+    <html lang="en">
       <body className={`${font.className} bg-gray-100`}>
+        <ToasterProvider />
         <NavbarHeader /> {/* Use the Header component */}
 
         <div className="flex flex-row mb-10">
           <Sidebar /> {/* Use the Sidebar component */}
-          
+
           <MainContent>{children}</MainContent> {/* Use the MainContent component */}
         </div>
       </body>
     </html>
-    );
+  );
 }
 
 // {/* AdminNavbar stays at the top */}

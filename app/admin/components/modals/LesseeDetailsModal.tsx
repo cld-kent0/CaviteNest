@@ -4,6 +4,7 @@ import Modal from "@/app/components/modals/Modal";
 import axios from "axios";
 import React, { useState } from "react";
 import Image from "next/image"; // Import the Next.js Image component
+import toast from "react-hot-toast";
 
 interface LesseeDetailsModalProps {
   isOpen: boolean;
@@ -58,10 +59,9 @@ const LesseeDetailsModal: React.FC<LesseeDetailsModalProps> = ({
         lessee.role = newStatus === "verified" ? "LESSOR" : lessee.role;
 
         alert(
-          `Lessee has been ${
-            newStatus === "verified"
-              ? "verified and promoted to Lessor"
-              : newStatus === "rejected"
+          `Lessee has been ${newStatus === "verified"
+            ? "verified and promoted to Lessor"
+            : newStatus === "rejected"
               ? "rejected"
               : "unverified"
           }`
@@ -69,7 +69,8 @@ const LesseeDetailsModal: React.FC<LesseeDetailsModalProps> = ({
       }
     } catch (error) {
       console.error("Failed to update verification status:", error);
-      alert("An error occurred while updating the verification status.");
+      // alert("An error occurred while updating the verification status.");
+      toast.error("No Image Available. An error occurred while updating the verification status.")
     } finally {
       setIsVerifying(false);
       onClose();
@@ -154,9 +155,9 @@ const LesseeDetailsModal: React.FC<LesseeDetailsModalProps> = ({
       onSubmit={
         step === STEPS.ID_VERIFICATION
           ? () =>
-              toggleVerification(
-                lessee.idStatus === "verified" ? "unverified" : "verified"
-              )
+            toggleVerification(
+              lessee.idStatus === "verified" ? "unverified" : "verified"
+            )
           : onNext
       }
       title="Lessee Details"
@@ -165,10 +166,10 @@ const LesseeDetailsModal: React.FC<LesseeDetailsModalProps> = ({
           ? isVerifying
             ? "Updating..."
             : lessee.idStatus === "verified"
-            ? "Unverified"
-            : lessee.idStatus === "rejected"
-            ? "Verify"
-            : "Verify"
+              ? "Unverified"
+              : lessee.idStatus === "rejected"
+                ? "Verify"
+                : "Verify"
           : "View ID Verification"
       }
       actionDisabled={step === STEPS.ID_VERIFICATION && isVerifying}
