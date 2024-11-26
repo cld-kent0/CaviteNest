@@ -66,7 +66,7 @@ export default async function handler(
           subject: 'Reservation Confirmed',
           html: `
             <h2>Reservation Confirmation</h2>
-            <p><strong>Thank you for inquiring with us!</strong></p>
+            <p><strong>Thank you for booking with us!</strong></p>
             <p>Your reservation for the listing titled <strong>"${reservation.listing.title}"</strong> has been confirmed.</p>
             <table style="width: 100%; border: 1px solid #ddd; border-collapse: collapse;">
               <tr>
