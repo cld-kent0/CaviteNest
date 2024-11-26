@@ -44,7 +44,7 @@ const About = () => {
   return (
     <ClientLayout>
       <div>
-        <hr className="md:w-[100px] md:h-[8px] w-[70px] h-[8px] bg-emerald-700 rounded ml-[35px] md:ml-[85px] mt-16 mb-6" />
+        <hr className="md:w-[100px] md:h-[8px] w-[70px] h-[8px] bg-emerald-700 rounded ml-[35px] md:ml-[85px] mt-16 md:mt-24 mb-6" />
         <h2 className="text-4xl md:text-5xl font-bold ml-[35px] md:ml-[85px] mb-9">
           About CaviteNest
         </h2>
