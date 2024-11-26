@@ -58,6 +58,8 @@ export const config = {
     "/properties",
     "/favorites",
     "/subscription",
+    "/subscription/:path*",
     "/profile",
+    "/messages",
   ],
 };

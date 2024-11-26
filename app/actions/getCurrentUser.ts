@@ -18,6 +18,9 @@ export default async function getCurrentUser() {
       where: {
         email: session.user.email as string,
       },
+      include: {
+        Subscription: true, // Include Subscription to access paymentMethodType
+      },
     });
 
     if (!currentUser) {
@@ -29,6 +32,7 @@ export default async function getCurrentUser() {
       createdAt: currentUser.createdAt.toISOString(),
       updatedAt: currentUser.updatedAt.toISOString(),
       emailVerified: currentUser.emailVerified?.toISOString() || null,
+      Subscription: currentUser.Subscription, // Pass Subscription to SafeUser
     };
   } catch (error: any) {
     null;
@@ -39,7 +43,6 @@ export default async function getCurrentUser() {
 // import { authOptions } from "@/pages/api/auth/[...nextauth]";
 // import { getServerSession } from "next-auth/next";
 // import { SafeUser } from "../types";
-
 
 // export async function getSession() {
 //   return await getServerSession(authOptions);
