@@ -4,9 +4,17 @@ import clsx from "clsx";
 import { format } from "date-fns";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Modal from "@/app/components/modals/Modal";
 import toast from "react-hot-toast";
+import { FieldValues, SubmitHandler } from "react-hook-form";
+import Heading from "@/app/components/Heading";
+
+enum STEPS {
+  LISTING_INFO = 0,
+  RESERVATION_DETAILS = 1,
+  LESSEE_INFO = 2,
+}
 
 interface MessageBoxProps {
   data: FullMessageType;
@@ -26,6 +34,9 @@ const MessageBox: React.FC<MessageBoxProps> = ({
   const { data: session } = useSession();
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [reservationDetails, setReservationDetails] = useState<any>({});
+  const [loading, setLoading] = useState(true); // Loading state
+
+  const [step, setStep] = useState(STEPS.LISTING_INFO);
 
   const isOwn = session?.user?.email === data?.sender?.email;
   const seenList = (data.seen || [])
@@ -37,27 +48,24 @@ const MessageBox: React.FC<MessageBoxProps> = ({
 
   const container = clsx(
     "flex gap-3 p-4",
-    isOwn ? "justify-end" : "justify-start" // Align message to the right for owner, left otherwise
+    isOwn ? "justify-end" : "justify-start"
   );
   const profile = clsx(isOwn && "order-2");
   const body = clsx("flex flex-col gap-2", isOwn && "items-end");
 
-  // Apply conditional width modification based on the presence of listingId and ownership
   const messageStyle = clsx(
     "text-md py-2 px-5 text-justify rounded-2xl",
     isOwn ? "bg-emerald-600 text-white" : "bg-gray-100 text-black",
-    // Apply max-width only if listingId is not available or if the current user is not the owner
     !listingId && !isOwnerOfListing ? "max-w-[40%]" : "max-w-full"
   );
 
   const handleConfirmReservationStatus = async () => {
     try {
-      if (!reservationDetails.id) {
+      if (!reservationDetails?.id) {
         console.error("Reservation details are not available.");
         return;
       }
 
-      // Confirm the reservation status first
       const response = await fetch("/api/reservations/confirmReservation", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -74,7 +82,6 @@ const MessageBox: React.FC<MessageBoxProps> = ({
 
       toast.success("Reservation confirmed successfully!");
 
-      // Now, delete the message immediately after confirming
       const deleteResponse = await deleteMessage();
       if (deleteResponse) {
         toast.success("Message deleted successfully.");
@@ -96,15 +103,12 @@ const MessageBox: React.FC<MessageBoxProps> = ({
         return false;
       }
 
-      console.log("Deleting message:", { messageId: data.id, listingId }); // Log to check values
-
-      // Make the DELETE request to the deleteMessage API
       const response = await fetch("/api/reservations/deleteMessage", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messageId: data.id,
-          listingId: listingId,
+          listingId,
         }),
       });
 
@@ -123,6 +127,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({
   useEffect(() => {
     if (listingId && isConfirmModalOpen) {
       const fetchReservationDetails = async () => {
+        setLoading(true); // Start loading
         try {
           const response = await fetch(
             `/api/reservations/getReservation?listingId=${listingId}`
@@ -133,6 +138,8 @@ const MessageBox: React.FC<MessageBoxProps> = ({
           setReservationDetails(reservationDetails || {});
         } catch (error) {
           console.error("Failed to fetch reservation details:", error);
+        } finally {
+          setLoading(false); // Stop loading once data is fetched
         }
       };
 
@@ -140,14 +147,167 @@ const MessageBox: React.FC<MessageBoxProps> = ({
     }
   }, [isConfirmModalOpen, listingId]);
 
+  const onBack = () => {
+    setStep((value) => (value > STEPS.LISTING_INFO ? value - 1 : value));
+  };
+
+  const onNext = () => {
+    setStep((prevStep) =>
+      prevStep < STEPS.LESSEE_INFO ? prevStep + 1 : prevStep
+    );
+  };
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    if (step === STEPS.LESSEE_INFO) {
+      await handleConfirmReservationStatus();
+    } else {
+      onNext();
+    }
+  };
+
+  const actionLabel = useMemo(() => {
+    return step === STEPS.LESSEE_INFO ? "Confirm Reservation" : "Next";
+  }, [step]);
+
+  const secondaryActionLabel = useMemo(() => {
+    return step === STEPS.LISTING_INFO ? undefined : "Back";
+  }, [step]);
+
+  const onClose = () => {
+    setStep(STEPS.LISTING_INFO);
+    setIsConfirmModalOpen(false);
+  };
+
+  const progressPercentage =
+    ((step + 1) / (Object.keys(STEPS).length / 2)) * 100;
+
+  const renderBodyContent = () => {
+    if (loading) {
+      return (
+        <div className="flex items-center justify-center h-full py-20">
+          <p className="text-xl text-gray-500">
+            Please wait a moment, while we fetch the details...
+          </p>{" "}
+          {/* Centered Loading */}
+        </div>
+      );
+    }
+
+    switch (step) {
+      case STEPS.LISTING_INFO:
+        return (
+          <div className="flex flex-col gap-8 p-5">
+            <Heading
+              title="Listing Information"
+              subTitle="Currently viewing this certain property's information:"
+            />
+            <p>
+              <strong>Title:</strong>{" "}
+              {reservationDetails?.listing?.title || "N/A"}
+            </p>
+            <p>
+              <strong>Description:</strong>{" "}
+              {reservationDetails?.listing?.description || "N/A"}
+            </p>
+            <p>
+              <strong>Listing Images:</strong>
+              {reservationDetails?.listing?.imageSrc?.length > 0 ? (
+                <div className="flex gap-2">
+                  <div className="w-24 h-24 flex justify-center items-center">
+                    <Image
+                      src={reservationDetails?.listing?.imageSrc[0]}
+                      alt="Listing Image"
+                      width={100}
+                      height={100}
+                      className="object-cover rounded-lg shadow-md"
+                    />
+                  </div>
+                </div>
+              ) : (
+                "No images available"
+              )}
+            </p>
+          </div>
+        );
+
+      case STEPS.RESERVATION_DETAILS:
+        return (
+          <div className="flex flex-col gap-8 p-5">
+            <Heading
+              title="Reservation Details"
+              subTitle="Currently viewing this lessee's reservation details:"
+            />
+            <p>
+              <strong>Start Date:</strong>{" "}
+              {reservationDetails?.startDate
+                ? format(new Date(reservationDetails?.startDate), "MM/dd/yyyy")
+                : "N/A"}
+            </p>
+            <p>
+              <strong>End Date:</strong>{" "}
+              {reservationDetails?.endDate
+                ? format(new Date(reservationDetails?.endDate), "MM/dd/yyyy")
+                : "N/A"}
+            </p>
+            <p>
+              <strong>Total Price:</strong> ₱
+              {reservationDetails?.totalPrice || "N/A"}
+            </p>
+          </div>
+        );
+
+      case STEPS.LESSEE_INFO:
+        return (
+          <div className="flex flex-col gap-8 p-5">
+            <Heading
+              title="Lessee Information"
+              subTitle="Currently viewing this lessee's contact information:"
+            />
+            <p>
+              <strong>Name:</strong> {reservationDetails?.user?.name || "N/A"}
+            </p>
+            <p>
+              <strong>Email:</strong> {reservationDetails?.user?.email || "N/A"}
+            </p>
+          </div>
+        );
+
+      default:
+        return <p>Unknown Step</p>;
+    }
+  };
+
   return (
     <div className={container}>
-      {/* Profile Section */}
+      <Modal
+        isOpen={isConfirmModalOpen}
+        onClose={onClose}
+        title="Latest Reservation Summary"
+        onSubmit={onSubmit}
+        actionLabel={actionLabel}
+        secondaryActionLabel={secondaryActionLabel}
+        secondaryAction={step === STEPS.LISTING_INFO ? undefined : onBack}
+      >
+        <div className="flex flex-col gap-2">
+          <div className="w-full bg-gray-200 h-2 rounded-lg mb-4">
+            <div
+              className="h-2 rounded-lg"
+              style={{
+                width: `${progressPercentage}%`,
+                background:
+                  "linear-gradient(to right, #a5d6a7, #66bb6a, #388e3c)",
+                transition: "width 0.3s ease-in-out",
+              }}
+            />
+          </div>
+          {renderBodyContent()}
+        </div>
+      </Modal>
+
       <div className={profile}>
         <Profile user={data.sender} />
       </div>
 
-      {/* Message Section */}
       <div className={body}>
         <div className="flex items-center gap-1">
           <div className="text-sm text-gray-500">{data.sender.name}</div>
@@ -156,14 +316,12 @@ const MessageBox: React.FC<MessageBoxProps> = ({
           </div>
         </div>
 
-        {/* Message Content */}
         <div className={messageStyle}>
           <div
             dangerouslySetInnerHTML={{
               __html: data.body || "No message content available",
             }}
           />
-          {/* Reservation Button for Listing Owners, inside the message */}
           {isOwnerOfListing && (
             <div className="mb-3 text-center">
               <button
@@ -176,86 +334,12 @@ const MessageBox: React.FC<MessageBoxProps> = ({
           )}
         </div>
 
-        {/* Seen Status */}
         {isLast && isOwn && seenList && (
           <div className="text-xs font-light text-gray-500">
             {`Seen by ${seenList}`}
           </div>
         )}
       </div>
-
-      {/* Confirm Reservation Modal */}
-      <Modal
-        isOpen={isConfirmModalOpen}
-        onClose={() => setIsConfirmModalOpen(false)}
-        title="Latest Reservation Summary"
-        body={
-          reservationDetails?.listing && reservationDetails?.user ? (
-            <div>
-              <p>
-                <strong>Listing Information:</strong>
-              </p>
-              <p>Title: {reservationDetails.listing.title || "N/A"}</p>
-              <p>
-                Description: {reservationDetails.listing.description || "N/A"}
-              </p>
-              <p>
-                Listing Images:{" "}
-                {reservationDetails?.listing?.imageSrc?.length > 0 ? (
-                  <div className="flex gap-2">
-                    {reservationDetails?.listing?.imageSrc.map(
-                      (image: string, index: number) => (
-                        <div key={index} className="flex justify-center">
-                          <Image
-                            src={image}
-                            alt={`Listing Image ${index + 1}`}
-                            width={100}
-                            height={100}
-                            className="object-cover"
-                          />
-                        </div>
-                      )
-                    )}
-                  </div>
-                ) : (
-                  "No images available"
-                )}
-              </p>
-              <p>
-                <strong>Reservation Details:</strong>
-              </p>
-              <p>
-                Start Date:{" "}
-                {reservationDetails.startDate
-                  ? format(new Date(reservationDetails.startDate), "MM/dd/yyyy")
-                  : "N/A"}
-              </p>
-              <p>
-                End Date:{" "}
-                {reservationDetails.endDate
-                  ? format(new Date(reservationDetails.endDate), "MM/dd/yyyy")
-                  : "N/A"}
-              </p>
-              <p>Total Price: ${reservationDetails.totalPrice || "N/A"}</p>
-              <p>
-                <strong>Lessee Information:</strong>
-              </p>
-              <p>Name: {reservationDetails.user.name || "N/A"}</p>
-              <p>Email: {reservationDetails.user.email || "N/A"}</p>
-              <p className="mt-3 -mb-6">
-                <strong>Reservation Status:</strong>{" "}
-                {reservationDetails?.status || "N/A"}
-              </p>
-            </div>
-          ) : (
-            <p>Loading reservation details...</p>
-          )
-        }
-        onSubmit={handleConfirmReservationStatus}
-        actionLabel="Confirm Reservation"
-        secondaryActionLabel="Not Now"
-        secondaryAction={() => setIsConfirmModalOpen(false)}
-      />
     </div>
   );
 };
