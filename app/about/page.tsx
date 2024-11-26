@@ -54,17 +54,25 @@ const About = () => {
 
         {/* Hero Section */}
         <section className="relative h-[65vh]">
+          {/* Background Overlay */}
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{
-              backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${heroImageSrc})`,
+              backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${heroImageSrc})`,
             }}
           />
-          <div className="relative z-10 flex flex-col justify-start items-start h-full text-left pl-[50px] md:pl-[100px] pt-[120px]">
+
+          {/* Content */}
+          <div className="relative z-10 flex flex-col justify-start items-start h-full p-[60px] md:p-[110px] pt-[80px] md:pt-[150px]">
+            {/* Title */}
             <h1 className="text-6xl md:text-7xl font-bold text-white">
               {heroTitle}
             </h1>
-            <p className="mt-6 text-lg text-white">{heroDescription}</p>
+
+            {/* Description */}
+            <p className="mt-6 text-sm md:text-lg text-white">
+              {heroDescription}
+            </p>
           </div>
         </section>
 
