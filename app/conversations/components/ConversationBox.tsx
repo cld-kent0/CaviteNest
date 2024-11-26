@@ -56,13 +56,13 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
   }, [userEmail, lastMessage]);
 
   const lastMessageText = useMemo(() => {
-    if (lastMessage?.image) {
-      return "Sent an image";
+    if (lastMessage?.image && lastMessage.image.length > 0) {
+      return "Sent an image"; // Only show this if there's actually an image
     }
     if (lastMessage?.body) {
-      return lastMessage.body;
+      return lastMessage.body; // Show the text body if present
     }
-    return "Started a conversation";
+    return "Started a conversation"; // Default message if no body or image
   }, [lastMessage]);
 
   return (

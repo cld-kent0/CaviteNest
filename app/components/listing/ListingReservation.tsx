@@ -213,50 +213,54 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
       if (sanitizedModalData.rentalAmount !== "Not Specified") {
         // Rental Inquiry Message
         tailwindStyledMessage = `
+        You have sent a latest inquiry (note: this replaces the previous inquiry for that property)
+        <div class"flex flex-row gap-14">
           <div class="rounded-lg overflow-hidden">
             <div class="p-6">
-              <p class="text-lg mb-4">Hi, I'm interested in this property</p>
               <div class="flex items-center">
                 <img 
                   src="${sanitizedModalData.listingImg}" 
                   alt="Listing Image" 
-                  class="h-32 w-32 object-cover rounded-md mr-6"
+                  class="h-32 w-60 object-cover mr-6"
                 />
                 <div>
-                  <h2 class="text-2xl font-semibold">Rental Inquiry Details</h2>
-                  <p class="text-lg mt-1"><strong class="font-semibold">Address:</strong> ${sanitizedModalData.rentalAddress}</p>
-                  <p class="text-lg mt-2"><strong class="font-semibold">Total Amount:</strong> ₱${sanitizedModalData.rentalAmount}</p>
-                  <p class="text-lg mt-2"><strong class="font-semibold">Security Deposit:</strong> ₱${sanitizedModalData.rentalSecurityDeposit}</p>
-                  <p class="text-lg mt-2"><strong class="font-semibold">Utilities and Maintenance:</strong> ${sanitizedModalData.utilitiesAndMaintenance}</p>
+                  <h2 class="text-2xl font-semibold mb-3">Rental Inquiry Details</h2>
+                  <p class="text-lg mt-1"><strong class="font-medium">Address:</strong> ${sanitizedModalData.rentalAddress}</p>
+                  <p class="text-lg mt-2"><strong class="font-medium">Total Amount:</strong> ₱${sanitizedModalData.rentalAmount}</p>
+                  <p class="text-lg mt-2"><strong class="font-medium">Security Deposit:</strong> ₱${sanitizedModalData.rentalSecurityDeposit}</p>
+                  <p class="text-lg mt-2"><strong class="font-medium">Utilities and Maintenance:</strong> ${sanitizedModalData.utilitiesAndMaintenance}</p>
                 </div>
               </div>
             </div>
           </div>
+        </div>
         `;
       } else if (sanitizedModalData.bookingFee !== "Not Specified") {
         // Booking Inquiry Message
         tailwindStyledMessage = `
+        You have sent a latest inquiry (note: this replaces the previous inquiry for that property)
+        <div class"flex flex-row gap-14">
           <div class="rounded-lg overflow-hidden">
             <div class="p-6">
-              <p class="text-lg mb-4">Hi, I'm interested in this property</p>
               <div class="flex items-center">
                 <img 
-                  src="${sanitizedModalData.listingImg}" 
-                  alt="Listing Image" 
-                  class="h-32 w-32 object-cover rounded-md mr-6"
+                  src="${sanitizedModalData.listingImg}"
+                  alt="Listing Image"
+                  class="h-32 w-60 object-cover mr-6"
                 />
                 <div>
-                  <h2 class="text-2xl font-semibold">Booking Inquiry Details</h2>
-                  <p class="text-lg mt-1"><strong class="font-semibold">Address:</strong> ${sanitizedModalData.bookingAddress}</p>
-                  <p class="text-lg mt-2"><strong class="font-semibold">Amount:</strong> ₱${sanitizedModalData.bookingFee}</p>
-                  <p class="text-lg mt-2"><strong class="font-semibold">Check-In:</strong> ${sanitizedModalData.checkInDate}</p>
-                  <p class="text-lg mt-2"><strong class="font-semibold">Check-Out:</strong> ${sanitizedModalData.checkOutDate}</p>
-                  <p class="text-lg mt-2"><strong class="font-semibold">Payment Method:</strong> ${sanitizedModalData.paymentMethod}</p>
-                  <p class="text-lg mt-2"><strong class="font-semibold">Cancellation Policy:</strong> ${sanitizedModalData.cancellationPolicy}</p>
+                  <h2 class="text-2xl font-semibold mb-3">Booking Inquiry Details</h2>
+                  <p class="text-lg mt-1"><strong class="font-medium">Address:</strong> ${sanitizedModalData.bookingAddress}</p>
+                  <p class="text-lg mt-2"><strong class="font-medium">Amount:</strong> ₱${sanitizedModalData.bookingFee}</p>
+                  <p class="text-lg mt-2"><strong class="font-medium">Check-In:</strong> ${sanitizedModalData.checkInDate}</p>
+                  <p class="text-lg mt-2"><strong class="font-medium">Check-Out:</strong> ${sanitizedModalData.checkOutDate}</p>
+                  <p class="text-lg mt-2"><strong class="font-medium">Payment Method:</strong> ${sanitizedModalData.paymentMethod}</p>
+                  <p class="text-lg mt-2"><strong class="font-medium">Cancellation Policy:</strong> ${sanitizedModalData.cancellationPolicy}</p>
                 </div>
               </div>
             </div>
           </div>
+        </div>
         `;
       }
       // Send the Tailwind styled message to the API

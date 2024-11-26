@@ -5,8 +5,6 @@ import { format } from "date-fns";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
-import ImageModal from "./ImageModal";
-import { useRouter } from "next/navigation";
 import Modal from "@/app/components/modals/Modal";
 import toast from "react-hot-toast";
 
@@ -26,10 +24,8 @@ const MessageBox: React.FC<MessageBoxProps> = ({
   currentUserId,
 }) => {
   const { data: session } = useSession();
-  const [imageModalOpen, setImageModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [reservationDetails, setReservationDetails] = useState<any>({});
-  const router = useRouter();
 
   const isOwn = session?.user?.email === data?.sender?.email;
   const seenList = (data.seen || [])
@@ -39,14 +35,19 @@ const MessageBox: React.FC<MessageBoxProps> = ({
 
   const isOwnerOfListing = currentUserId === listingOwner;
 
-  const container = clsx("flex gap-3 p-4", isOwn && "justify-end");
+  const container = clsx(
+    "flex gap-3 p-4",
+    isOwn ? "justify-end" : "justify-start" // Align message to the right for owner, left otherwise
+  );
   const profile = clsx(isOwn && "order-2");
   const body = clsx("flex flex-col gap-2", isOwn && "items-end");
 
-  const message = clsx(
-    "text-sm w-fit overflow-hidden",
+  // Apply conditional width modification based on the presence of listingId and ownership
+  const messageStyle = clsx(
+    "text-md py-2 px-5 text-justify rounded-2xl",
     isOwn ? "bg-emerald-600 text-white" : "bg-gray-100 text-black",
-    data.image ? "rounded-md p-0" : "rounded-lg py-2 px-3"
+    // Apply max-width only if listingId is not available or if the current user is not the owner
+    !listingId && !isOwnerOfListing ? "max-w-[40%]" : "max-w-full"
   );
 
   const handleConfirmReservationStatus = async () => {
@@ -56,14 +57,13 @@ const MessageBox: React.FC<MessageBoxProps> = ({
         return;
       }
 
+      // Confirm the reservation status first
       const response = await fetch("/api/reservations/confirmReservation", {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           reservationId: reservationDetails.id,
-          listingId: listingId,
+          listingId,
           status: "confirmed",
         }),
       });
@@ -73,10 +73,50 @@ const MessageBox: React.FC<MessageBoxProps> = ({
       }
 
       toast.success("Reservation confirmed successfully!");
+
+      // Now, delete the message immediately after confirming
+      const deleteResponse = await deleteMessage();
+      if (deleteResponse) {
+        toast.success("Message deleted successfully.");
+      } else {
+        toast.error("Failed to delete message.");
+      }
+
       setIsConfirmModalOpen(false);
     } catch (error) {
       console.error("Error confirming reservation:", error);
       toast.error("Failed to confirm reservation");
+    }
+  };
+
+  const deleteMessage = async () => {
+    try {
+      if (!listingId || !data.id) {
+        console.error("Listing ID or Message ID is missing.");
+        return false;
+      }
+
+      console.log("Deleting message:", { messageId: data.id, listingId }); // Log to check values
+
+      // Make the DELETE request to the deleteMessage API
+      const response = await fetch("/api/reservations/deleteMessage", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messageId: data.id,
+          listingId: listingId,
+        }),
+      });
+
+      if (!response.ok) {
+        console.error("Failed to delete message", response);
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Error deleting message:", error);
+      return false;
     }
   };
 
@@ -100,17 +140,14 @@ const MessageBox: React.FC<MessageBoxProps> = ({
     }
   }, [isConfirmModalOpen, listingId]);
 
-  const handleImageClick = (src: string) => {
-    setImageModalOpen(true);
-  };
-
-  const messageBody = `${data.body || "null"}`;
-
   return (
     <div className={container}>
+      {/* Profile Section */}
       <div className={profile}>
         <Profile user={data.sender} />
       </div>
+
+      {/* Message Section */}
       <div className={body}>
         <div className="flex items-center gap-1">
           <div className="text-sm text-gray-500">{data.sender.name}</div>
@@ -118,42 +155,32 @@ const MessageBox: React.FC<MessageBoxProps> = ({
             {format(new Date(data.createdAt), "p")}
           </div>
         </div>
-        <div className={message}>
-          <ImageModal
-            src={data?.image?.[0] || ""}
-            isOpen={imageModalOpen}
-            onClose={() => setImageModalOpen(false)}
+
+        {/* Message Content */}
+        <div className={messageStyle}>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: data.body || "No message content available",
+            }}
           />
-          {data?.image && data.image.length > 0 ? (
-            <Image
-              onClick={() => setImageModalOpen(true)}
-              alt="Image"
-              height="288"
-              width="288"
-              src={data.image[0]}
-              className="object-cover cursor-pointer hover:scale-110 transition translate"
-            />
-          ) : (
-            <div
-              dangerouslySetInnerHTML={{
-                __html: messageBody, // Inject the formatted text here
-              }}
-            />
-          )}
-          <div className="text-center">
-            {isOwnerOfListing && (
+          {/* Reservation Button for Listing Owners, inside the message */}
+          {isOwnerOfListing && (
+            <div className="mb-3 text-center">
               <button
                 onClick={() => setIsConfirmModalOpen(true)}
-                className="mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
               >
                 Confirm Reservation
               </button>
-            )}
-          </div>
+            </div>
+          )}
         </div>
 
-        {isLast && isOwn && seenList.length > 0 && (
-          <div className="text-xs font-light text-gray-500">{`Seen by ${seenList}`}</div>
+        {/* Seen Status */}
+        {isLast && isOwn && seenList && (
+          <div className="text-xs font-light text-gray-500">
+            {`Seen by ${seenList}`}
+          </div>
         )}
       </div>
 
@@ -168,9 +195,9 @@ const MessageBox: React.FC<MessageBoxProps> = ({
               <p>
                 <strong>Listing Information:</strong>
               </p>
-              <p>Title: {reservationDetails?.listing?.title || "N/A"}</p>
+              <p>Title: {reservationDetails.listing.title || "N/A"}</p>
               <p>
-                Description: {reservationDetails?.listing?.description || "N/A"}
+                Description: {reservationDetails.listing.description || "N/A"}
               </p>
               <p>
                 Listing Images:{" "}
@@ -199,26 +226,22 @@ const MessageBox: React.FC<MessageBoxProps> = ({
               </p>
               <p>
                 Start Date:{" "}
-                {reservationDetails?.startDate
-                  ? format(
-                      new Date(reservationDetails?.startDate),
-                      "MM/dd/yyyy"
-                    )
+                {reservationDetails.startDate
+                  ? format(new Date(reservationDetails.startDate), "MM/dd/yyyy")
                   : "N/A"}
               </p>
               <p>
                 End Date:{" "}
-                {reservationDetails?.endDate &&
-                new Date(reservationDetails?.endDate).getTime() !== 0
-                  ? format(new Date(reservationDetails?.endDate), "MM/dd/yyyy")
-                  : "Not Applicable"}
+                {reservationDetails.endDate
+                  ? format(new Date(reservationDetails.endDate), "MM/dd/yyyy")
+                  : "N/A"}
               </p>
-              <p>Total Price: ${reservationDetails?.totalPrice || "N/A"}</p>
-              <p className="mt-2">
+              <p>Total Price: ${reservationDetails.totalPrice || "N/A"}</p>
+              <p>
                 <strong>Lessee Information:</strong>
               </p>
-              <p>Name: {reservationDetails?.user?.name || "N/A"}</p>
-              <p>Email Address: {reservationDetails?.user?.email || "N/A"}</p>
+              <p>Name: {reservationDetails.user.name || "N/A"}</p>
+              <p>Email: {reservationDetails.user.email || "N/A"}</p>
               <p className="mt-3 -mb-6">
                 <strong>Reservation Status:</strong>{" "}
                 {reservationDetails?.status || "N/A"}
