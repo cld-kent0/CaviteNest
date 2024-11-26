@@ -40,7 +40,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
         isScrolled ? "shadow-lg" : "shadow-sm"
       }`}
     >
-      <div className="-p-4 border-b-[1px]">
+      <div className="p-4 md:p-0 border-b-[1px]">
         <Container>
           <div className="flex flex-row items-center">
             {/* Left section with Logo and Search */}

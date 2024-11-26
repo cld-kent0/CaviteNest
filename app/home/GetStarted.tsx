@@ -12,7 +12,7 @@ const GetStarted = () => {
     <section className="relative py-12 md:py-16 bg-white my-8">
       {/* Background Image Container */}
       <div className="relative w-full max-w-7xl mx-auto">
-        <div className="relative w-full h-[800px] md:h-[600px]">
+        <div className="relative w-full h-[900px] md:h-[600px]">
           <Image
             src={backgroundImage}
             alt="Background"
@@ -32,7 +32,7 @@ const GetStarted = () => {
               Get Started
             </h2>
             <p className="text-gray-600 mt-2">
-              Just a few steps to rent a stay.
+              Just a few steps to rent or book a property.
             </p>
           </div>
 
@@ -55,10 +55,11 @@ const GetStarted = () => {
                 </div>
               </div>
               <h3 className="text-base md:text-lg font-semibold text-gray-800">
-                Search
+                Find a Property
               </h3>
-              <p className="text-gray-600 mt-2 text-sm md:text-base max-w-xs sm:max-w-sm line-clamp-2">
-                Assess each property based on your predefined criteria.
+              <p className="text-gray-600 mt-2 text-sm md:text-base px-8 md:px-0">
+                Browse available properties and filter by your preferences for
+                long-term rent or short-term bookings.
               </p>
             </div>
 
@@ -79,11 +80,12 @@ const GetStarted = () => {
                 </div>
               </div>
               <h3 className="text-base md:text-lg font-semibold text-gray-800">
-                Inquire
+                Communicate with the Lessor
               </h3>
-              <p className="text-gray-600 mt-2 text-sm md:text-base max-w-xs sm:max-w-sm line-clamp-2">
-                Reach out to property owners to clarify any questions about the
-                property.
+              <p className="text-gray-600 mt-2 text-sm md:text-base px-8 md:p-0">
+                Reach out to the property owner to inquire about availability or
+                ask for more details on long-term rental or short-term
+                reservations.
               </p>
             </div>
 
@@ -104,10 +106,11 @@ const GetStarted = () => {
                 </div>
               </div>
               <h3 className="text-base md:text-lg font-semibold text-gray-800">
-                Acquire
+                Book or Rent
               </h3>
-              <p className="text-gray-600 mt-2 text-sm md:text-base max-w-xs sm:max-w-sm line-clamp-2">
-                Book or Rent your stay through CaviteNest and enjoy your time!
+              <p className="text-gray-600 mt-2 text-sm md:text-base px-8 md:p-0">
+                Secure your booking or finalize your rental with CoviteNest and
+                get ready to move in.
               </p>
             </div>
           </div>

@@ -38,7 +38,7 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ currentUser }) => {
             ))}
           </ul>
         </nav>
-        <nav className="mt-4 pb-28 flex flex-col justify-between items-center">
+        <nav className="mt-4 pb-4 flex flex-col justify-between items-center">
           <div
             onClick={() => setIsOpen(true)}
             className="cursor-pointer hover: opacity-75 transition"

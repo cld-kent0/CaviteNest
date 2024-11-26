@@ -173,9 +173,12 @@ const LoginModal: React.FC = () => {
         <input
           type="checkbox"
           id="agreement"
-          checked={agreedPolicy && agreedTerms} // Checkbox only checked if both are agreed
-          onChange={() => {}}
-          disabled={!(agreedPolicy && agreedTerms)} // Disable checkbox by default
+          checked={agreedPolicy && agreedTerms} // Checkbox is checked when both are agreed
+          onChange={() => {
+            // If clicked manually, toggle both agreements
+            setAgreedPolicy(!agreedPolicy);
+            setAgreedTerms(!agreedTerms);
+          }}
           className="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
         />
         <label htmlFor="agreement" className="text-sm text-gray-600">
@@ -195,6 +198,7 @@ const LoginModal: React.FC = () => {
           </button>
         </label>
       </div>
+
       {errors.agreement && (
         <span className="text-red-600 text-sm">
           You must agree to the terms.
