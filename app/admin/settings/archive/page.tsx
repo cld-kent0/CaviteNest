@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 import SearchInput from '../../components/SearchInput';
 import ActionButton from '../../components/ActionButton';
 import Pagination from '../../components/Pagination';
@@ -66,38 +67,62 @@ const ArchivePage = () => {
 
   const handleUnarchive = async (type: string, id: string) => {
     try {
-      const response = await axios.put('/api/admin/archiving/unarchive', {
+      await axios.put('/api/admin/archiving/unarchive', {
         type,
         id,
       });
-      console.log('Unarchive success:', response.data);
       fetchArchiveItems(); // Refresh the list after unarchiving
+      toast.success('Item successfully unarchived!');
     } catch (error) {
       console.error('Error performing unarchive action:', error);
+      toast.error('Failed to unarchive the item.');
     }
   };
 
   const handleAction = async (action: 'archive' | 'unarchive' | 'delete', item: ArchiveItem) => {
-    const confirmed = window.confirm(
-      action === 'unarchive'
-        ? 'Are you sure you want to unarchive this item?'
-        : action === 'delete'
-        ? 'Are you sure you want to delete this item? This action cannot be undone.'
-        : 'Are you sure you want to archive this item?'
+    toast(
+      (t) => (
+        <div className="flex flex-col items-center">
+          <p className="text-gray-800">
+            {action === 'unarchive'
+              ? 'Unarchive this item?'
+              : action === 'delete'
+                ? 'Delete this item? This action cannot be undone.'
+                : 'Archive this item?'}
+          </p>
+          <div className="flex justify-between gap-2 mt-2">
+            <button
+              className="bg-red-500 text-white px-4 py-2 rounded-md"
+              onClick={async () => {
+                toast.dismiss(t.id);
+                try {
+                  if (action === 'unarchive') {
+                    await handleUnarchive(item.type, item.id);
+                  } else {
+                    const endpoint = `/api/admin/archiving/${action}`;
+                    await axios.post(endpoint, { id: item.id, type: item.type });
+                    fetchArchiveItems(); // Refresh the list after the action
+                    toast.success(`${action.charAt(0).toUpperCase() + action.slice(1)} successful!`);
+                  }
+                } catch (error) {
+                  console.error(`Error performing ${action} action:`, error);
+                  toast.error(`Failed to ${action} the item.`);
+                }
+              }}
+            >
+              Confirm
+            </button>
+            <button
+              className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md"
+              onClick={() => toast.dismiss(t.id)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+      { duration: Infinity }
     );
-    if (!confirmed) return;
-
-    try {
-      if (action === 'unarchive') {
-        await handleUnarchive(item.type, item.id);
-      } else {
-        const endpoint = `/api/admin/archiving/${action}`;
-        await axios.post(endpoint, { id: item.id, type: item.type });
-        fetchArchiveItems(); // Refresh the list after performing the action
-      }
-    } catch (error) {
-      console.error(`Error performing ${action} action:`, error);
-    }
   };
 
   // Filter items based on search query and archive state
@@ -161,18 +186,18 @@ const ArchivePage = () => {
                   <td className="px-4 py-2 border-b">
                     <ActionButton
                       itemId={item.id}
-                      actions={[ 
+                      actions={[
                         {
                           label: showArchived ? 'Unarchive' : 'Archive',
                           onClick: () => handleAction(showArchived ? 'unarchive' : 'archive', item),
                         },
                         ...(showArchived
                           ? [
-                              {
-                                label: 'Delete',
-                                onClick: () => handleAction('delete', item),
-                              },
-                            ]
+                            {
+                              label: 'Delete',
+                              onClick: () => handleAction('delete', item),
+                            },
+                          ]
                           : []),
                       ]}
                     />

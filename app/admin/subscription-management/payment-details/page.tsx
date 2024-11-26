@@ -95,7 +95,7 @@ const GcashPaymentList = () => {
   return (
     <div className="p-6">
       <h2 className="text-3xl font-bold text-gray-800 mb-6">Payment Management / GCash Payments</h2>
-      
+
       {/* Search Input and Edit QR Code Button */}
       <div className="flex justify-between mb-4">
         <button
@@ -150,10 +150,10 @@ const GcashPaymentList = () => {
                           label: 'View',
                           onClick: () => openModal(payment),
                         },
-                        {
-                          label: 'Block',
-                          onClick: (id) => alert(`Blocking payment...`),
-                        },
+                        // {
+                        //   label: 'Block',
+                        //   onClick: (id) => alert(`Blocking payment...`),
+                        // },
                       ]}
                     />
                   </td>
@@ -183,10 +183,10 @@ const GcashPaymentList = () => {
         onClose={closeModal}
       />
 
-        <EditQRCodeModal
+      <EditQRCodeModal
         isOpen={isQRCodeModalOpen}
         onClose={() => setIsQRCodeModalOpen(false)} // Close the QR Code modal
-        />
+      />
     </div>
   );
 };

@@ -51,7 +51,8 @@ const SalesRevenueGraph = () => {
         (transaction) =>
           new Date(transaction.createdAt) >= new Date(startDate) &&
           new Date(transaction.createdAt) <= new Date(endDate) &&
-          (transaction.status === "COMPLETED" || transaction.status === "ACTIVE")
+          // (transaction.status === "COMPLETED" || transaction.status === "ACTIVE") //dapat yung active lng
+          (transaction.status === "ACTIVE")
       );
 
       const groupedData: Record<string, { total: number; count: number }> = filteredData.reduce(
@@ -124,7 +125,7 @@ const SalesRevenueGraph = () => {
         />
         <button
           onClick={() => processChartData(transactions)}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+          className="bg-sky-900 text-white px-4 py-2 rounded"
         >
           Apply
         </button>

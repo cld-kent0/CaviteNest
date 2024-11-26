@@ -522,7 +522,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
                     </div>
                   </div>
                   <p className="text-neutral-600 text-justify">
-                    Click the <strong>&quot;Reserve&quot;</strong> button below
+                    Click the <strong>&quot;Inquire&quot;</strong> button below
                     to see the full details of the property and the agreement
                     set by the owner!
                   </p>

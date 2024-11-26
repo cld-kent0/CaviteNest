@@ -4,6 +4,7 @@ import Modal from '@/app/components/modals/Modal';
 import axios from 'axios';
 import React, { useState } from 'react';
 import Image from 'next/image'; // Import the Next.js Image component
+import toast from 'react-hot-toast';
 
 interface LessorDetailsModalProps {
   isOpen: boolean;
@@ -49,11 +50,13 @@ const LessorDetailsModal: React.FC<LessorDetailsModalProps> = ({ isOpen, lessor,
 
       if (response.data) {
         lessor.idStatus = newStatus;
-        alert(`Lessor has been ${newStatus}.`);
+        // alert(`Lessor has been ${newStatus}.`);
+        toast.success(`Lessor has been ${newStatus}.`);
       }
     } catch (error) {
       console.error('Failed to update verification status:', error);
-      alert('An error occurred while updating the verification status.');
+      // alert('An error occurred while updating the verification status.');
+      toast.error("No Image Available")
     } finally {
       setIsUpdating(false);
       onClose(); // Close the modal
@@ -69,12 +72,14 @@ const LessorDetailsModal: React.FC<LessorDetailsModalProps> = ({ isOpen, lessor,
       });
 
       if (response.data) {
-        alert('Lessor has been successfully converted to Lessee.');
+        // alert('Lessor has been successfully converted to Lessee.');
+        toast.success('Lessor has been successfully converted to Lessee.')
         onClose();
       }
     } catch (error) {
       console.error('Failed to convert Lessor to Lessee:', error);
-      alert('An error occurred while converting to Lessee.');
+      // alert('An error occurred while converting to Lessee.');
+      toast.error('Failed to convert Lessor to Lessee')
     } finally {
       setIsUpdating(false);
     }
@@ -85,7 +90,7 @@ const LessorDetailsModal: React.FC<LessorDetailsModalProps> = ({ isOpen, lessor,
     <div className="space-y-4">
       <div className="flex justify-center">
         <Image
-          src={lessor.image ? lessor.image: '/images/placeholder.jpg'}
+          src={lessor.image ? lessor.image : '/images/placeholder.jpg'}
           alt={lessor.name}
           className="rounded-full"
           width={96} // Profile picture width
@@ -138,37 +143,76 @@ const LessorDetailsModal: React.FC<LessorDetailsModalProps> = ({ isOpen, lessor,
 
   if (step === STEPS.ID_VERIFICATION) {
     bodyContent = (
+      // <div className="space-y-4">
+      //   <p>
+      //     <strong>ID Type:</strong> {lessor.idType}
+      //   </p>
+      //   <div className="flex gap-4">
+      //     <div>
+      //       <p>
+      //         <strong>ID Front:</strong>
+      //       </p>
+      //       <Image
+      //         src={lessor.idFront}
+      //         alt="ID Front"
+      //         className="rounded border border-gray-300"
+      //         width={300}
+      //         height={400}
+      //         objectFit="contain" // Prevent cropping
+      //       />
+      //     </div>
+      //     <div>
+      //       <p>
+      //         <strong>ID Back:</strong>
+      //       </p>
+      //       <Image
+      //         src={lessor.idBack}
+      //         alt="ID Back"
+      //         className="rounded border border-gray-300"
+      //         width={300}
+      //         height={400}
+      //         objectFit="contain"
+      //       />
+      //     </div>
+      //   </div>
+      // </div>
       <div className="space-y-4">
         <p>
           <strong>ID Type:</strong> {lessor.idType}
         </p>
-        <div className="flex gap-4">
-          <div>
-            <p>
-              <strong>ID Front:</strong>
-            </p>
+        <p>
+          <strong>ID Front:</strong>
+        </p>
+        <div className="flex justify-center">
+          {lessor.idFront ? (
             <Image
               src={lessor.idFront}
               alt="ID Front"
-              className="rounded border border-gray-300"
+              className="rounded-lg"
               width={300}
               height={400}
-              objectFit="contain" // Prevent cropping
+              objectFit="contain" // Adjust to prevent cropping
             />
-          </div>
-          <div>
-            <p>
-              <strong>ID Back:</strong>
-            </p>
+          ) : (
+            <p>No Front ID Image Available</p>
+          )}
+        </div>
+        <p>
+          <strong>ID Back:</strong>
+        </p>
+        <div className="flex justify-center">
+          {lessor.idBack ? (
             <Image
               src={lessor.idBack}
               alt="ID Back"
-              className="rounded border border-gray-300"
+              className="rounded-lg"
               width={300}
               height={400}
               objectFit="contain"
             />
-          </div>
+          ) : (
+            <p>No Back ID Image Available</p>
+          )}
         </div>
       </div>
     );
@@ -189,10 +233,10 @@ const LessorDetailsModal: React.FC<LessorDetailsModalProps> = ({ isOpen, lessor,
           ? isUpdating
             ? 'Updating...'
             : lessor.idStatus === 'verified'
-            ? 'Unverify'
-            : lessor.idStatus === 'rejected'
-            ? 'Verify'
-            : 'Verify'
+              ? 'Unverify'
+              : lessor.idStatus === 'rejected'
+                ? 'Verify'
+                : 'Verify'
           : 'View ID Verification'
       }
       actionDisabled={isUpdating}

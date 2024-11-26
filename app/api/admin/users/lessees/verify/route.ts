@@ -1,19 +1,25 @@
-import { NextResponse } from 'next/server';
-import prisma from '@/app/libs/prismadb';
+import { NextResponse } from "next/server";
+import prisma from "@/app/libs/prismadb";
 
 export async function POST(req: Request) {
   try {
     const { id, idStatus, idFront, idBack, idType, role } = await req.json();
 
     if (!id) {
-      return NextResponse.json({ error: 'Lessee ID is required.' }, { status: 400 });
+      return NextResponse.json(
+        { error: "Lessee ID is required." },
+        { status: 400 }
+      );
     }
 
     // Validate required fields for ID verification
-    if (idStatus === 'verified') {
+    if (idStatus === "verified") {
       if (!idFront || !idBack || !idType) {
         return NextResponse.json(
-          { error: 'ID Front, ID Back, and ID Type are required for verification.' },
+          {
+            error:
+              "ID Front, ID Back, and ID Type are required for verification.",
+          },
           { status: 400 }
         );
       }
@@ -27,7 +33,7 @@ export async function POST(req: Request) {
         idFront,
         idBack,
         idType,
-        role: idStatus === 'verified' ? 'LESSOR' : role, // Promote to LESSOR if verified
+        role: idStatus === "verified" ? "LESSOR" : role, // Promote to LESSOR if verified
       },
     });
 
@@ -36,9 +42,9 @@ export async function POST(req: Request) {
       data: updatedLessee,
     });
   } catch (error) {
-    console.error('Error updating Lessee verification:', error);
+    console.error("Error updating Lessee verification:", error);
     return NextResponse.json(
-      { error: 'Failed to update verification status.' },
+      { error: "Failed to update verification status." },
       { status: 500 }
     );
   }
