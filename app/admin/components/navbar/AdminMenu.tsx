@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Avatar from "@/app/components/Avatar";
 import MenuItem from "@/app/components/navbar/MenuItem";
@@ -97,10 +97,7 @@ const AdminMenu: React.FC = () => {
           <div className="flex flex-col cursor-pointer">
             {isAdmin ? (
               <>
-                <MenuItem
-                  onClick={handleMainPageClick}
-                  label="Main Page"
-                />
+                <MenuItem onClick={handleMainPageClick} label="Main Page" />
                 <hr />
                 <MenuItem onClick={signOut} label="Logout" />
               </>

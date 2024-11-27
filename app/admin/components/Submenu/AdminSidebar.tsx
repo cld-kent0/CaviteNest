@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
-import Image from 'next/image'; // Import the Next.js Image component
-import { BiMenu } from 'react-icons/bi';
-import SidebarItem from '../navbar/SidebarItem';
-import UserManagementSubmenu from './UserManagementSubmenu';
-import SettingsSubmenu from './SettingsSubmenu';
-import PropertyListingsSubmenu from './PropertyListingsSubmenu';
-import SubscriptionSubmenu from './SubscriptionSubmenu';
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { BiMenu } from "react-icons/bi";
+import SidebarItem from "../navbar/SidebarItem";
+import UserManagementSubmenu from "./UserManagementSubmenu";
+import SettingsSubmenu from "./SettingsSubmenu";
+import PropertyListingsSubmenu from "./PropertyListingsSubmenu";
+import SubscriptionSubmenu from "./SubscriptionSubmenu";
 
 const AdminSidebar = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(true); // This controls whether the sidebar and submenus are open
   const [activePath, setActivePath] = useState<string | null>(null);
   const { data: session } = useSession();
 
@@ -20,7 +20,7 @@ const AdminSidebar = () => {
   const userImage = session?.user?.image || "/images/placeholder.jpg";
 
   useEffect(() => {
-    const savedActivePath = localStorage.getItem('activePath');
+    const savedActivePath = localStorage.getItem("activePath");
     if (savedActivePath) {
       setActivePath(savedActivePath);
     }
@@ -28,7 +28,7 @@ const AdminSidebar = () => {
 
   useEffect(() => {
     if (activePath) {
-      localStorage.setItem('activePath', activePath);
+      localStorage.setItem("activePath", activePath);
     }
   }, [activePath]);
 
@@ -37,26 +37,29 @@ const AdminSidebar = () => {
   };
 
   return (
-    <div className={`relative top-4 left-0 h-full ${isOpen ? 'w-64' : 'w-18'} duration-300 bg-sky-950 text-white rounded-md`}>
+    <div
+      className={`relative ${
+        isOpen ? "w-64" : "w-18"
+      } duration-300 bg-sky-950 text-white rounded-md min-h-full shadow-sky-900 shadow-xl`}
+    >
       {/* Hamburger Menu */}
-      <div className="absolute left-5 mt-6 bg-sky-950">
+      <div className="absolute left-5 mt-11">
         <BiMenu
           className="cursor-pointer"
           size={24}
           onClick={() => setIsOpen(!isOpen)}
         />
       </div>
-
-      {/* AdminSidebar Content */}
+      {/* Sidebar Content */}
       <div className="mt-24 flex flex-col space-y-4">
         {/* Admin Profile Section */}
-        <div className="flex flex-col items-center mb-6 mt-16">
+        <div className="flex flex-col items-center mb-6 mt-36">
           <Image
             src={userImage}
             alt="User Profile"
             className="rounded-full"
-            width={isOpen ? 48 : 32} // Adjust width for open/closed state
-            height={isOpen ? 48 : 32} // Adjust height for open/closed state
+            width={isOpen ? 48 : 32}
+            height={isOpen ? 48 : 32}
           />
           {isOpen && (
             <div className="text-center mt-2">
@@ -73,35 +76,32 @@ const AdminSidebar = () => {
             label="Dashboard"
             isOpen={isOpen}
             path="/admin/dashboard"
-            activePath={activePath || ''}
+            activePath={activePath || ""}
             setActivePath={handleItemClick}
           />
 
-          {/* Users Management Submenu */}
+          {/* Submenus - These will always be expanded if isOpen is true */}
           <UserManagementSubmenu
-            isOpen={isOpen}
-            activePath={activePath || ''}
+            isOpen={isOpen} // This prop controls whether the submenu is expanded or not
+            activePath={activePath || ""}
             setActivePath={handleItemClick}
           />
 
-          {/* Property Listings Submenu */}
           <PropertyListingsSubmenu
-            isOpen={isOpen}
-            activePath={activePath || ''}
+            isOpen={isOpen} // This prop controls whether the submenu is expanded or not
+            activePath={activePath || ""}
             setActivePath={handleItemClick}
           />
 
-          {/* Subscription Submenu */}
           <SubscriptionSubmenu
-            isOpen={isOpen}
-            activePath={activePath || ''}
+            isOpen={isOpen} // This prop controls whether the submenu is expanded or not
+            activePath={activePath || ""}
             setActivePath={handleItemClick}
           />
 
-          {/* Settings Submenu */}
           <SettingsSubmenu
-            isOpen={isOpen}
-            activePath={activePath || ''}
+            isOpen={isOpen} // This prop controls whether the submenu is expanded or not
+            activePath={activePath || ""}
             setActivePath={handleItemClick}
           />
         </div>
