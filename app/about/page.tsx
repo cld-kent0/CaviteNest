@@ -46,7 +46,7 @@ const About = () => {
       <div>
         <hr className="md:w-[100px] md:h-[8px] w-[70px] h-[8px] bg-emerald-700 rounded ml-[35px] md:ml-[85px] mt-16 md:mt-24 mb-6" />
         <h2 className="text-4xl md:text-5xl font-bold ml-[35px] md:ml-[85px] mb-9">
-          About CaviteNest
+          About Us
         </h2>
 
         {/* Error message */}
@@ -70,7 +70,10 @@ const About = () => {
             </h1>
 
             {/* Description */}
-            <p className="mt-6 text-sm md:text-lg text-white">
+            <p
+              className="mt-6 text-sm md:text-lg text-white text-justify"
+              style={{ textIndent: "2em" }}
+            >
               {heroDescription}
             </p>
           </div>
@@ -92,25 +95,11 @@ const About = () => {
                 <h2 className="text-3xl font-bold text-gray-900">
                   WHAT CaviteNest IS?
                 </h2>
-                <div className="mt-4 md:mr-4 text-gray-600 text-justify p-4">
-                  {vision.split("\n").map((paragraph, index) => (
-                    <p
-                      key={index}
-                      style={index === 0 ? { textIndent: "2em" } : {}}
-                      className="mb-4"
-                    >
-                      CaviteNest is a platform that makes finding rental
-                      properties in Cavite easy and hassle-free. Whether you’re
-                      a property owner or a renter, we connect you with a
-                      variety of options—apartments, family homes, or private
-                      rooms. We focus on convenience, transparency, and
-                      reliability, offering detailed listings and smooth
-                      communication tools to simplify the rental process.
-                      CaviteNest is more than just a platform—it’s your gateway
-                      to finding the perfect home or tenant, built on trust and
-                      accessibility.
-                    </p>
-                  ))}
+                <div
+                  className="mt-4 md:mr-4 text-gray-600 text-justify p-4"
+                  style={{ textIndent: "2em" }}
+                >
+                  {vision}
                 </div>
               </div>
               <div className="lg:w-1/2 mt-8 lg:mt-0 lg:pl-8 flex justify-center lg:justify-end">
@@ -137,29 +126,11 @@ const About = () => {
                 <h2 className="text-3xl font-bold text-gray-900">
                   WHAT CaviteNest DOES?
                 </h2>
-                <div className="mt-4 md:ml-4 text-gray-600 text-justify p-4">
-                  {mission.split("\n").map((paragraph, index) => (
-                    <p
-                      key={index}
-                      style={index === 0 ? { textIndent: "2em" } : {}}
-                      className="mb-4"
-                    >
-                      CaviteNest connects property seekers with rental
-                      opportunities in Cavite City, simplifying the process of
-                      finding, renting, and managing properties. Our
-                      user-friendly platform offers verified listings, ensuring
-                      all properties meet high-quality standards. Users can
-                      filter options by location, price, size, and amenities to
-                      quickly find the perfect match. In addition to long-term
-                      rentals, CaviteNest also offers short-term stay options
-                      for travelers and those in need of temporary housing.
-                      Listings are updated in real-time, ensuring transparency
-                      and accurate availability. With strict property
-                      verification and dedicated customer support, CaviteNest
-                      provides a seamless, secure, and hassle-free rental
-                      experience for everyone.
-                    </p>
-                  ))}
+                <div
+                  className="mt-4 md:ml-4 text-gray-600 text-justify p-4"
+                  style={{ textIndent: "2em" }}
+                >
+                  {mission}
                 </div>
               </div>
               <div className="lg:w-1/2 mt-8 lg:mt-0 lg:pr-8 flex justify-center lg:justify-start">
