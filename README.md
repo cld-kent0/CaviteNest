@@ -92,7 +92,7 @@ The platform allows users to list their properties for rent, search for availabl
 ## Contributors
 
 <a href="https://github.com/cld-kent0/CaviteNest/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=cld-kent0/CaviteNest" alt="img" />
+  <img src="" alt="contrib.rocks image" />
 </a>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -101,7 +101,7 @@ The platform allows users to list their properties for rent, search for availabl
 
 ## Contact
 
-CaviteNest - cavitenest.platform@gmail.com
+CaviteNest - cavitenest.platform2024@gmail.com
 
 Project Link: [https://github.com/cld-kent0/CaviteNest](https://github.com/cld-kent0/CaviteNest)
 
