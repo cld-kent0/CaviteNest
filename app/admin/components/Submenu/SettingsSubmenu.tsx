@@ -21,7 +21,7 @@ const SettingsSubmenu = ({ isOpen, activePath, setActivePath }: SettingsSubmenuP
         path="#"
         activePath={activePath}
         setActivePath={() => setSettingsOpen(!isSettingsOpen)}
-        >
+      >
         {isOpen && (isSettingsOpen ? <BiChevronUp /> : <BiChevronDown />)} {/* Pass the arrow icon as a child */}
       </SidebarItem>
       {isSettingsOpen && (
@@ -74,14 +74,14 @@ const SettingsSubmenu = ({ isOpen, activePath, setActivePath }: SettingsSubmenuP
             activePath={activePath}
             setActivePath={setActivePath}
           />
-          <SidebarItem
+          {/* <SidebarItem
             icon={<FiDatabase />}
             label={isOpen ? "Backup & Restore" : ""}
             isOpen={isOpen}
             path="/admin/settings/backup-restore"
             activePath={activePath}
             setActivePath={setActivePath}
-          />
+          /> */}
           {/* <SidebarItem
             icon={<BiHistory />}
             label={isOpen ? "History Log" : ""}
