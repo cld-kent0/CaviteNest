@@ -1,5 +1,4 @@
 <!-- PROJECT SHIELDS -->
-
 [![Contributors][contributors-shield]][contributors-url]
 [![MIT License][license-shield]][license-url]
 
@@ -104,7 +103,7 @@ The platform allows users to list their properties for booking or renting, and e
 - Design Improvements
   - [x] First Batch
   - [x] Pre-defense Batch
-- [x] Pre-defense Release (0.9)
+- [x] Pre-final defense Release (0.8)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
