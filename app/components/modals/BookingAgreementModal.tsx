@@ -80,10 +80,6 @@ const BookingAgreementModal: React.FC<BookingAgreementModalProps> = ({
             {" "}
             {bookingPrice ? formatPrice(bookingPrice) : "Not Specified"}
           </strong>{" "}
-          with a booking fee of{" "}
-          <strong>
-            {bookingFee ? formatPrice(bookingFee) : "Not Specified"}
-          </strong>
           , which is payable by{" "}
           <strong>{paymentMethod || "Not Specified"}</strong>. A security
           deposit of{" "}

@@ -108,8 +108,8 @@ const GetStarted = () => {
               <h3 className="text-base md:text-lg font-semibold text-gray-800">
                 Book or Rent
               </h3>
-              <p className="text-gray-600 mt-2 text-sm md:text-base px-8 md:p-0">
-                Secure your booking or finalize your rental with CoviteNest and
+              <p className="text-gray-600 mt-2 text-sm ssmd:text-base px-8 md:p-0">
+                Secure your booking or finalize your rental with CaviteNest and
                 get ready to move in.
               </p>
             </div>

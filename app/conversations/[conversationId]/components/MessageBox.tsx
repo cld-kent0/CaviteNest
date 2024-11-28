@@ -247,7 +247,6 @@ const MessageBox: React.FC<MessageBoxProps> = ({
               ) : (
                 "No images available"
               )}
-              {reservationDetails.listing.rentalType}
             </p>
           </div>
         );

@@ -99,7 +99,18 @@ const RentModal: React.FC<RentModalProps> = ({ user }) => {
   const guestCount = watch("guestCount");
   const roomCount = watch("roomCount");
   const bathroomCount = watch("bathroomCount");
-  const imageSrc = watch("imageSrc");
+
+  useEffect(() => {
+    // Sync rentalAmount with rentalPrice in PRICE step
+    if (watch("rentalAmount") !== undefined) {
+      setValue("rentalPrice", watch("rentalAmount"));
+    }
+
+    // Sync bookingFee with bookingPrice in PRICE step
+    if (watch("bookingFee") !== undefined) {
+      setValue("bookingPrice", watch("bookingFee"));
+    }
+  }, [watch("rentalAmount"), watch("bookingFee")]);
 
   const [showAgreementTab, setShowAgreementTab] = useState(rentalType);
 
@@ -523,7 +534,7 @@ const RentModal: React.FC<RentModalProps> = ({ user }) => {
                   />
                   <Input
                     id="rentalAmount"
-                    label="Rental Amount"
+                    label="Rental Price"
                     required
                     formatPrice={true}
                     register={register}
@@ -625,7 +636,7 @@ const RentModal: React.FC<RentModalProps> = ({ user }) => {
                   />
                   <Input
                     id="bookingFee"
-                    label="Booking Fee"
+                    label="Booking Price"
                     required
                     formatPrice={true}
                     register={register}
@@ -699,8 +710,8 @@ const RentModal: React.FC<RentModalProps> = ({ user }) => {
         return (
           <div className="flex flex-col gap-8">
             <Heading
-              title="Set your price"
-              subTitle="What do you want to charge?"
+              title="Review your Pricing"
+              subTitle="This is what you've set based on the previous step"
             />
 
             {/* Only show the rental price if rentalType is 'rent' or 'both' and rent tab is selected */}
@@ -708,11 +719,12 @@ const RentModal: React.FC<RentModalProps> = ({ user }) => {
               <Input
                 id="rentalPrice"
                 label="Rental Price per Month"
-                disabled={isLoading}
+                disabled={true}
                 register={register}
                 errors={errors}
                 required
                 formatPrice={true}
+                value={watch("rentalPrice")} // Will autofill from rentalAmount in AGREEMENT
                 onChange={(e) => {
                   const inputValue = e.target.value;
 
@@ -740,11 +752,12 @@ const RentModal: React.FC<RentModalProps> = ({ user }) => {
               <Input
                 id="bookingPrice"
                 label="Booking Price per Night"
-                disabled={isLoading}
+                disabled={true}
                 register={register}
                 errors={errors}
                 required
                 formatPrice={true}
+                value={watch("bookingPrice")} // Will autofill from bookingFee in AGREEMENT
                 onChange={(e) => {
                   const inputValue = e.target.value;
 
