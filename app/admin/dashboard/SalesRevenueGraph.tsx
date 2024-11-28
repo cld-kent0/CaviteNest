@@ -98,7 +98,7 @@ const SalesRevenueGraph = () => {
         (transaction) =>
           new Date(transaction.createdAt) >= new Date(startDate) &&
           new Date(transaction.createdAt) <= new Date(endDate) &&
-          transaction.status === "ACTIVE"
+          transaction.status === "ACTIVE" || transaction.status === "COMPLETED"
       );
 
       const groupedData: Record<string, { total: number; count: number }> =

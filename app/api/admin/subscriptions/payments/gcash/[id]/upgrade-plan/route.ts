@@ -12,7 +12,10 @@ export async function POST(req: NextRequest) {
 
     // Validate the required fields
     if (!paymentId || !userId || !plan) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 }
+      );
     }
 
     // Fetch the payment details from the database
@@ -44,18 +47,19 @@ export async function POST(req: NextRequest) {
     }
 
     // Determine subscription period and set dates
-    const subscriptionPeriod = payment.billingPeriod === "yearly" ? "yearly" : "quarterly";
+    const subscriptionPeriod =
+      payment.billingPeriod === "annually" ? "annually" : "quarterly";
     const startDate = new Date();
     const endDate =
-      subscriptionPeriod === "yearly"
+      subscriptionPeriod === "annually"
         ? new Date(new Date().setFullYear(startDate.getFullYear() + 1))
         : new Date(new Date().setMonth(startDate.getMonth() + 3));
 
     // Create or update the subscription in the database
     const updatedSubscription = await prisma.subscription.upsert({
       where: isNewSubscription
-        ? { userId }  // Use userId to create a new subscription
-        : { id: payment.subscriptionId! },  // Use the subscriptionId to update an existing subscription
+        ? { userId } // Use userId to create a new subscription
+        : { id: payment.subscriptionId! }, // Use the subscriptionId to update an existing subscription
       create: {
         userId,
         plan,
@@ -67,6 +71,7 @@ export async function POST(req: NextRequest) {
       },
       update: {
         plan,
+        subscriptionStatus: "ACTIVE",
         period: subscriptionPeriod,
         startDate,
         endDate,

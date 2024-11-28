@@ -197,6 +197,9 @@ const GcashPaymentDetailsModal: React.FC<GcashPaymentDetailsModalProps> = ({
       )}
     </div>
   );
+  // const excludedStatuses = ["COMPLETED"];
+  // const canShowUpgradeButton =
+  //   payment.status === "PENDING" && excludedStatuses.includes(payment.status);
 
   const actionButtons = (
     <div className="flex gap-4 w-full h-14">
@@ -216,6 +219,7 @@ const GcashPaymentDetailsModal: React.FC<GcashPaymentDetailsModalProps> = ({
           >
             Back
           </button>
+          {/* { canShowUpgradeButton && payment.user.customerId ? */}
           {payment.status === "PENDING" && payment.user.customerId ? (
             <button
               onClick={handleUpdatePlan}

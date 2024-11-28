@@ -135,7 +135,7 @@ const SubscriptionPageClient = () => {
               <>
                 ₱ 1,249.00 when you&nbsp;
                 <span style={{ textDecoration: "underline", fontWeight: "bold" }}>
-                  pay yearly
+                  pay annually
                 </span>
               </>
             }
@@ -178,7 +178,7 @@ const SubscriptionPageClient = () => {
               <>
                 ₱ 1,849.00 when you&nbsp;
                 <span style={{ textDecoration: "underline", fontWeight: "bold" }}>
-                  pay yearly
+                  pay annually
                 </span>
               </>
             }

@@ -28,6 +28,7 @@ enum Plan {
 enum SubscriptionPeriod {
   quarterly
   yearly
+  annually
 }
 
 enum IdType {

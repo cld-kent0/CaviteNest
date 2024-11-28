@@ -23,6 +23,7 @@ export async function POST(
     }
 
     if (payment.status === "COMPLETED") {
+      console.log("Billing Period:", payment.billingPeriod);
       return NextResponse.json(
         { error: "Payment is already completed" },
         { status: 400 }
@@ -34,11 +35,11 @@ export async function POST(
       data: {
         userId: payment.userId,
         plan: payment.plan,
-        period: payment.billingPeriod === "yearly" ? "yearly" : "quarterly",
+        period: payment.billingPeriod === "annually" ? "annually" : "quarterly",
         priceId: payment.price, // Include the priceId from payment
         startDate: new Date(),
         endDate:
-          payment.billingPeriod === "yearly"
+          payment.billingPeriod === "annually"
             ? new Date(new Date().setFullYear(new Date().getFullYear() + 1))
             : new Date(new Date().setMonth(new Date().getMonth() + 3)),
         paymentMethodType: "GCASH",

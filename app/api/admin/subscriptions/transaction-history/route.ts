@@ -37,14 +37,14 @@ export async function GET(req: Request) {
           price =
             subscription.period === "quarterly"
               ? 699
-              : subscription.period === "yearly"
+              : subscription.period === "annually"
               ? 1249
               : null;
         } else if (subscription.plan === "business") {
           price =
             subscription.period === "quarterly"
               ? 999
-              : subscription.period === "yearly"
+              : subscription.period === "annually"
               ? 1849
               : null;
         }

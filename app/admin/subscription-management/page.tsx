@@ -184,7 +184,7 @@ const SubscriptionManagement = () => {
                 <td className="px-4 py-2 border-b whitespace-nowrap">{subscription.startDate}</td>
                 <td className="px-4 py-2 border-b whitespace-nowrap">{subscription.endDate}</td>
                 <td
-                  className={`px-4 py-2 border-b ${subscription.subscriptionStatus === 'Canceled'
+                  className={`px-4 py-2 border-b ${subscription.subscriptionStatus === 'CANCELLED'
                     ? 'text-red-500'
                     : 'text-green-500'
                     }`}
