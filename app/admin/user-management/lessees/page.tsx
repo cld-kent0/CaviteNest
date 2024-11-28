@@ -8,7 +8,8 @@ import SearchInput from "../../components/SearchInput";
 import ActionButton from "../../components/ActionButton";
 import Pagination from "../../components/Pagination";
 import LesseeDetailsModal from "../../components/modals/LesseeDetailsModal";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
+import { error } from "console";
 
 interface Lessee {
   id: string;
@@ -41,19 +42,52 @@ const LesseeList = () => {
       .catch((error) => console.error("Error fetching lessees:", error));
   };
 
+  // const archiveLessee = (id: string) => {
+  //   const confirmed = window.confirm(
+  //     "Are you sure you want to archive this lessee?"
+  //   );
+  //   if (confirmed) {
+  //     axios
+  //       .post(`/api/admin/archiving/archive`, { id, type: "lessee" })
+  //       .then(() => fetchLessees())
+  //       .catch((error) => console.error("Error archiving lessee:", error));
+  //   }
+  // };
   const archiveLessee = (id: string) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to archive this lessee?"
+    toast(
+      (t) => (
+        <div>
+          <p>Are you sure you want to archive the lesseee?</p>
+          <div className="mt-2 flex justify-end gap-2">
+            <button
+              onClick={() => {
+                toast.dismiss(t.id);
+                axios
+                  .post(`/api/admin/archiving/archive`, { id, type: "lessee" })
+                  .then(() => {
+                    fetchLessees();
+                    toast.success("Lessee archived successfully!");
+                  })
+                  .catch((error) => {
+                    console.error("Error archiving property:", error);
+                    toast.error("Failed to archive property.");
+                  })
+              }}
+              className="bg-red-600 text-white px-4 py-2 rounded"
+            >
+              Confirm
+            </button>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="bg-gray-300 text-black px-4 py-2 rounded"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+      { duration: Infinity }
     );
-    if (confirmed) {
-      axios
-        .post(`/api/admin/archiving/archive`, { id, type: "lessee" })
-        .then(() => {
-          fetchLessees();
-          toast.success("Lessee archived successfully!");
-        })
-        .catch((error) => console.error("Error archiving lessee:", error));
-    }
   };
 
   // const unarchiveLessee = (id: string) => {
@@ -91,6 +125,7 @@ const LesseeList = () => {
 
   return (
     <div className="p-6">
+      <Toaster />
       <h2 className="text-3xl font-bold text-gray-800 mb-6">
         Users Management / Lessee
       </h2>

@@ -9,7 +9,7 @@ import Pagination from "../../components/Pagination";
 import LessorDetailsModal from "../../components/modals/LessorDetailsModal";
 import Image from "next/image"; // Import Image component
 import printContent from "../../components/printReport"; // Import the print utility
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 interface Lessor {
   id: string;
@@ -50,19 +50,53 @@ const LessorList = () => {
       .catch((error) => console.error("Error fetching lessors:", error));
   };
 
+  // const archiveLessor = (id: string) => {
+  //   const confirmed = window.confirm(
+  //     "Are you sure you want to archive this lessor?"
+  //   );
+  //   if (confirmed) {
+  //     axios
+  //       .post(`/api/admin/archiving/archive`, { id, type: "lessor" })
+  //       .then(() => fetchLessors())
+  //       .catch((error) => console.error("Error archiving lessor:", error));
+  //   }
+  // };
+
   const archiveLessor = (id: string) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to archive this lessor?"
+    toast(
+      (t) => (
+        <div>
+          <p>Are you sure you want to archive the lessor?</p>
+          <div className="mt-2 flex justify-end gap-2">
+            <button
+              onClick={() => {
+                toast.dismiss(t.id);
+                axios
+                  .post(`/api/admin/archiving/archive`, { id, type: "lessor" })
+                  .then(() => {
+                    fetchLessors();
+                    toast.success("Lessor archived successfully!");
+                  })
+                  .catch((error) => {
+                    console.error("Error archiving Lessor:", error);
+                    toast.error("Failed to archive Lessor.");
+                  })
+              }}
+              className="bg-red-600 text-white px-4 py-2 rounded"
+            >
+              Confirm
+            </button>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="bg-gray-300 text-black px-4 py-2 rounded"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+      { duration: Infinity }
     );
-    if (confirmed) {
-      axios
-        .post(`/api/admin/archiving/archive`, { id, type: "lessor" })
-        .then(() => {
-          fetchLessors();
-          toast.success("Lessor archived successfully!");
-        })
-        .catch((error) => console.error("Error archiving lessor:", error));
-    }
   };
 
   // const unarchiveLessor = (id: string) => {
@@ -182,6 +216,7 @@ const LessorList = () => {
 
   return (
     <div className="p-6">
+      <Toaster />
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-3xl font-bold text-gray-800 mb-6">
           Users Management / Lessor
