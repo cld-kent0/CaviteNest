@@ -149,7 +149,7 @@ const RentModal: React.FC<RentModalProps> = ({ user }) => {
 
   const handleImageUpload = (newImages: string[]) => {
     setImages((prevImages) => [...prevImages, ...newImages]);
-    console.log("Uploaded images:", [...images, ...newImages]);
+    //    console.log("Uploaded images:", [...images, ...newImages]);
   };
 
   // Fetch existing listings and set the limit based on the user's subscription plan
@@ -157,7 +157,7 @@ const RentModal: React.FC<RentModalProps> = ({ user }) => {
     const fetchUserListings = async () => {
       if (!user) return;
 
-      //console.log("Fetching listings for userId:", user.id); // Add this log
+      //      //console.log("Fetching listings for userId:", user.id); // Add this log
       try {
         // Get the number of listings the user already has
         const response = await axios.get(
@@ -167,7 +167,7 @@ const RentModal: React.FC<RentModalProps> = ({ user }) => {
 
         if (listingsCount !== undefined) {
           // Log current exisiting listings
-          console.log("Listing Count:", listingsCount);
+          //          console.log("Listing Count:", listingsCount);
           setExistingListings(listingsCount); // Set the number of existing listings
         } else {
           console.error("Unexpected response format:", response.data);
@@ -240,8 +240,8 @@ const RentModal: React.FC<RentModalProps> = ({ user }) => {
       rentModal.onClose();
 
       // Log the property limit and current listings
-      console.log(`Current Plan: ${user?.plan}`);
-      console.log(`Property Limit: ${propertyLimit}`);
+      //      console.log(`Current Plan: ${user?.plan}`);
+      //      console.log(`Property Limit: ${propertyLimit}`);
     } catch (error) {
       toast.error("Something went wrong. Please try again.");
     } finally {

@@ -47,19 +47,19 @@ const MessageBox: React.FC<MessageBoxProps> = ({
 
   const isOwnerOfListing = currentUserId === listingOwner;
 
-  const container = clsx(
-    "flex gap-3 p-4",
-    isOwn ? "justify-end" : "justify-start"
-  );
+  const container = clsx("flex gap-3 p-4", isOwn ? "justify-end" : "");
+
   const profile = clsx(isOwn && "order-2");
-  const body = clsx("flex flex-col gap-2", isOwn && "items-end");
+
+  const body = clsx("flex flex-col gap-2", isOwn ? "items-end" : "items-start");
 
   const messageStyle = clsx(
-    "text-md py-2 px-5 text-justify rounded-2xl",
+    "text-md py-2 px-5 rounded-2xl",
     isOwn ? "bg-emerald-600 text-white" : "bg-gray-100 text-black",
-    !listingId && !isOwnerOfListing ? "max-w-[40%]" : "max-w-full",
-    !listingId ? "max-w-full" : ""
+    data.listingId ? "w-full" : "" // Full width if listingId exists
   );
+
+  const wrapperStyle = "flex justify-center"; // Center-align the messages
 
   // Calculate the total price based on the startDate, endDate, and price per night
   const calculateTotalPrice = () => {
@@ -366,11 +366,9 @@ const MessageBox: React.FC<MessageBoxProps> = ({
           {renderBodyContent()}
         </div>
       </Modal>
-
       <div className={profile}>
         <Profile user={data.sender} />
       </div>
-
       <div className={body}>
         <div className="flex items-center gap-1">
           <div className="text-sm text-gray-500">{data.sender.name}</div>
@@ -396,10 +394,23 @@ const MessageBox: React.FC<MessageBoxProps> = ({
             </div>
           )}
         </div>
-
         {isLast && isOwn && seenList && (
-          <div className="text-xs font-light text-gray-500">
-            {`Seen by ${seenList}`}
+          <div className="flex items-center gap-2 text-xs font-light text-gray-500 mt-2">
+            {data.seen
+              .filter((user) => user.email !== data?.sender?.email)
+              .map((user, index) => (
+                <div key={index} className="flex items-center gap-1">
+                  <span>Seen by {user.name}</span>
+                  {index !== data.seen.length - 1 && <span></span>}
+                  <Image
+                    src={user.image || "/default-avatar.png"}
+                    alt={`${user.name}'s profile`}
+                    width={16}
+                    height={16}
+                    className="rounded-full"
+                  />
+                </div>
+              ))}
           </div>
         )}
       </div>

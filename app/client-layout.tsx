@@ -15,7 +15,7 @@ export default function ClientLayout({
 
   // Conditionally hide the footer on specific pages (e.g., /messages or /conversations)
   useEffect(() => {
-    console.log("Current Pathname:", pathname); // Log the pathname to check it
+    //    console.log("Current Pathname:", pathname); // Log the pathname to check it
     if (
       pathname?.startsWith("/messages") ||
       pathname?.startsWith("/conversations") //||
