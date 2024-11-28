@@ -18,6 +18,11 @@ interface Subscription {
   endDate: string;
   customerId: string;
   subscriptionStatus: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+  };
 }
 
 const SubscriptionManagement = () => {
@@ -123,6 +128,8 @@ const SubscriptionManagement = () => {
           <tr>
             <th>ID</th>
             <th>User ID</th>
+            <th>User Name</th>
+            <th>Email</th>
             <th>Plan</th>
             <th>Period</th>
             <th>Start Date</th>
@@ -137,6 +144,8 @@ const SubscriptionManagement = () => {
                 <tr>
                   <td>${sub.id}</td>
                   <td>${sub.userId}</td>
+                  <td>${sub.user.name}</td>
+                  <td>${sub.user.email}</td>
                   <td>${sub.plan}</td>
                   <td>${sub.period}</td>
                   <td>${new Date(sub.startDate).toLocaleDateString()}</td>
@@ -167,6 +176,8 @@ const SubscriptionManagement = () => {
           <thead className="bg-gray-100">
             <tr>
               <th className="px-4 py-2 border-b text-left">User ID</th>
+              <th className="px-4 py-2 border-b text-left">User Name</th>
+              <th className="px-4 py-2 border-b text-left">Email</th>
               <th className="px-4 py-2 border-b text-left">Plan</th>
               <th className="px-4 py-2 border-b text-left">Period</th>
               <th className="px-4 py-2 border-b text-left">Start Date</th>
@@ -179,6 +190,8 @@ const SubscriptionManagement = () => {
             {subscriptions.map((subscription) => (
               <tr key={subscription.id} className="hover:bg-gray-50">
                 <td className="px-4 py-2 border-b">{subscription.userId}</td>
+                <td className="px-4 py-2 border-b whitespace-nowrap">{subscription.user.name}</td>
+                <td className="px-4 py-2 border-b">{subscription.user.email}</td>
                 <td className="px-4 py-2 border-b">{subscription.plan}</td>
                 <td className="px-4 py-2 border-b">{subscription.period}</td>
                 <td className="px-4 py-2 border-b whitespace-nowrap">{subscription.startDate}</td>

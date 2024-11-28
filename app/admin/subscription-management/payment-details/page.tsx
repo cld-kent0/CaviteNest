@@ -135,11 +135,13 @@ const GcashPaymentList = () => {
         <thead>
           <tr>
             <th>ID</th>
+            <th>Customer ID</th>
             <th>User</th>
+            <th>Email</th>
             <th>Plan</th>
             <th>Billing Period</th>
-            <th>Customer ID</th>
             <th>Price</th>
+            <th>Reference Number</th>
             <th>Status</th>
             <th>Created At</th>
           </tr>
@@ -150,11 +152,13 @@ const GcashPaymentList = () => {
           (payment) => `
               <tr>
                 <td>${payment.id}</td>
+                <td>${payment.user.customerId}</td>
                 <td>${payment.user.name}</td>
+                <td>${payment.user.email}</td>
                 <td>${payment.plan}</td>
                 <td>${payment.billingPeriod}</td>
-                <td>${payment.user.customerId}</td>
                 <td>${payment.price}</td>
+                <td>${payment.referenceNo}</td>
                 <td>${payment.status}</td>
                 <td>${new Date(payment.createdAt).toLocaleDateString()}</td>
               </tr>`
@@ -193,12 +197,13 @@ const GcashPaymentList = () => {
         <table className="min-w-full table-auto text-gray-700">
           <thead className="bg-gray-100">
             <tr>
-              <th className="px-4 py-2 border-b text-left">ID</th>
+              <th className="px-4 py-2 border-b text-left">Customer ID</th>
               <th className="px-4 py-2 border-b text-left">User</th>
+              <th className="px-4 py-2 border-b text-left">Email</th>
               <th className="px-4 py-2 border-b text-left">Plan</th>
               <th className="px-4 py-2 border-b text-left whitespace-nowrap">Billing Period</th>
-              <th className="px-4 py-2 border-b text-left">Customer ID</th> {/* Changed column header */}
               <th className="px-4 py-2 border-b text-left">Price</th>
+              <th className="px-4 py-2 border-b text-left">Reference Number</th>
               <th className="px-4 py-2 border-b text-left">Status</th>
               <th className="px-4 py-2 border-b text-left">Created At</th>
               <th className="px-4 py-2 border-b text-left">Actions</th>
@@ -214,12 +219,13 @@ const GcashPaymentList = () => {
             ) : (
               paginatedPayments.map((payment) => (
                 <tr key={payment.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-2 border-b">{payment.id}</td>
+                  <td className="px-4 py-2 border-b whitespace-nowrap">{payment.user.customerId}</td> {/* Display Subscription ID */}
                   <td className="px-4 py-2 border-b whitespace-nowrap">{payment.user.name}</td>
+                  <td className="px-4 py-2 border-b">{payment.user.email}</td>
                   <td className="px-4 py-2 border-b">{payment.plan}</td>
                   <td className="px-4 py-2 border-b whitespace-nowrap">{payment.billingPeriod}</td>
-                  <td className="px-4 py-2 border-b whitespace-nowrap">{payment.user.customerId}</td> {/* Display Subscription ID */}
                   <td className="px-4 py-2 border-b whitespace-nowrap">{payment.price}</td>
+                  <td className="px-4 py-2 border-b">{payment.referenceNo}</td>
                   <td className="px-4 py-2 border-b">{payment.status}</td>
                   <td className="px-4 py-2 border-b">
                     {new Date(payment.createdAt).toLocaleDateString()}
