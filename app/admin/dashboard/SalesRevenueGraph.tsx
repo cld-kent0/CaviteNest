@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import {
@@ -10,6 +12,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+// Transaction and ChartData interfaces
 interface Transaction {
   createdAt: string;
   price: string | number;
@@ -19,30 +22,74 @@ interface Transaction {
 interface ChartData {
   date: string;
   total: number;
-  count: number; // Added count for subscribed users
+  count: number;
 }
 
+// Helper function to format a date as YYYY-MM-DD
+const formatDate = (date: Date) => date.toISOString().split("T")[0];
+
+// Modular DatePicker Component
+interface DateRangePickerProps {
+  startDate: string;
+  endDate: string;
+  onStartDateChange: (date: string) => void;
+  onEndDateChange: (date: string) => void;
+  onApply: () => void;
+}
+
+const DateRangePicker = ({
+  startDate,
+  endDate,
+  onStartDateChange,
+  onEndDateChange,
+  onApply,
+}: DateRangePickerProps) => {
+  return (
+    <div className="flex items-center space-x-4 mb-6">
+      <input
+        type="date"
+        value={startDate}
+        onChange={(e) => onStartDateChange(e.target.value)}
+        className="border p-2 rounded"
+      />
+      <input
+        type="date"
+        value={endDate}
+        onChange={(e) => onEndDateChange(e.target.value)}
+        className="border p-2 rounded"
+      />
+      <button
+        onClick={onApply}
+        className="bg-sky-900 text-white px-4 py-2 rounded"
+      >
+        Apply
+      </button>
+    </div>
+  );
+};
+
 const SalesRevenueGraph = () => {
-  // Calculate today's date and the next day's date
   const today = new Date();
+
+  // Set default start date to November 24 of the current year
+  const defaultStartDate = new Date(today.getFullYear(), 10, 24); // November is month 10 (0-based)
+  const formattedStartDate = formatDate(defaultStartDate);
+
   const tomorrow = new Date(today);
   tomorrow.setDate(today.getDate() + 1);
-
-  // Format dates as YYYY-MM-DD
-  const formattedToday = today.toISOString().split("T")[0];
-  const formattedTomorrow = tomorrow.toISOString().split("T")[0];
+  const formattedTomorrow = formatDate(tomorrow);
 
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [chartData, setChartData] = useState<ChartData[]>([]);
-  const [startDate, setStartDate] = useState(formattedToday);
+  const [startDate, setStartDate] = useState(formattedStartDate);
   const [endDate, setEndDate] = useState(formattedTomorrow);
 
+  // Process chart data
   const processChartData = useCallback(
     (data: Transaction[]) => {
-      // Utility function to convert price string to number
       const convertPriceToNumber = (price: string | number): number => {
-        if (typeof price === 'string') {
-          return parseFloat(price.replace('₱', '').replace(',', '').trim());
+        if (typeof price === "string") {
+          return parseFloat(price.replace("₱", "").replace(",", "").trim());
         }
         return price;
       };
@@ -51,13 +98,14 @@ const SalesRevenueGraph = () => {
         (transaction) =>
           new Date(transaction.createdAt) >= new Date(startDate) &&
           new Date(transaction.createdAt) <= new Date(endDate) &&
-          // (transaction.status === "COMPLETED" || transaction.status === "ACTIVE") //dapat yung active lng
-          (transaction.status === "ACTIVE")
+          transaction.status === "ACTIVE"
       );
 
-      const groupedData: Record<string, { total: number; count: number }> = filteredData.reduce(
-        (acc, transaction) => {
-          const date = new Date(transaction.createdAt).toISOString().split("T")[0];
+      const groupedData: Record<string, { total: number; count: number }> =
+        filteredData.reduce((acc, transaction) => {
+          const date = new Date(transaction.createdAt)
+            .toISOString()
+            .split("T")[0];
 
           if (!acc[date]) {
             acc[date] = { total: 0, count: 0 };
@@ -69,9 +117,7 @@ const SalesRevenueGraph = () => {
           acc[date].count += 1;
 
           return acc;
-        },
-        {} as Record<string, { total: number; count: number }>
-      );
+        }, {} as Record<string, { total: number; count: number }>);
 
       const allDates: string[] = [];
       let currentDate = new Date(startDate);
@@ -107,29 +153,18 @@ const SalesRevenueGraph = () => {
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-6">Revenue & Subscriptions Overview</h2>
+      <h2 className="text-2xl font-bold mb-6">
+        Revenue & Subscriptions Overview
+      </h2>
 
       {/* Date Range Filters */}
-      <div className="flex items-center space-x-4 mb-6">
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          className="border p-2 rounded"
-        />
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          className="border p-2 rounded"
-        />
-        <button
-          onClick={() => processChartData(transactions)}
-          className="bg-sky-900 text-white px-4 py-2 rounded"
-        >
-          Apply
-        </button>
-      </div>
+      <DateRangePicker
+        startDate={startDate}
+        endDate={endDate}
+        onStartDateChange={setStartDate}
+        onEndDateChange={setEndDate}
+        onApply={() => processChartData(transactions)}
+      />
 
       {/* Summary Card */}
       <div className="bg-white rounded-lg shadow-md p-4 mb-6">
@@ -141,7 +176,9 @@ const SalesRevenueGraph = () => {
           </div>
           <div className="flex gap-2 items-center">
             <span className="font-medium">Total Payments :</span>
-            <span className="font-bold text-lg">₱{totalPayments.toFixed(2)}</span>
+            <span className="font-bold text-lg">
+              ₱{totalPayments.toFixed(2)}
+            </span>
           </div>
         </div>
       </div>

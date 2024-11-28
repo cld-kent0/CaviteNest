@@ -1,11 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 const AdminLogo = () => {
-  const router = useRouter();
-
   return (
     <Image
       alt="Logo"
@@ -13,6 +10,7 @@ const AdminLogo = () => {
       height="90"
       width="150"
       src="/images/cavitenestLogo.png"
+      onClick={() => (window.location.href = "/")} // Navigate to "/" and trigger a refresh
     />
   );
 };

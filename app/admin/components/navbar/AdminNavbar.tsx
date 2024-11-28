@@ -51,11 +51,12 @@ const Navbar: React.FC<NavbarProps> = () => {
               md:gap-0
             "
           >
-            <AdminLogo />
+            <div className="-ml-8">
+              <AdminLogo />
+            </div>
             <div className="bg-gray-300 rounded-full px-3 py-1 shadow-md inset-shadow">
               <RealTimeClock />
             </div>
-
             <AdminSearch />
             <AdminMenu />
           </div>

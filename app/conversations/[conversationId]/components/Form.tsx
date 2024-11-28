@@ -3,7 +3,7 @@
 import useConversation from "@/app/hooks/useConversation";
 import axios from "axios";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { HiPaperAirplane, HiPhoto } from "react-icons/hi2";
+import { HiPaperAirplane } from "react-icons/hi2";
 import MessageInput from "./MessageInput";
 
 const Form = () => {

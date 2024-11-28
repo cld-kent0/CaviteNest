@@ -166,10 +166,12 @@ const ProfileClient: React.FC<ProfileClientProps> = ({ user, profile }) => {
       </div>
     </span>
   ) : (
-    <span className="text-gray-800">
-      Your CaviteNest profile is an important part of every reservation. Create
-      yours to help other Hosts and guests get to know you.
-    </span>
+    <div className="text-justify">
+      <span className="text-gray-800">
+        Your CaviteNest profile is an important part of every reservation.
+        Create yours to help other Hosts and guests get to know you.
+      </span>
+    </div>
   );
 
   // Email Verification Function

@@ -16,7 +16,9 @@ interface BodyProps {
 const Body: React.FC<BodyProps> = ({ initialMessages }) => {
   const { data: session } = useSession(); // Get session data (current user info)
   const [messages, setMessages] = useState(initialMessages);
-  const [currentUserId, setCurrentUserId] = useState<string | undefined>(undefined); // State to store the user ID
+  const [currentUserId, setCurrentUserId] = useState<string | undefined>(
+    undefined
+  ); // State to store the user ID
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const { conversationId } = useConversation();

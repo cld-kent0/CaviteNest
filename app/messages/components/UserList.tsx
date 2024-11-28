@@ -14,7 +14,7 @@ const UserList: React.FC<UserListProps> = ({ items }) => {
 
   // Define onStartConversation function here for handling the event
   const handleStartConversation = (userId: string) => {
-    console.log("Starting conversation with user:", userId);
+    //    console.log("Starting conversation with user:", userId);
     // Add logic to start the conversation here
   };
 

@@ -149,6 +149,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                   </>
                 )}
                 <hr />
+                <MenuItem onClick={() => router.push("/faqs")} label="FAQs" />
                 <MenuItem onClick={signOut} label="Logout" />
               </>
             ) : (
