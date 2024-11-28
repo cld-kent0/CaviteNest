@@ -27,7 +27,8 @@ export default async function ProfilePage() {
   }
 
   // Fetch the user & profile collections from the database
-  const [user, profile] = await prisma.$transaction([ // Utilizing transaction method
+  const [user, profile] = await prisma.$transaction([
+    // Utilizing transaction method
     // Find from user
     prisma.user.findUnique({
       where: { email: session.user.email },
@@ -41,10 +42,10 @@ export default async function ProfilePage() {
         idStatus: true,
         idFront: true,
         idBack: true,
-        idType:true,
+        idType: true,
         profileCreated: true,
         role: true,
-        plan:true,
+        plan: true,
       },
     }),
     // Find from profile
@@ -55,7 +56,7 @@ export default async function ProfilePage() {
         userId: true,
         contactNo: true,
         interest: true,
-        location: true,        
+        location: true,
         description: true,
         createdAt: true,
         updatedAt: true,
@@ -66,16 +67,18 @@ export default async function ProfilePage() {
 
   // Check if there's no user
   if (!user) {
-    return <p>There&apos;s no user!</p>
+    return <p>There&apos;s no user!</p>;
   }
 
   // Return
   return (
     <>
-      <ProfileModal/>
-      <UploadIdModal/>
-      <EditProfileModal profile={profile}/>
-      <ProfileClient user={user} profile={profile}/>
+      <div>
+        <ProfileModal />
+        <UploadIdModal />
+        <EditProfileModal profile={profile} />
+        <ProfileClient user={user} profile={profile} />
+      </div>
     </>
   );
 }

@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
               If you did not create an account with us, please ignore this email. Your email address will not be used for any further communication.
             </p>
             <p style="font-size: 14px; color: #777;">This verification link will expire in 2 hours.</p>
-            <p style="font-size: 14px;">If you have any questions or need assistance, please feel free to contact us at <a href="mailto:support@example.com" style="color: #4CAF50;">support@example.com</a>.</p>
+            <p style="font-size: 14px;">If you have any questions or need assistance, please feel free to contact us at <a href="mailto:cavitenest.platform2024@gmail.com" style="color: #4CAF50;">cavitenest.platform2024@gmail.com</a>.</p>
             <p style="font-size: 14px; color: #777;">Best regards,<br/>The CaviteNest Team</p>
           </div>
         </body>

@@ -107,7 +107,7 @@ const ProfileClient: React.FC<ProfileClientProps> = ({ user, profile }) => {
       />
       {profile?.updatedAt && (
         <div className="flex justify-end mr-4">
-          <p className="text-sm font-medium text-gray-600 items-center mt-12">
+          <p className="text-sm font-medium text-gray-600 items-center mt-5">
             Last updated:{" "}
             {formatDistanceToNow(new Date(profile.updatedAt), {
               addSuffix: true,
@@ -201,7 +201,7 @@ const ProfileClient: React.FC<ProfileClientProps> = ({ user, profile }) => {
   };
 
   return (
-    <div className="flex flex-wrap justify-center items-center gap-28 min-h-screen bg-gray-100 ">
+    <div className="flex flex-col lg:flex-row justify-center items-center gap-28 py-16 bg-gray-100 ">
       <div className="bg-white shadow-2xl shadow-slate-700 rounded-2xl p-11 w-full max-w-md pb-12 border-2 border-gray-100">
         <div className="flex flex-col items-center">
           <div className="w-30 h-30 rounded-full overflow-hidden bg-gray-300">
@@ -249,7 +249,7 @@ const ProfileClient: React.FC<ProfileClientProps> = ({ user, profile }) => {
                 hover:bg-green-800
                 hover:text-white 
                 transition duration-300
-                ${!canSubscribe ? "opacity-50 cursor-not-allowed" : ""}
+                ${!canSubscribe ? "opacity-50 cursor-not-allowed" : ""} 
               `}
               disabled={!canSubscribe} // Disable button when not allowed
             >
@@ -269,17 +269,17 @@ const ProfileClient: React.FC<ProfileClientProps> = ({ user, profile }) => {
             <button
               onClick={handleResendVerification}
               className="
-              border-2
-              border-black
-              w-72 
-              mt-4 
-              bg-blue-600 
-              text-white py-2 
-              rounded-3xl
-              font-semibold
-              hover:bg-blue-800
-              hover:text-white 
-              transition duration-300
+                border-2
+                border-black
+                w-72 
+                mt-4 
+                bg-blue-600 
+                text-white py-2 
+                rounded-3xl
+                font-semibold
+                hover:bg-blue-800
+                hover:text-white 
+                transition duration-300
               "
             >
               Resend Verification Email
@@ -300,7 +300,6 @@ const ProfileClient: React.FC<ProfileClientProps> = ({ user, profile }) => {
                   Before you book or host on CaviteNest, you’ll need to complete
                   this step.
                 </span>
-                {/* <div className="text-black text-center mt-2"> <strong>Status:</strong> {user.idStatus} </div> */}
                 <div className="flex flex-col">
                   <div className="flex flex-row gap-2 mt-5 -mb-1 justify-center">
                     <div className="font-bold text-black"> Status: </div>
@@ -316,18 +315,18 @@ const ProfileClient: React.FC<ProfileClientProps> = ({ user, profile }) => {
                     <button
                       onClick={() => uploadIdModal.onOpen()}
                       className="
-                    border-2
-                    border-black
-                    w-72 
-                    mt-4 
-                    bg-green-600 
-                    text-white py-2 
-                    rounded-3xl
-                    font-semibold
-                    hover:bg-green-700
-                    hover:text-white 
-                    transition duration-300
-                  "
+                        border-2
+                        border-black
+                        w-72 
+                        mt-4 
+                        bg-green-600 
+                        text-white py-2 
+                        rounded-3xl
+                        font-semibold
+                        hover:bg-green-700
+                        hover:text-white 
+                        transition duration-300
+                      "
                     >
                       Upload Government ID
                     </button>

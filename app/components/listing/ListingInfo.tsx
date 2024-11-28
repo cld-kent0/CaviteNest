@@ -1,4 +1,3 @@
-import useCountries from "@/app/hooks/useCountries";
 import { SafeUser } from "@/app/types";
 import { Category } from "@/app/types/categories";
 import dynamic from "next/dynamic";
@@ -165,11 +164,22 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
           </div>
         )}
       </div>
-
       <hr />
-
       {/* Map */}
       <Map center={coordinates} />
+      <hr />
+      <div className="flex flex-col gap-7">
+        <h2 className="text-lg font-semibold">About the Lessor:</h2>
+        <div className="flex flex-row gap-6 ml-6 -mt-3">
+          <ProfileAvatar src={user?.image} key={user?.id} />
+          <div className="flex flex-col justify-between">
+            <p className="mt-6">{user?.name}</p>
+          </div>
+        </div>
+        <p className="text-base text-justify p-3 -mt-3">
+          {profile?.description}
+        </p>
+      </div>
     </div>
   );
 };
