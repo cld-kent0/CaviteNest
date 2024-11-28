@@ -72,18 +72,18 @@ const PropertyList = () => {
     );
   };
 
-  const unarchiveProperty = (id: string) => {
-    axios
-      .post(`/api/admin/archiving/unarchive`, { id, type: "listing" })
-      .then(() => {
-        fetchProperties();
-        toast.success("Property unarchived successfully!");
-      })
-      .catch((error) => {
-        console.error("Error unarchiving property:", error);
-        toast.error("Failed to unarchive property.");
-      });
-  };
+  // const unarchiveProperty = (id: string) => {
+  //   axios
+  //     .post(`/api/admin/archiving/unarchive`, { id, type: "listing" })
+  //     .then(() => {
+  //       fetchProperties();
+  //       toast.success("Property unarchived successfully!");
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error unarchiving property:", error);
+  //       toast.error("Failed to unarchive property.");
+  //     });
+  // };
 
   const filteredProperties = properties
     .filter((property) => property.is_archived === showArchived)
@@ -164,20 +164,20 @@ const PropertyList = () => {
                         showArchived
                           ? [
                             {
-                              label: "View Unarchive",
-                              onClick: unarchiveProperty,
+                              label: "View",
+                              onClick: () => router.push("/admin/settings/archive"),
                             },
                           ]
                           : [
-                            {
-                              label: "Archive",
-                              onClick: archiveProperty,
-                            },
                             {
                               label: "View",
                               onClick: () => {
                                 window.location.href = `/listings/${property.id}`;
                               },
+                            },
+                            {
+                              label: "Archive",
+                              onClick: archiveProperty,
                             },
                           ]
                       }

@@ -57,11 +57,14 @@ The platform allows users to list their properties for booking or renting, and e
 **Features:**
 
 - User account management (registration, login, and profile)
-- Property listing, booking, and rental system
 - Search filters for finding the right property
 - Interactive property details page with photos, descriptions, and booking or rental prices
-- Administrator Features
-- ...
+- Property listing, booking, and rental system
+- Real-time messaging to communicate with lessors or other lessees.
+- Favorite interesting places for future plans or collections.
+- More to add...
+
+*This system was developed as part of our coursework at Cavite State University - Cavite City Campus.*
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -70,13 +73,14 @@ The platform allows users to list their properties for booking or renting, and e
 ### Tech Stack
 - **Made with** [![JavaScript][JavaScript.js]][JavaScript-url] but consists **99%** of [![TypeScript][TypeScript]][TypeScript-url]-based.
 - **Front-end** is mostly [![React][React.js]][React-url] with a touch of [![Next][Next.js]][Next-url] that also contributes to the **back-end**.
-- [![Node][Node.js]][Node.js-url] was the main handler of the server-side functions.
-- While [![MongoDB][MongoDB]][MongoDB-url] is the database of choice.
-- **Queries** handler via [![Prisma][Prisma]][Prisma-url]. An ORM that simplifies database access for JS & TS objects.
-- Media storage and manipulation is made possible by [![Cloudinary][Cloudinary]][Cloudinary-url]
-- Subscription plan payments is handled by [![Stripe][Stripe]][Stripe-url]
-- Utilizing [![Pusher][Pusher]][Pusher-url] for real-time messaging feature.
-- Deployed and Hosted by [![Vercel][Vercel]][Vercel-url]
+- [![Node][Node.js]][Node.js-url] was the main handler of the **server-side functions**.
+- The **pre-built CSS classes** of [![TailwindCSS][TailwindCSS]][Tailwind-url] were mostly used to design the web layout.
+- While [![MongoDB][MongoDB]][MongoDB-url] is the **database** of choice.
+- **Queries handler** via [![Prisma][Prisma]][Prisma-url]. An ORM that simplifies database access for JS & TS objects.
+- **Media** storage and manipulation is made possible by [![Cloudinary][Cloudinary]][Cloudinary-url]
+- **Subscription plan payments** is handled by [![Stripe][Stripe]][Stripe-url]
+- Utilizing [![Pusher][Pusher]][Pusher-url] for its **real-time features**.
+- **Deployed and Hosted** by [![Vercel][Vercel]][Vercel-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -85,18 +89,19 @@ The platform allows users to list their properties for booking or renting, and e
 ## Roadmap
 - [x] Stripe Payments - Integrating Stripe for plan subscription payments
 - [x] Multiple Images Upload in Listing Property - Allow property owners to upload multiple images per listing
-- [x] Email Notifications
-- [ ] Pre-defense Release (1.0)
-### Major
+- Email Notifications
+  - [x] Reservations
+  - [ ] Cancellations
+  - [ ] Messages
 - Locations
   - [ ] Limit the location to only be around Cavite City
 - Error Trapping
   - [x] First Batch
-  - [ ] Final Batch
- ### Minor
+  - [ ] Pre-defense Batch
 - Design Improvements
   - [x] First Batch
-  - [ ] Final Batch
+  - [ ] Pre-defense Batch
+- [ ] Pre-defense Release (1.0)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -162,11 +167,13 @@ Project Link: [https://github.com/cld-kent0/CaviteNest](https://github.com/cld-k
 [license-shield]: https://img.shields.io/github/license/cld-kent0/CaviteNest?style=for-the-badge
 [license-url]: https://github.com/cld-kent0/CaviteNest/blob/master/LICENSE.txt
 [JavaScript.js]: https://img.shields.io/badge/JavaScript-%231a4065?style=for-the-badge&logo=Javascript
-[JavaScript-url]: https://www.w3schools.com/js/
+[JavaScript-url]: https://www.w3schools.com/js
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
+[Next-url]: https://nextjs.org
 [React.js]: https://img.shields.io/badge/react.js-black?style=for-the-badge&logo=react
 [React-url]: https://reactjs.org/
+[TailwindCSS]: https://img.shields.io/badge/tailwindcss-%23445469?style=for-the-badge&logo=tailwindcss
+[Tailwind-url]: https://tailwindcss.com/
 [MongoDB]: https://img.shields.io/badge/MongoDb-%23001f2c?style=for-the-badge&logo=mongodb&logoColor=%2300fe69
 [MongoDB-url]: https://www.mongodb.com
 [Prisma]: https://img.shields.io/badge/Prisma-%23457dd1?style=for-the-badge&logo=prisma

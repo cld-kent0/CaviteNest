@@ -36,9 +36,8 @@ const Navbar: React.FC<NavbarProps> = () => {
 
   return (
     <div
-      className={`fixed z-30 w-full bg-white transition-shadow duration-300 ${
-        isScrolled ? "shadow-lg" : "shadow-sm"
-      }`}
+      className={`fixed z-30 w-full bg-white transition-shadow duration-300 ${isScrolled ? "shadow-lg" : "shadow-sm"
+        }`}
     >
       <div className="p-4 md:p-0 border-b-[1px]">
         <Container>

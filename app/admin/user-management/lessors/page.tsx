@@ -61,12 +61,12 @@ const LessorList = () => {
     }
   };
 
-  const unarchiveLessor = (id: string) => {
-    axios
-      .post(`/api/admin/archiving/unarchive`, { id, type: "lessor" })
-      .then(() => fetchLessors())
-      .catch((error) => console.error("Error unarchiving lessor:", error));
-  };
+  // const unarchiveLessor = (id: string) => {
+  //   axios
+  //     .post(`/api/admin/archiving/unarchive`, { id, type: "lessor" })
+  //     .then(() => fetchLessors())
+  //     .catch((error) => console.error("Error unarchiving lessor:", error));
+  // };
 
   const openModal = (lessor: Lessor) => {
     setSelectedLessor(lessor);
@@ -292,8 +292,8 @@ const LessorList = () => {
                         showArchived
                           ? [
                             {
-                              label: "Unarchive",
-                              onClick: unarchiveLessor,
+                              label: "View",
+                              onClick: () => router.push("/admin/settings/archive"),
                             },
                           ]
                           : [

@@ -2,6 +2,7 @@ import getCurrentUser from "@/app/actions/getCurrentUser";
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 import { pusherServer } from "@/app/libs/pusher";
+import nodemailer from "nodemailer";
 
 export async function POST(request: Request) {
   try {
@@ -97,6 +98,11 @@ export async function POST(request: Request) {
         id: conversationId,
         messages: [lastMessage],
       });
+
+      // Send email notification to the user (if the message is not from them)
+      if (user.email && user.id !== currentUser.id) {
+        sendEmailNotification(user.email, newMessage);
+      }
     });
 
     // Return the new message, including listingId and listingOwner
@@ -108,5 +114,70 @@ export async function POST(request: Request) {
   } catch (error: any) {
     console.error(error, "ERROR_MESSAGES");
     return new NextResponse("Internal Error", { status: 500 });
+  }
+}
+
+async function sendEmailNotification(recipientEmail: string, message: any) {
+  // Set up the email transport
+  const transporter = nodemailer.createTransport({
+    service: "gmail", // You can change this to your email provider
+    auth: {
+      user: "cavitenest.platform2024@gmail.com", // Your email
+      pass: "rlkd bbzm ozoa zonv", // Your email password (use OAuth2 or app password for security)
+    },
+  });
+
+  // Fetch sender's name (assuming sender data is included in the message object)
+  const senderName = message.sender ? message.sender.name : "Cavitenest User"; // Fallback to a default name if not available
+
+  // Assuming you have a way to get the recipient's name (from database or message object)
+  const recipientName = "User"; // Replace this with actual recipient name
+
+  // Set up email data
+  const mailOptions = {
+    from: "cavitenest.platform2024@gmail.com",
+    to: recipientEmail,
+    subject: "New Message Notification on Cavitenest Platform",
+    text: `
+    Dear ${recipientName},
+
+    You have received a new message from ${senderName} in one of your conversations on the Cavitenest platform.
+
+    Message Details:
+    "${message.body}"
+
+    Please log in to your account to view the full message and respond by clicking the link below:
+    https://cavite-nest.vercel.app/conversations
+
+    If you need any assistance, feel free to contact us.
+
+    Best regards,
+    Cavitenest Support Team
+    `,
+    html: `
+    <p>Dear <strong>${recipientName}</strong>,</p>
+
+    <p>You have received a new message from <strong>${senderName}</strong> in one of your conversations on the <strong>Cavitenest platform</strong>.</p>
+
+    <p><strong>Message Details:</strong><br>
+    "${message.body}"
+    </p>
+
+    <p>Please log in to your account to view the full message and respond by clicking the link below:</p>
+    <p><a href="https://cavite-nest.vercel.app/conversations" target="_blank">View Conversations</a></p>
+
+    <p>If you need any assistance, feel free to contact us.</p>
+
+    <p>Best regards,<br>
+    <strong>Cavitenest Support Team</strong></p>
+    `,
+  };
+
+  // Send the email
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully to " + recipientEmail);
+  } catch (error) {
+    console.error("Error sending email: ", error);
   }
 }

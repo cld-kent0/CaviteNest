@@ -172,7 +172,9 @@ const GcashPaymentDetailsModal: React.FC<GcashPaymentDetailsModalProps> = ({
             <Image
               src={payment.receiptFile}
               alt="Receipt"
-              className="w-50 h-80 border rounded-lg"
+              className="border rounded-lg"
+              width={196} // Fixed size for better consistency
+              height={220}
             />
           </div>
           <div className="mb-4 mt-8 flex">
