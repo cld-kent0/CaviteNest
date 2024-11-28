@@ -10,7 +10,6 @@ import Button from "../components/Button";
 import DeleteButton from "../properties/DeleteButton";
 import HeartButton from "../components/HeartButton";
 import { usePathname } from "next/navigation";
-import ArchiveButton from "../properties/ArchiveButton";
 
 // Helper function to format the price with commas and two decimal places
 const formatPrice = (price: number): string => {
@@ -229,7 +228,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
           />
         )}
         {onArchive && archiveLabel && (
-          <ArchiveButton
+          <Button
             disabled={disabled}
             label={disabled ? "Archiving..." : archiveLabel}
             onClick={handleArchive}
