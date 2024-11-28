@@ -101,7 +101,7 @@ The platform allows users to list their properties for booking or renting, and e
 - Design Improvements
   - [x] First Batch
   - [x] Pre-defense Batch
-- [ ] Pre-defense Release (0.9)
+- [x] Pre-defense Release (0.9)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
