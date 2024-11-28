@@ -52,12 +52,12 @@ const LesseeList = () => {
     }
   };
 
-  const unarchiveLessee = (id: string) => {
-    axios
-      .post(`/api/admin/archiving/unarchive`, { id, type: "lessee" })
-      .then(() => fetchLessees())
-      .catch((error) => console.error("Error unarchiving lessee:", error));
-  };
+  // const unarchiveLessee = (id: string) => {
+  //   axios
+  //     .post(`/api/admin/archiving/unarchive`, { id, type: "lessee" })
+  //     .then(() => fetchLessees())
+  //     .catch((error) => console.error("Error unarchiving lessee:", error));
+  // };
 
   const openModal = (lessee: Lessee) => {
     setSelectedLessee(lessee);
@@ -145,8 +145,8 @@ const LesseeList = () => {
                   <td className="px-4 py-2 border-b whitespace-nowrap">
                     {lessee.idStatus
                       ? lessee.idStatus
-                          .toLowerCase() // Convert all to lowercase
-                          .replace(/^\w/, (c) => c.toUpperCase()) // Capitalize the first letter
+                        .toLowerCase() // Convert all to lowercase
+                        .replace(/^\w/, (c) => c.toUpperCase()) // Capitalize the first letter
                       : ""}
                   </td>
                   <td className="px-4 py-2 border-b">
@@ -158,21 +158,21 @@ const LesseeList = () => {
                       actions={
                         showArchived
                           ? [
-                              {
-                                label: "Unarchive",
-                                onClick: unarchiveLessee,
-                              },
-                            ]
+                            {
+                              label: "View",
+                              onClick: () => router.push("/admin/settings/archive"),
+                            },
+                          ]
                           : [
-                              {
-                                label: "View",
-                                onClick: () => openModal(lessee), // Open modal when View is clicked
-                              },
-                              {
-                                label: "Archive",
-                                onClick: archiveLessee,
-                              },
-                            ]
+                            {
+                              label: "View",
+                              onClick: () => openModal(lessee), // Open modal when View is clicked
+                            },
+                            {
+                              label: "Archive",
+                              onClick: archiveLessee,
+                            },
+                          ]
                       }
                     />
                   </td>
