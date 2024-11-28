@@ -93,11 +93,14 @@ The platform allows users to list their properties for booking or renting, and e
   - [x] Reservations
   - [ ] Cancellations
   - [x] Messages
+- Messaging
+  - [ ] Image uploading
 - Locations
   - [ ] Limit the location to only be around Cavite City
 - Error Trapping
   - [x] First Batch
   - [x] Pre-defense Batch
+  - [ ] File formats & sizes (specified & trapped)
 - Design Improvements
   - [x] First Batch
   - [x] Pre-defense Batch
