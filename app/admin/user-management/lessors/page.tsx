@@ -9,6 +9,7 @@ import Pagination from "../../components/Pagination";
 import LessorDetailsModal from "../../components/modals/LessorDetailsModal";
 import Image from "next/image"; // Import Image component
 import printContent from "../../components/printReport"; // Import the print utility
+import toast from "react-hot-toast";
 
 interface Lessor {
   id: string;
@@ -56,7 +57,10 @@ const LessorList = () => {
     if (confirmed) {
       axios
         .post(`/api/admin/archiving/archive`, { id, type: "lessor" })
-        .then(() => fetchLessors())
+        .then(() => {
+          fetchLessors();
+          toast.success("Lessor archived successfully!");
+        })
         .catch((error) => console.error("Error archiving lessor:", error));
     }
   };

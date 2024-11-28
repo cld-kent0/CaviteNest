@@ -8,6 +8,7 @@ import SearchInput from "../../components/SearchInput";
 import ActionButton from "../../components/ActionButton";
 import Pagination from "../../components/Pagination";
 import LesseeDetailsModal from "../../components/modals/LesseeDetailsModal";
+import toast from "react-hot-toast";
 
 interface Lessee {
   id: string;
@@ -47,7 +48,10 @@ const LesseeList = () => {
     if (confirmed) {
       axios
         .post(`/api/admin/archiving/archive`, { id, type: "lessee" })
-        .then(() => fetchLessees())
+        .then(() => {
+          fetchLessees();
+          toast.success("Lessee archived successfully!");
+        })
         .catch((error) => console.error("Error archiving lessee:", error));
     }
   };
