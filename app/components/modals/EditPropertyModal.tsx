@@ -87,7 +87,18 @@ const EditPropertyModal: React.FC<EditPropertyModalProps> = ({
   const guestCount = watch("guestCount");
   const roomCount = watch("roomCount");
   const bathroomCount = watch("bathroomCount");
-  const imageSrc = watch("imageSrc");
+
+  useEffect(() => {
+    // Sync rentalAmount with rentalPrice in PRICE step
+    if (watch("rentalAmount") !== undefined) {
+      setValue("rentalPrice", watch("rentalAmount"));
+    }
+
+    // Sync bookingFee with bookingPrice in PRICE step
+    if (watch("bookingFee") !== undefined) {
+      setValue("bookingPrice", watch("bookingFee"));
+    }
+  }, [watch("rentalAmount"), watch("bookingFee")]);
 
   const [showAgreementTab, setShowAgreementTab] = useState(rentalType);
 
@@ -434,7 +445,7 @@ const EditPropertyModal: React.FC<EditPropertyModalProps> = ({
                   />
                   <Input
                     id="rentalAmount"
-                    label="Rental Amount"
+                    label="Rental Price"
                     required
                     formatPrice={true}
                     register={register}
@@ -537,7 +548,7 @@ const EditPropertyModal: React.FC<EditPropertyModalProps> = ({
                   />
                   <Input
                     id="bookingFee"
-                    label="Booking Fee"
+                    label="Booking Price"
                     required
                     formatPrice={true}
                     register={register}
@@ -592,8 +603,8 @@ const EditPropertyModal: React.FC<EditPropertyModalProps> = ({
         return (
           <div className="flex flex-col gap-8">
             <Heading
-              title="Set pricing for your rental"
-              subTitle="Set rental price"
+              title="Review your Pricing"
+              subTitle="This is what you've set based on the previous step"
             />
 
             {/* Only show the rental price if rentalType is 'rent' or 'both' and rent tab is selected */}
@@ -601,11 +612,11 @@ const EditPropertyModal: React.FC<EditPropertyModalProps> = ({
               <Input
                 id="rentalPrice"
                 label="Rental Price"
-                disabled={isLoading}
+                disabled={true}
                 register={register}
                 errors={errors}
                 required
-                value={watch("price")} // Correct the field to watch "rentalPrice"
+                value={watch("rentalAmount")} // Correct the field to watch "rentalPrice"
                 onChange={(e) => {
                   const inputValue = e.target.value;
 
@@ -631,11 +642,11 @@ const EditPropertyModal: React.FC<EditPropertyModalProps> = ({
               <Input
                 id="bookingPrice"
                 label="Booking Price"
-                disabled={isLoading}
+                disabled={true}
                 register={register}
                 errors={errors}
                 required
-                value={watch("price")}
+                value={watch("bookingFee")}
                 onChange={(e) => {
                   const value = e.target.value.replace(/[^\d]/g, ""); // Only allow numbers
 

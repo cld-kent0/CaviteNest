@@ -99,8 +99,8 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
       return;
     }
 
-    console.log("Checking reservation for user:", currentUser);
-    console.log("Listing ID:", listingId);
+    //    //console.log("Checking reservation for user:", currentUser);
+    //    //console.log("Listing ID:", listingId);
 
     try {
       // Send the POST request to check for a pending reservation
@@ -109,7 +109,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
         listingId: listingId, // Listing ID
       });
 
-      console.log("Response from server:", response.data);
+      //      console.log("Response from server:", response.data);
 
       // Check if the server response indicates a pending reservation
       if (
@@ -117,7 +117,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
         response.data.message ===
           "You already have a reservation (pending or confirmed) for this property."
       ) {
-        console.log("Pending reservation detected.");
+        //        console.log("Pending reservation detected.");
         toast.error(
           "You already have an existing reservation for this property. Check your 'My Trips'."
         );
@@ -126,10 +126,33 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
 
       // If no pending reservation, open the appropriate modal based on the inquiry type
       if (currentType === "rent") {
-        setRentalModalOpen(true); // Open the rental modal
+        setRentalModalOpen(true); // Open the rental modalsss
       } else if (currentType === "booking") {
         setBookingModalOpen(true); // Open the booking modal
       }
+    } catch (error) {
+      // Log error and display a toast error message
+      console.error("Error checking reservation:", error);
+      toast.error(
+        "An error occurred while checking for your reservation. Please try again."
+      );
+    }
+  };
+
+  const handleContactClick = async () => {
+    // Check if the user is logged in, if not open the login modal
+    if (!isLoggedIn) {
+      return loginModal.onOpen();
+    }
+
+    // Early exit if user or listingId is missing
+    if (!currentUser || !listingId) {
+      toast.error("User ID or Listing ID is missing.");
+      console.error("Missing userId or listingId");
+      return;
+    }
+
+    try {
     } catch (error) {
       // Log error and display a toast error message
       console.error("Error checking reservation:", error);
@@ -225,8 +248,8 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
                 <div>
                   <h2 class="text-2xl font-semibold mb-3">Rental Inquiry Details</h2>
                   <p class="text-lg mt-1"><strong class="font-medium">Address:</strong> ${sanitizedModalData.rentalAddress}</p>
+                  <p class="text-lg mt-2"><strong class="font-medium">Total Amount:</strong> ₱${sanitizedModalData.rentalAmount}</p>
                   <p class="text-lg mt-1"><strong class="font-medium">Ideal Date:</strong> ${sanitizedModalData.startDate}</p>
-                  <p class="text-lg mt-2"><strong class="font-medium">Amount:</strong> ₱${sanitizedModalData.rentalAmount}</p>
                   <p class="text-lg mt-2"><strong class="font-medium">Security Deposit:</strong> ₱${sanitizedModalData.rentalSecurityDeposit}</p>
                 </div>
               </div>
@@ -250,7 +273,6 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
                 <div>
                   <h2 class="text-2xl font-semibold mb-3">Booking Inquiry Details</h2>
                   <p class="text-lg mt-1"><strong class="font-medium">Address:</strong> ${sanitizedModalData.bookingAddress}</p>
-                  <p class="text-lg mt-2"><strong class="font-medium">Fee:</strong> ₱${sanitizedModalData.bookingFee}</p>
                   <p class="text-lg mt-2"><strong class="font-medium">Total Amount:</strong> ₱${sanitizedModalData.bookingPrice}</p>
                   <p class="text-lg mt-2"><strong class="font-medium">Check-In:</strong> ${sanitizedModalData.checkInDate}</p>
                   <p class="text-lg mt-2"><strong class="font-medium">Check-Out:</strong> ${sanitizedModalData.checkOutDate}</p>
