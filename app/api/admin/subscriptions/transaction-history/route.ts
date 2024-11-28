@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
+    const url = new URL(req.url);
+    const searchParams = Object.fromEntries(url.searchParams.entries());
+
     const gcashPayments = await prisma.gcashPayment.findMany({
       include: {
         user: true,

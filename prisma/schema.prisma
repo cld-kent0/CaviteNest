@@ -34,6 +34,7 @@ enum IdType {
   passport
   drivers_license
   identity
+  other_identification
 }
 
 enum IdStatus {

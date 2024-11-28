@@ -114,8 +114,47 @@ const UploadIdModal = () => {
           <input type="radio" value="identity" {...register("idtype")} className="mr-2" />
           National ID
         </label>
+        <label className="cursor-pointer">
+          <input type="radio" value="other_identification" {...register("idtype")} className="mr-2" />
+          Other Identification
+        </label>
         {errors.idtype && <p className="text-red-500">ID type is required.</p>}
       </div>
+
+      <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-lg shadow-md">
+        <div className="flex items-center">
+          <svg
+            className="w-6 h-6 text-blue-400"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M13 16h-1v-4h-.01m1.01 0a9 9 0 11-9 9c5 0 9-4 9-9z"
+            />
+          </svg>
+          <h3 className="text-lg font-semibold text-blue-700 ml-2">Verification Notice</h3>
+        </div>
+        <div className="mt-2 text-sm text-blue-700">
+          <p>
+            To complete your registration, your account must be <strong>verified</strong>. This process helps ensure the security and authenticity of our platform.
+          </p>
+          <p className="mt-1">
+            Once you submit the required information, your verification status will remain <strong>pending</strong> until reviewed and approved by the admin.
+          </p>
+          {/* <p className="mt-1">
+            You will receive a confirmation email once your account has been successfully verified.
+          </p> */}
+          <p className="mt-1 font-medium">
+            Please allow up to 24–48 hours for the verification process to be completed.
+          </p>
+        </div>
+      </div>
+
     </div>
   );
 

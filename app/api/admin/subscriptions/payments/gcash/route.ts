@@ -1,8 +1,11 @@
-import { NextResponse } from 'next/server';
-import prisma from '@/app/libs/prismadb';
+import { NextResponse } from "next/server";
+import prisma from "@/app/libs/prismadb";
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
+    const url = new URL(req.url);
+    const searchParams = Object.fromEntries(url.searchParams.entries());
+
     const payments = await prisma.gcashPayment.findMany({
       include: {
         user: {
@@ -16,7 +19,6 @@ export async function GET() {
         subscription: {
           select: {
             id: true,
-
           },
         },
       },
@@ -24,7 +26,7 @@ export async function GET() {
 
     return NextResponse.json(payments);
   } catch (error) {
-    console.error('Error fetching Gcash payments:', error);
+    console.error("Error fetching Gcash payments:", error);
     return NextResponse.error();
   }
 }

@@ -1,12 +1,15 @@
-import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/app/libs/prismadb';
+import { NextRequest, NextResponse } from "next/server";
+import prisma from "@/app/libs/prismadb";
 
 // GET subscription by ID
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   const { id } = params;
 
   if (!id) {
-    return NextResponse.json({ error: 'ID is required' }, { status: 400 });
+    return NextResponse.json({ error: "ID is required" }, { status: 400 });
   }
 
   try {
@@ -15,21 +18,27 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     });
 
     if (!subscription) {
-      return NextResponse.json({ error: 'Subscription not found' }, { status: 404 });
+      return NextResponse.json(
+        { error: "Subscription not found" },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json(subscription);
   } catch (error) {
-    return NextResponse.json({ error: 'An error occurred' }, { status: 500 });
+    return NextResponse.json({ error: "An error occurred" }, { status: 500 });
   }
 }
 
 // DELETE subscription by ID
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   const { id } = params;
 
   if (!id) {
-    return NextResponse.json({ error: 'ID is required' }, { status: 400 });
+    return NextResponse.json({ error: "ID is required" }, { status: 400 });
   }
 
   try {
@@ -37,8 +46,8 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       where: { id }, // Use id as string
     });
 
-    return NextResponse.json({ message: 'Subscription deleted successfully' });
+    return NextResponse.json({ message: "Subscription deleted successfully" });
   } catch (error) {
-    return NextResponse.json({ error: 'An error occurred' }, { status: 500 });
+    return NextResponse.json({ error: "An error occurred" }, { status: 500 });
   }
 }

@@ -139,6 +139,39 @@ const GcashPaymentModal: React.FC<GcashPaymentModalProps> = ({
         <p>
           <strong>Price:</strong> {price}
         </p>
+        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-lg shadow-md mt-4">
+          <div className="flex items-center">
+            <svg
+              className="w-6 h-6 text-yellow-400"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M13 16h-1v-4h-.01m1.01 0a9 9 0 11-9 9c5 0 9-4 9-9z"
+              />
+            </svg>
+            <h3 className="text-lg font-semibold text-yellow-700 ml-2">Important Note!</h3>
+          </div>
+          <div className="mt-2 text-sm text-yellow-700">
+            <p>
+              If you choose <strong>Gcash</strong> as your payment method, your subscription status will
+              <strong> not update instantly</strong> or in real-time.
+            </p>
+            <p className="mt-1">
+              The system will hold your subscription as <strong>pending</strong>, requiring manual
+              verification by the admin to confirm the payment.
+            </p>
+            <p className="mt-1">
+              Once the admin manually verifies the payment, your subscription status will be updated in the system.
+            </p>
+          </div>
+        </div>
+
       </div>
     </div>
   );
