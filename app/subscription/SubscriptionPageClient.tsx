@@ -1,10 +1,10 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Heading from './Heading';
-import SubscriptionCard from './SubscriptionCard';
-import Container from '../components/Container';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Heading from "./Heading";
+import SubscriptionCard from "./SubscriptionCard";
+import Container from "../components/Container";
 
 const SubscriptionPageClient = () => {
   const router = useRouter();
@@ -24,7 +24,7 @@ const SubscriptionPageClient = () => {
   // Fetch user's subscription plan
   const getUserSubscription = async () => {
     try {
-      const res = await fetch('/api/subscription'); // Call the API route
+      const res = await fetch("/api/subscription"); // Call the API route
       const data = await res.json();
       if (res.ok) {
         setUserPlan(data.plan); // Set the user's subscription plan
@@ -32,20 +32,20 @@ const SubscriptionPageClient = () => {
         console.error(data.message);
       }
     } catch (error) {
-      console.error('Error fetching user subscription:', error);
+      console.error("Error fetching user subscription:", error);
     }
   };
 
   // Fetch user's payment history
   const getPaymentHistory = async () => {
     try {
-      const res = await fetch('/api/subscription/payment-history');
+      const res = await fetch("/api/subscription/payment-history");
       const data = await res.json();
       if (res.ok && Array.isArray(data.history)) {
         setPaymentHistory(data.history);
       }
     } catch (error) {
-      console.error('Error fetching payment history:', error);
+      console.error("Error fetching payment history:", error);
     }
   };
 
@@ -75,14 +75,22 @@ const SubscriptionPageClient = () => {
       title: plan.title,
       description: plan.description,
       price: plan.price,
-      features: plan.features.join(','),
+      features: plan.features.join(","),
       borderColor: plan.borderColor,
       lineColor: plan.lineColor,
       hoverColor: plan.hoverColor,
-      planType: plan.planType
+      planType: plan.planType,
     }).toString();
     router.push(`/subscription/subscriptionNext?${queryParams}`);
   };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-GB"); // Formats to dd-mm-yyyy
+  };
+
+  const toSentenceCase = (text: string) =>
+    text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
 
   return (
     <div className="min-h-screen">
@@ -101,6 +109,7 @@ const SubscriptionPageClient = () => {
             description="Upload and Tell a story about your property."
             price="₱ 0.00"
             priceDesc="Pay nothing"
+            hoverColor="bg-gray-600"
             border={true}
             borderColor="border-gray-600"
             lineColor="black"
@@ -134,7 +143,9 @@ const SubscriptionPageClient = () => {
             priceDesc={
               <>
                 ₱ 1,249.00 when you&nbsp;
-                <span style={{ textDecoration: "underline", fontWeight: "bold" }}>
+                <span
+                  style={{ textDecoration: "underline", fontWeight: "bold" }}
+                >
                   pay annually
                 </span>
               </>
@@ -146,13 +157,13 @@ const SubscriptionPageClient = () => {
             onSubscribe={() =>
               handleGoTo({
                 title: "Premium Plan",
-                description: "Manage 3-5 properties with full access to all features.",
+                description:
+                  "Manage 3-5 properties with full access to all features.",
                 price: "₱ 699.00",
                 features: [
                   "Upload 3-5 Property Listings",
                   "Communicate with Clients using Messaging Module",
                   "Check Availability of your properties real-time",
-                  // "Display Reviews and Feedbacks",
                   "Verified Badge Included",
                 ],
                 borderColor: "border-green-700",
@@ -165,7 +176,6 @@ const SubscriptionPageClient = () => {
               "Upload 3-5 Property Listings",
               "Communicate with Clients using Messaging Module",
               "Check Availability of your properties real-time",
-              // "Display Reviews and Feedbacks",
               "Verified Badge Included",
             ]}
             isSelected={userPlan === "premium"}
@@ -177,7 +187,9 @@ const SubscriptionPageClient = () => {
             priceDesc={
               <>
                 ₱ 1,849.00 when you&nbsp;
-                <span style={{ textDecoration: "underline", fontWeight: "bold" }}>
+                <span
+                  style={{ textDecoration: "underline", fontWeight: "bold" }}
+                >
                   pay annually
                 </span>
               </>
@@ -189,15 +201,15 @@ const SubscriptionPageClient = () => {
             onSubscribe={() =>
               handleGoTo({
                 title: "Business Plan",
-                description: "Manage > 5 properties with full access to all features.",
+                description:
+                  "Manage > 5 properties with full access to all features.",
                 price: "₱ 999.00",
                 features: [
                   "Upload 5 or more Property Listings",
                   "Communicate with Clients using Messaging Module",
                   "Check Availability of your properties real-time",
-                  // "Display Reviews and Feedbacks",
                   "Verified Badge Included",
-                  // "Feature Properties on Homepage",
+                  "Feature Properties on Homepage",
                 ],
                 borderColor: "border-blue-900",
                 lineColor: "blue",
@@ -209,25 +221,24 @@ const SubscriptionPageClient = () => {
               "Upload 5 or more Property Listings",
               "Communicate with Clients using Messaging Module",
               "Check Availability of your properties real-time",
-              // "Display Reviews and Feedbacks",
               "Verified Badge Included",
-              // "Feature Properties on Homepage",
+              "Feature Properties on Homepage",
             ]}
             isSelected={userPlan === "business"}
           />
         </div>
+        <hr className="mt-20" />
         {/* Payment history */}
-        <div className="mt-12 mb-12">
+        <div className="mb-28 py-12">
           <Heading title="Payment History" center />
           {loading ? (
             <p className="text-center mt-4">Loading...</p>
           ) : paymentHistory?.length > 0 ? (
-            <table className="min-w-full bg-white shadow-md rounded">
+            <table className="min-w-full bg-white shadow-md rounded mx-auto">
               <thead>
                 <tr>
-                  <th className="px-4 py-2 text-left">Date</th>
-                  <th className="px-4 py-2 text-left">Amount</th>
                   <th className="px-4 py-2 text-left">Plan</th>
+                  <th className="px-4 py-2 text-left">Amount</th>
                   <th className="px-4 py-2 text-left">Status</th>
                   <th className="px-4 py-2 text-left">Start Period</th>
                   <th className="px-4 py-2 text-left">End Period</th>
@@ -237,15 +248,17 @@ const SubscriptionPageClient = () => {
                 {paymentHistory.map((payment, index) => (
                   <tr
                     key={index}
-                    className={`border-t ${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'
-                      }`}
+                    className={`border-t ${
+                      index % 2 === 0 ? "bg-gray-100" : "bg-white"
+                    }`}
                   >
-                    <td className="px-4 py-2">{payment.date}</td>
+                    <td className="px-4 py-2">
+                      {toSentenceCase(payment.plan)}
+                    </td>
                     <td className="px-4 py-2">{payment.amount}</td>
-                    <td className="px-4 py-2">{payment.plan}</td>
                     <td className="px-4 py-2">{payment.status}</td>
-                    <td className="px-4 py-2">{payment.start}</td>
-                    <td className="px-4 py-2">{payment.end}</td>
+                    <td className="px-4 py-2">{formatDate(payment.start)}</td>
+                    <td className="px-4 py-2">{formatDate(payment.end)}</td>
                   </tr>
                 ))}
               </tbody>
