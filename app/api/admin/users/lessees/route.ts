@@ -29,20 +29,23 @@
 //   }
 // }
 
-
 // app/api/admin/lessees/route.ts
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
+    const url = new URL(req.url);
+    const searchParams = Object.fromEntries(url.searchParams.entries());
+
     // Fetch users with the role of 'LESSEE' and not archived
     const lessees = await prisma.user.findMany({
       where: {
-        role: 'LESSEE', // Filter by the LESSEE role
+        role: "LESSEE", // Filter by the LESSEE role
         // is_archived: false, // Exclude archived users
       },
-      select: { // Optionally, select only the fields you need
+      select: {
+        // Optionally, select only the fields you need
         id: true,
         name: true,
         email: true,
@@ -52,7 +55,7 @@ export async function GET() {
         idFront: true,
         idBack: true,
         idType: true,
-        image: true,        // Assuming you have this field (profile image)
+        image: true, // Assuming you have this field (profile image)
       },
     });
 
