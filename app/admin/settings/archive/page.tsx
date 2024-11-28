@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import toast from 'react-hot-toast';
 import SearchInput from '../../components/SearchInput';
 import ActionButton from '../../components/ActionButton';
 import Pagination from '../../components/Pagination';
@@ -38,91 +37,81 @@ const ArchivePage = () => {
     fetchArchiveItems();
   }, []);
 
-  const fetchArchiveItems = () => {
-    axios
-      .all([
+  const fetchArchiveItems = async () => {
+    try {
+      const [listingsRes, lessorsRes, lesseesRes] = await axios.all([
         axios.get('/api/admin/property'),
         axios.get('/api/admin/users/lessors'),
         axios.get('/api/admin/users/lessees'),
-      ])
-      .then(
-        axios.spread((listingsRes, lessorsRes, lesseesRes) => {
-          const listings: Listing[] = listingsRes.data.map((item: Listing) => ({
-            ...item,
-            type: 'listing',
-          }));
-          const lessors: User[] = lessorsRes.data.map((item: User) => ({
-            ...item,
-            type: 'lessor',
-          }));
-          const lessees: User[] = lesseesRes.data.map((item: User) => ({
-            ...item,
-            type: 'lessee',
-          }));
-          setItems([...listings, ...lessors, ...lessees]);
-        })
-      )
-      .catch((error) => console.error('Error fetching archived items:', error));
+      ]);
+
+      const listings: Listing[] = listingsRes.data.map((item: Listing) => ({
+        ...item,
+        type: 'listing',
+      }));
+      const lessors: User[] = lessorsRes.data.map((item: User) => ({
+        ...item,
+        type: 'lessor',
+      }));
+      const lessees: User[] = lesseesRes.data.map((item: User) => ({
+        ...item,
+        type: 'lessee',
+      }));
+
+      setItems([...listings, ...lessors, ...lessees]);
+    } catch (error) {
+      console.error('Error fetching archived items:', error);
+    }
   };
 
   const handleUnarchive = async (type: string, id: string) => {
     try {
-      await axios.put('/api/admin/archiving/unarchive', {
+      const response = await axios.put('/api/admin/archiving/unarchive', {
         type,
         id,
       });
+      console.log('Unarchive success:', response.data);
       fetchArchiveItems(); // Refresh the list after unarchiving
-      toast.success('Item successfully unarchived!');
     } catch (error) {
       console.error('Error performing unarchive action:', error);
-      toast.error('Failed to unarchive the item.');
+    }
+  };
+
+  const handleDelete = async (type: string, id: string) => {
+    try {
+      const response = await axios.delete('/api/admin/archiving/delete', {
+        data: { type, id },
+      });
+      console.log('Delete success:', response.data);
+      fetchArchiveItems(); // Refresh the list after deleting
+    } catch (error) {
+      console.error('Error performing delete action:', error);
     }
   };
 
   const handleAction = async (action: 'archive' | 'unarchive' | 'delete', item: ArchiveItem) => {
-    toast(
-      (t) => (
-        <div className="flex flex-col items-center">
-          <p className="text-gray-800">
-            {action === 'unarchive'
-              ? 'Unarchive this item?'
-              : action === 'delete'
-                ? 'Delete this item? This action cannot be undone.'
-                : 'Archive this item?'}
-          </p>
-          <div className="flex justify-between gap-2 mt-2">
-            <button
-              className="bg-red-500 text-white px-4 py-2 rounded-md"
-              onClick={async () => {
-                toast.dismiss(t.id);
-                try {
-                  if (action === 'unarchive') {
-                    await handleUnarchive(item.type, item.id);
-                  } else {
-                    const endpoint = `/api/admin/archiving/${action}`;
-                    await axios.post(endpoint, { id: item.id, type: item.type });
-                    fetchArchiveItems(); // Refresh the list after the action
-                    toast.success(`${action.charAt(0).toUpperCase() + action.slice(1)} successful!`);
-                  }
-                } catch (error) {
-                  console.error(`Error performing ${action} action:`, error);
-                  toast.error(`Failed to ${action} the item.`);
-                }
-              }}
-            >
-              Confirm
-            </button>
-            <button
-              className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md"
-              onClick={() => toast.dismiss(t.id)}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      ),
-      { duration: Infinity }
+    const confirmed = window.confirm(
+      action === 'unarchive'
+        ? 'Are you sure you want to unarchive this item?'
+        : action === 'delete'
+          ? 'Are you sure you want to delete this item? This action cannot be undone.'
+          : 'Are you sure you want to archive this item?'
     );
+    if (!confirmed) return;
+
+    try {
+      if (action === 'unarchive') {
+        await handleUnarchive(item.type, item.id);
+      } else if (action === 'delete') {
+        await handleDelete(item.type, item.id);
+      } else {
+        const endpoint = `/api/admin/archiving/${action}`;
+        await axios.post(endpoint, { id: item.id, type: item.type });
+        fetchArchiveItems(); // Refresh the list after performing the action
+      }
+    } catch (error) {
+      console.error(`Error performing ${action} action:`, error);
+    }
   };
 
   // Filter items based on search query and archive state
