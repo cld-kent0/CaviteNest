@@ -87,9 +87,9 @@ The platform allows users to list their properties for booking or renting, and e
 - [x] Stripe Payments - Integrating Stripe for plan subscription payments
 - [x] Multiple Images Upload in Listing Property - Allow property owners to upload multiple images per listing
 - Email Notifications
-- [x] Reservations
-- [ ] Cancellations
-- [ ] Messages
+  - [x] Reservations
+  - [ ] Cancellations
+  - [ ] Messages
 - Locations
   - [ ] Limit the location to only be around Cavite City
 - Error Trapping
