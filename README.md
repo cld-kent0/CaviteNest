@@ -92,16 +92,16 @@ The platform allows users to list their properties for booking or renting, and e
 - Email Notifications
   - [x] Reservations
   - [ ] Cancellations
-  - [ ] Messages
+  - [x] Messages
 - Locations
   - [ ] Limit the location to only be around Cavite City
 - Error Trapping
   - [x] First Batch
-  - [ ] Pre-defense Batch
+  - [x] Pre-defense Batch
 - Design Improvements
   - [x] First Batch
-  - [ ] Pre-defense Batch
-- [ ] Pre-defense Release (1.0)
+  - [x] Pre-defense Batch
+- [ ] Pre-defense Release (0.9)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
