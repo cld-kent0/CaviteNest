@@ -304,10 +304,10 @@ const RentModal: React.FC<RentModalProps> = ({ user }) => {
                   aria-pressed={rentalType === type}
                   aria-label={`Select ${
                     type === "both"
-                      ? "Both Rental and Booking Options"
+                      ? "Both Monthly Rent and Daily Booking Options"
                       : type === "rent"
-                      ? "Long-term Rent"
-                      : "Short-term Booking"
+                      ? "Monthly Rent"
+                      : "Daily Booking"
                   }`}
                 >
                   <div className="text-center space-y-2">
@@ -315,15 +315,15 @@ const RentModal: React.FC<RentModalProps> = ({ user }) => {
                       {type === "both"
                         ? "Both Options"
                         : type === "rent"
-                        ? "Long-term Rent"
-                        : "Short-term Booking"}
+                        ? "Monthly Rent"
+                        : "Daily Booking"}
                     </h3>
                     <p className="text-sm">
                       {type === "rent"
-                        ? "Ideal for long-term rentals. Rent out your property on a monthly basis."
+                        ? "Offer your property for long-term rental. Tenants pay a fixed amount every month and can stay as long as they choose, based on your agreement."
                         : type === "booking"
-                        ? "Perfect for short-term stays. Allow guests to book for a few nights or weeks."
-                        : "Maximize flexibility by offering both rental and booking options."}
+                        ? "Perfect for short-term stays. Guests can book your property for a few days or weeks at a time."
+                        : "Cater to all needs by allowing both long-term monthly rentals and short-term daily bookings."}
                     </p>
                   </div>
                 </div>
