@@ -18,7 +18,7 @@ const SampleNextArrow = ({
 }) => {
   return (
     <div
-      className="absolute right-4 md:right-10 top-1/2 transform -translate-y-1/2 z-20 cursor-pointer text-1xl sm:text-3xl md:text-4xl text-black transition-colors duration-300 hover:text-yellow-300"
+      className="absolute right-4 md:right-10 top-1/2 transform -translate-y-1/2 z-20 cursor-pointer text-1xl sm:text-3xl md:text-4xl text-white transition-colors duration-300 hover:text-yellow-300"
       style={style}
       onClick={onClick}
     >
@@ -36,7 +36,7 @@ const SamplePrevArrow = ({
 }) => {
   return (
     <div
-      className="absolute left-4 md:left-10 top-1/2 transform -translate-y-1/2 z-20 cursor-pointer text-1xl sm:text-3xl md:text-4xl text-black transition-colors duration-300 hover:text-yellow-300"
+      className="absolute left-4 md:left-10 top-1/2 transform -translate-y-1/2 z-20 cursor-pointer text-1xl sm:text-3xl md:text-4xl text-white transition-colors duration-300 hover:text-yellow-300"
       style={style}
       onClick={onClick}
     >
@@ -56,12 +56,18 @@ const Card = ({
 }) => (
   <div className="flex items-center justify-center">
     <div className="relative w-full min-h-[42vh] md:min-h-[60vh] overflow-hidden">
+      {/* Image */}
       <Image
         src={image}
         alt={title}
         fill
         style={{ objectFit: "cover", borderRadius: "12px" }}
       />
+
+      {/* Background Shadow */}
+      <div className="absolute inset-0 bg-black bg-opacity-45 rounded-2xl"></div>
+
+      {/* Text Content */}
       <div className="absolute top-1/4 left-10 md:left-10 lg:left-24 p-4 md:p-6 lg:p-8">
         <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-white leading-tight">
           {title}
