@@ -1,6 +1,6 @@
 "use client";
 
-import { categories } from "@/app/constants/cetegories";
+import { categories } from "@/app/constants/categories";
 import axios from "axios";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";

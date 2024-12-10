@@ -14,7 +14,7 @@ import CountrySelect from "../inputs/CountrySelect";
 import ImageUpload from "../inputs/ImageUpload";
 import Input from "../inputs/Input";
 import Modal from "./Modal";
-import { categories } from "@/app/constants/cetegories";
+import { categories } from "@/app/constants/categories";
 import { amenities } from "@/app/constants/amenities";
 import AmenityInput from "../AmenityInput";
 import RentImageUpload from "../inputs/RentImageUpload";

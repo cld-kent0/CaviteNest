@@ -8,7 +8,7 @@ import Container from "@/app/components/Container";
 import ListingHead from "@/app/components/listing/ListingHead";
 import ListingInfo from "@/app/components/listing/ListingInfo";
 import ListingReservation from "@/app/components/listing/ListingReservation";
-import { categories } from "@/app/constants/cetegories";
+import { categories } from "@/app/constants/categories";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import { SafeListing, SafeReservation, SafeUser } from "@/app/types";
 import axios from "axios";

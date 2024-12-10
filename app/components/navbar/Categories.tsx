@@ -1,6 +1,6 @@
 "use client";
 
-import { categories } from "@/app/constants/cetegories";
+import { categories } from "@/app/constants/categories";
 import { usePathname, useSearchParams } from "next/navigation";
 import CategoryBox from "../CategoryBox";
 import Container from "../Container";
