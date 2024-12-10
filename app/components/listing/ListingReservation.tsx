@@ -312,7 +312,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
               <div className="text-neutral-600">a Month</div>
             </div>
             <hr className="mb-4" />
-            <h3 className="text-xl font-bold mb-4">Long-term Rental Details</h3>
+            <h3 className="text-xl font-bold mb-4">Monthly Rental Details</h3>
             <p className="text-neutral-600">
               Property Address: <strong>{rentalAddress}</strong>
             </p>
@@ -423,9 +423,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
           <div className="p-6">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-xl font-bold">
-                {currentType === "rent"
-                  ? "Long-term Rent"
-                  : "Short-term Booking"}
+                {currentType === "rent" ? "Monthly Rent" : "Daily Booking"}
               </h3>
               <button
                 className="p-3 bg-gray-200 rounded-lg text-sm"
@@ -445,7 +443,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
                 </div>
                 <hr className="mb-4" />
                 <h3 className="text-xl font-bold mb-4">
-                  Long-term Rental Details
+                  Monthly Rental Details
                 </h3>
                 <p className="text-neutral-600">
                   Property Address: <strong>{rentalAddress}</strong>
