@@ -3,7 +3,14 @@ import { Category } from "@/app/types/categories";
 import dynamic from "next/dynamic";
 import ProfileAvatar from "../ProfileAvatar"; // Assuming Avatar component is here
 import ListingCategory from "./ListingCategory";
-import { FaUserFriends, FaBed, FaBath, FaLocationArrow } from "react-icons/fa"; // Importing icons
+import {
+  FaUserFriends,
+  FaBed,
+  FaBath,
+  FaLocationArrow,
+  FaCalendarAlt,
+  FaSwimmer,
+} from "react-icons/fa"; // Importing icons
 import {
   AiOutlineCheck,
   AiOutlineFieldTime,
@@ -16,6 +23,7 @@ import {
   differenceInDays,
 } from "date-fns";
 import useCaviteMunicipalities from "@/app/hooks/useCountries";
+import { GiBed } from "react-icons/gi";
 
 const Map = dynamic(() => import("../Map"), {
   ssr: false,
@@ -114,18 +122,46 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
 
       {/* Listing Details */}
       <div className="grid grid-cols-2 font-light text-neutral-500 gap-4">
+        {/* Guests */}
         <div className="flex items-center">
           <FaUserFriends className="mr-1" />
           {guestCount} guests
         </div>
-        <div className="flex items-center">
-          <FaBed className="mr-1" />
-          {roomCount} rooms
-        </div>
+
+        {/* Rooms/Beds */}
+        {category && category.label === "Room" ? (
+          <div className="flex items-center">
+            <GiBed className="mr-1" />
+            {roomCount} beds
+          </div>
+        ) : (
+          <div className="flex items-center">
+            <FaBed className="mr-1" />
+            {roomCount} rooms
+          </div>
+        )}
+
+        {/* Bathrooms */}
         <div className="flex items-center col-span-2">
           <FaBath className="mr-1" />
           {bathroomCount} bathrooms
         </div>
+
+        {/* Event-specific details */}
+        {category && category.label === "Events Place" && (
+          <div className="flex items-center col-span-2">
+            <FaCalendarAlt className="mr-1" />
+            Event capacity: {guestCount} guests
+          </div>
+        )}
+
+        {/* Resort-specific details */}
+        {category && category.label === "Resort" && (
+          <div className="flex items-center col-span-2">
+            <FaSwimmer className="mr-1" />
+            Pool available
+          </div>
+        )}
       </div>
 
       <hr />

@@ -376,26 +376,129 @@ const RentModal: React.FC<RentModalProps> = ({ user }) => {
               title="Share some basics about your place"
               subTitle="What amenities do you have?"
             />
-            <Counter
-              title="Guests"
-              subtitle="How many guests do you allow?"
-              value={guestCount}
-              onChange={(value) => setCustomValue("guestCount", value)}
-            />
-            <hr />
-            <Counter
-              title="Rooms"
-              subtitle="How many rooms do you have?"
-              value={roomCount}
-              onChange={(value) => setCustomValue("roomCount", value)}
-            />
-            <hr />
-            <Counter
-              title="Bathrooms"
-              subtitle="How many bathrooms do you have?"
-              value={bathroomCount}
-              onChange={(value) => setCustomValue("bathroomCount", value)}
-            />
+
+            {/* Conditionally render fields based on the selected category */}
+            {category === "House" && (
+              <>
+                <Counter
+                  title="Guests"
+                  subtitle="How many guests do you allow?"
+                  value={guestCount}
+                  onChange={(value) => setCustomValue("guestCount", value)}
+                />
+                <hr />
+                <Counter
+                  title="Rooms"
+                  subtitle="How many rooms do you have?"
+                  value={roomCount}
+                  onChange={(value) => setCustomValue("roomCount", value)}
+                />
+                <hr />
+                <Counter
+                  title="Bathrooms"
+                  subtitle="How many bathrooms do you have?"
+                  value={bathroomCount}
+                  onChange={(value) => setCustomValue("bathroomCount", value)}
+                />
+              </>
+            )}
+
+            {category === "Apartment" && (
+              <>
+                <Counter
+                  title="Guests"
+                  subtitle="How many guests can your apartment accommodate?"
+                  value={guestCount}
+                  onChange={(value) => setCustomValue("guestCount", value)}
+                />
+                <hr />
+                <Counter
+                  title="Bedrooms"
+                  subtitle="How many bedrooms does your apartment have?"
+                  value={roomCount}
+                  onChange={(value) => setCustomValue("roomCount", value)}
+                />
+                <hr />
+                <Counter
+                  title="Bathrooms"
+                  subtitle="How many bathrooms are there?"
+                  value={bathroomCount}
+                  onChange={(value) => setCustomValue("bathroomCount", value)}
+                />
+              </>
+            )}
+
+            {category === "Room" && (
+              <>
+                <Counter
+                  title="Guests"
+                  subtitle="How many guests can stay in this room?"
+                  value={guestCount}
+                  onChange={(value) => setCustomValue("guestCount", value)}
+                />
+                <hr />
+                <Counter
+                  title="Beds"
+                  subtitle="How many beds are in this room?"
+                  value={roomCount}
+                  onChange={(value) => setCustomValue("roomCount", value)}
+                />
+                <hr />
+                <Counter
+                  title="Bathrooms"
+                  subtitle="How many bathrooms are accessible to this room?"
+                  value={bathroomCount}
+                  onChange={(value) => setCustomValue("bathroomCount", value)}
+                />
+              </>
+            )}
+
+            {category === "Events Place" && (
+              <>
+                <Counter
+                  title="Guests"
+                  subtitle="How many guests can the events place accommodate?"
+                  value={guestCount}
+                  onChange={(value) => setCustomValue("guestCount", value)}
+                />
+                <hr />
+                <Counter
+                  title="Rooms"
+                  subtitle="How many event rooms are available?"
+                  value={roomCount}
+                  onChange={(value) => setCustomValue("roomCount", value)}
+                />
+                <hr />
+                {/* Optional: Add event-specific fields, e.g., event capacity, facilities, etc. */}
+              </>
+            )}
+
+            {category === "Resort" && (
+              <>
+                <Counter
+                  title="Guests"
+                  subtitle="How many guests can your resort accommodate?"
+                  value={guestCount}
+                  onChange={(value) => setCustomValue("guestCount", value)}
+                />
+                <hr />
+                <Counter
+                  title="Rooms"
+                  subtitle="How many rooms does your resort have?"
+                  value={roomCount}
+                  onChange={(value) => setCustomValue("roomCount", value)}
+                />
+                <hr />
+                <Counter
+                  title="Bathrooms"
+                  subtitle="How many bathrooms are available?"
+                  value={bathroomCount}
+                  onChange={(value) => setCustomValue("bathroomCount", value)}
+                />
+                <hr />
+                {/* Additional fields for Resort properties (like pool, amenities) can be added here */}
+              </>
+            )}
           </div>
         );
 
