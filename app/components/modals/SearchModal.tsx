@@ -141,7 +141,7 @@ const SearchModal = () => {
           } hover:bg-[#456fb3] hover:text-white`}
         >
           <i className="mr-2 fas fa-home"></i> {/* Home icon for Rent */}
-          Rent
+          Monthly Rent
         </button>
         <button
           onClick={() => setRentalType("booking")}
@@ -153,7 +153,7 @@ const SearchModal = () => {
         >
           <i className="mr-2 fas fa-calendar-check"></i>{" "}
           {/* Calendar icon for Booking */}
-          Booking
+          Daily Booking
         </button>
         <button
           onClick={() => setRentalType("both")}
