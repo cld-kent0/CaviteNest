@@ -503,6 +503,11 @@ const RentModal: React.FC<RentModalProps> = ({ user }) => {
         );
 
       case STEPS.AMENITIES:
+        // Filter amenities based on the selected category
+        const filteredAmenities = amenities.filter((amenity) =>
+          amenity.categories.includes(category)
+        );
+
         return (
           <div className="flex flex-col gap-8">
             <Heading
@@ -510,7 +515,7 @@ const RentModal: React.FC<RentModalProps> = ({ user }) => {
               subTitle="What can your guests enjoy?"
             />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto">
-              {amenities.map((item) => (
+              {filteredAmenities.map((item) => (
                 <div key={item.label} className="col-span-1">
                   <AmenityInput
                     onClick={() => {
