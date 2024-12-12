@@ -1,12 +1,12 @@
 import { FaWifi, FaSwimmingPool, FaCar, FaDumbbell, FaHotTub, FaTv, FaGamepad, FaMicrophone, FaTableTennis, FaPaw, FaWheelchair, } from "react-icons/fa";
-import { MdKitchen, MdLocalLaundryService, MdAir, MdViewComfy, MdBusinessCenter, MdBusiness, MdLuggage } from "react-icons/md";
-import { IoThermometerOutline } from "react-icons/io5";
+import { MdKitchen, MdLocalLaundryService, MdAir, MdViewComfy, MdBusiness, MdLuggage, MdTableRestaurant } from "react-icons/md";
+import { IoThermometerOutline, IoWaterSharp } from "react-icons/io5";
 import { AiOutlineCoffee } from "react-icons/ai";
 import { GiFireplace, GiBarbecue, GiPoolTriangle, GiElevator } from "react-icons/gi";
 import { MdBathtub, MdShower } from "react-icons/md";
 import { FiGlobe } from "react-icons/fi";
 import { Amenity } from "../types/amenities";
-import { TbGardenCart, TbGolf } from "react-icons/tb";
+import { TbGardenCart, TbGolf, TbMicrowave } from "react-icons/tb";
 import { CgSmartHomeLight } from "react-icons/cg";
 
 export const amenities: Amenity[] = [
@@ -23,10 +23,10 @@ export const amenities: Amenity[] = [
     categories: ["House", "Apartment", "Resort"],
   },
   {
-    label: "Free parking",
+    label: "Parking space",
     icon: FaCar,
     description: "Free parking available on the premises",
-    categories: ["House", "Apartment", "Resort", "Events Place"],
+    categories: ["House", "Apartment", "Resort", "Room", "Events Place"],
   },
   {
     label: "Air conditioning",
@@ -44,13 +44,13 @@ export const amenities: Amenity[] = [
     label: "Washer",
     icon: MdLocalLaundryService,
     description: "Washer available for your laundry needs",
-    categories: ["House", "Apartment"],
+    categories: ["House", "Apartment", "Room"],
   },
   {
     label: "Dryer",
     icon: MdLocalLaundryService,
     description: "Dryer available for your laundry needs",
-    categories: ["House", "Apartment"],
+    categories: ["House", "Apartment", "Room"],
   },
   {
     label: "TV",
@@ -62,19 +62,19 @@ export const amenities: Amenity[] = [
     label: "Pool",
     icon: FaSwimmingPool,
     description: "Outdoor or indoor swimming pool",
-    categories: ["Resort", "House"],
+    categories: ["Resort", "House", "Events Place"],
   },
   {
     label: "Gym",
     icon: FaDumbbell,
     description: "In-house gym for fitness enthusiasts",
-    categories: ["Resort", "Apartment"],
+    categories: ["House", "Resort", "Apartment", "Events Place"],
   },
   {
     label: "Hot tub",
     icon: FaHotTub,
     description: "Relax in the hot tub after a long day",
-    categories: ["Resort", "House"],
+    categories: ["Resort", "House", "Events Place"],
   },
   {
     label: "Coffee maker",
@@ -86,25 +86,25 @@ export const amenities: Amenity[] = [
     label: "Fireplace",
     icon: GiFireplace,
     description: "Cozy fireplace to warm up your space",
-    categories: ["House", "Resort"],
+    categories: ["House", "Resort", "Events Place"],
   },
   {
     label: "Barbecue",
     icon: GiBarbecue,
     description: "Outdoor barbecue for grilling",
-    categories: ["House", "Resort"],
+    categories: ["House", "Resort", "Events Place"],
   },
   {
     label: "Bathtub",
     icon: MdBathtub,
     description: "Relaxing bathtub for your comfort",
-    categories: ["House", "Apartment", "Resort"],
+    categories: ["House", "Apartment", "Resort", "Events Place"],
   },
   {
     label: "Shower",
     icon: MdShower,
     description: "Walk-in shower for convenience",
-    categories: ["House", "Apartment", "Resort"],
+    categories: ["House", "Apartment", "Resort", "Events Place"],
   },
   {
     label: "Global concierge",
@@ -116,25 +116,25 @@ export const amenities: Amenity[] = [
     label: "Pet-friendly",
     icon: FaPaw, 
     description: "Pets are welcome on the property",
-    categories: ["House", "Apartment", "Resort"],
+    categories: ["House", "Apartment", "Resort", "Events Place"],
   },
   {
     label: "Balcony",
     icon: MdViewComfy, 
     description: "Private balcony with a scenic view",
-    categories: ["House", "Apartment", "Resort"],
+    categories: ["House", "Apartment", "Resort", "Events Place"],
   },
   {
     label: "Garden",
     icon: TbGardenCart, 
     description: "Beautiful garden area for relaxation",
-    categories: ["House", "Resort"],
+    categories: ["House", "Resort", "Events Place"],
   },
   {
     label: "Elevator",
     icon: GiElevator,
     description: "Elevator access for upper floors",
-    categories: ["Apartment", "Resort"],
+    categories: ["Apartment", "Resort", "Events Place"],
   },
   {
     label: "Business Center",
@@ -146,7 +146,7 @@ export const amenities: Amenity[] = [
     label: "Game Room",
     icon: FaGamepad,
     description: "Entertainment space with games, ping pong, and arcade",
-    categories: ["Resort", "House"],
+    categories: ["Resort", "House", "Events Place"],
   },
   {
     label: "Luggage storage",
@@ -158,7 +158,7 @@ export const amenities: Amenity[] = [
     label: "Wheelchair accessible",
     icon: FaWheelchair,
     description: "Facilities designed to accommodate guests with mobility challenges",
-    categories: ["House", "Apartment", "Resort"],
+    categories: ["House", "Apartment", "Resort", "Events Place"],
   },
   {
     label: "Smart home",
@@ -188,12 +188,30 @@ export const amenities: Amenity[] = [
     label: "Mini-golf",
     icon: TbGolf,
     description: "Mini-golf course for some outdoor fun",
-    categories: ["Resort"],
+    categories: ["Resort", "Events Place"],
   },
   {
     label: "Karaoke",
     icon: FaMicrophone,
     description: "Sing your heart out with a karaoke system",
     categories: ["Resort", "Events Place"],
+  },
+  {
+    label: "Microwave",
+    icon: TbMicrowave,
+    description: "Sing your heart out with a karaoke system",
+    categories: ["Apartment", "Room"],
+  },
+  {
+    label: "Hot water",
+    icon: IoWaterSharp,
+    description: "Sing your heart out with a karaoke system",
+    categories: ["Apartment", "Room"],
+  },
+  {
+    label: "Dining table",
+    icon: MdTableRestaurant,
+    description: "Sing your heart out with a karaoke system",
+    categories: ["Apartment", "Room"],
   },
 ];
