@@ -82,7 +82,7 @@ const CategoriesSection: React.FC = () => {
       title: "Houses",
       description:
         "A standalone building offering privacy, space, and often outdoor areas like gardens and yards.",
-      image: "/images/Houses.png",
+      image: "/images/house.png",
       label: "Houses",
       onClick: () => handleCategoryClick("House"),
     },
@@ -90,7 +90,7 @@ const CategoriesSection: React.FC = () => {
       title: "Apartments",
       description:
         "Self-contained units within larger buildings, offering various sizes and shared amenities.",
-      image: "/images/Apartments.png",
+      image: "/images/apartment.png",
       label: "Apartments",
       onClick: () => handleCategoryClick("Apartment"),
     },
