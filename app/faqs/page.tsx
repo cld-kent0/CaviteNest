@@ -90,7 +90,7 @@ export default function FAQSection() {
         {/* Hero Section */}
         <section
           className="bg-cover bg-center h-96"
-          style={{ backgroundImage: `url('/images/book.jpg')` }}
+          style={{ backgroundImage: `url('/images/faqs.png')` }}
         >
           <div className="bg-black bg-opacity-50 h-full flex items-center justify-center">
             <h2 className="flex items-center justify-center text-3xl md:text-5xl font-bold text-white text-center">
