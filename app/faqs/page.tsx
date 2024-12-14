@@ -164,9 +164,12 @@ export default function FAQSection() {
             </h3>
             <p className="text-gray-400 mb-12">
               Have more questions? Reach out to us via email at{" "}
-              <span className="text-blue-400 underline">
+              <a
+                href="mailto:cavitenest.platform2024@gmail.com"
+                className="text-blue-400 underline"
+              >
                 cavitenest.platform2024@gmail.com
-              </span>
+              </a>
             </p>
           </div>
         </footer>
