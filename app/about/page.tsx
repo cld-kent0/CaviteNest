@@ -104,7 +104,7 @@ const About = () => {
               </div>
               <div className="lg:w-1/2 mt-8 lg:mt-0 lg:pl-8 flex justify-center lg:justify-end">
                 <Image
-                  src="/images/ourvision.png"
+                  src="/images/aboutvision.png"
                   alt="WHAT IS CaviteNest?"
                   width={1000}
                   height={400}
@@ -135,7 +135,7 @@ const About = () => {
               </div>
               <div className="lg:w-1/2 mt-8 lg:mt-0 lg:pr-8 flex justify-center lg:justify-start">
                 <Image
-                  src="/images/ourmission.png"
+                  src="/images/aboutmission.png"
                   alt="WHAT does CaviteNest DO?"
                   width={1000}
                   height={400}
