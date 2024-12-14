@@ -14,12 +14,15 @@ import Calendar from "../inputs/Calendar";
 import Counter from "../inputs/Counter";
 import CountrySelect from "../inputs/CountrySelect";
 import Modal from "./Modal";
+import CategoryInput from "../CategoryInput";
+import { categories } from "@/app/constants/categories";
 
 enum STEPS {
   RENTAL_TYPE = 0,
-  LOCATION = 1,
-  DATE = 2,
-  INFO = 3,
+  CATEGORY = 1,
+  LOCATION = 2,
+  DATE = 3,
+  INFO = 4,
 }
 
 const SearchModal = () => {
@@ -37,7 +40,8 @@ const SearchModal = () => {
     endDate: new Date(),
     key: "selection",
   });
-  const [rentalType, setRentalType] = useState<string>(""); // State for rental type
+  const [rentalType, setRentalType] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
 
   const Map = useMemo(
     () =>
@@ -71,7 +75,8 @@ const SearchModal = () => {
       guestCount,
       bathroomCount,
       roomCount,
-      rentalType, // Add rentalType to query
+      rentalType,
+      category, // Add category to query
     };
 
     if (dateRange.startDate) {
@@ -96,6 +101,7 @@ const SearchModal = () => {
     router.push(url);
   }, [
     bathroomCount,
+    category,
     dateRange,
     guestCount,
     location,
@@ -136,11 +142,11 @@ const SearchModal = () => {
           onClick={() => setRentalType("rent")}
           className={`w-full p-4 flex items-center justify-start text-left rounded-xl transition-all duration-300 ${
             rentalType === "rent"
-              ? "bg-[#12264d] text-white" // Dark green for Rent
+              ? "bg-[#12264d] text-white"
               : "bg-gray-100 text-black"
           } hover:bg-[#456fb3] hover:text-white`}
         >
-          <i className="mr-2 fas fa-home"></i> {/* Home icon for Rent */}
+          <i className="mr-2 fas fa-home"></i>
           Monthly Rent
         </button>
         <button
@@ -151,8 +157,7 @@ const SearchModal = () => {
               : "bg-gray-100 text-black"
           } hover:bg-[#456fb3] hover:text-white`}
         >
-          <i className="mr-2 fas fa-calendar-check"></i>{" "}
-          {/* Calendar icon for Booking */}
+          <i className="mr-2 fas fa-calendar-check"></i>
           Daily Booking
         </button>
         <button
@@ -163,12 +168,35 @@ const SearchModal = () => {
               : "bg-gray-100 text-black"
           } hover:bg-[#456fb3] hover:text-white`}
         >
-          <i className="mr-2 fas fa-home"></i> {/* Home icon for Both */}
+          <i className="mr-2 fas fa-home"></i>
           Both
         </button>
       </div>
     </div>
   );
+
+  if (step === STEPS.CATEGORY) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Choose a category for your property"
+          subTitle="Select a category that best describes your desired property"
+        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto">
+          {categories.map((item) => (
+            <div key={item.label} className="col-span-1">
+              <CategoryInput
+                onClick={(category) => setCategory(item.label)}
+                selected={category === item.label}
+                label={item.label}
+                icon={item.icon}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   if (step === STEPS.LOCATION) {
     bodyContent = (
@@ -205,25 +233,133 @@ const SearchModal = () => {
   if (step === STEPS.INFO) {
     bodyContent = (
       <div className="flex flex-col gap-8">
-        <Heading title="More information" subTitle="Find your perfect place" />
-        <Counter
-          value={guestCount}
-          onChange={(value) => setGuestCount(value)}
-          title="Guests"
-          subtitle="How many guests are coming?"
+        <Heading
+          title="Share some basics about your place"
+          subTitle="What amenities do you have?"
         />
-        <Counter
-          value={roomCount}
-          onChange={(value) => setRoomCount(value)}
-          title="Rooms"
-          subtitle="How many rooms do you need?"
-        />
-        <Counter
-          value={bathroomCount}
-          onChange={(value) => setBathroomCount(value)}
-          title="Bathrooms"
-          subtitle="How many bathrooms do you need?"
-        />
+
+        {/* Dynamically render fields based on the selected category */}
+        {category === "House" && (
+          <>
+            <Counter
+              title="Guests"
+              subtitle="How many guests do you allow?"
+              value={guestCount}
+              onChange={(value) => setGuestCount(value)}
+            />
+            <hr />
+            <Counter
+              title="Rooms"
+              subtitle="How many rooms do you have?"
+              value={roomCount}
+              onChange={(value) => setRoomCount(value)}
+            />
+            <hr />
+            <Counter
+              title="Bathrooms"
+              subtitle="How many bathrooms do you have?"
+              value={bathroomCount}
+              onChange={(value) => setBathroomCount(value)}
+            />
+          </>
+        )}
+
+        {category === "Apartment" && (
+          <>
+            <Counter
+              title="Guests"
+              subtitle="How many guests can your apartment accommodate?"
+              value={guestCount}
+              onChange={(value) => setGuestCount(value)}
+            />
+            <hr />
+            <Counter
+              title="Bedrooms"
+              subtitle="How many bedrooms does your apartment have?"
+              value={roomCount}
+              onChange={(value) => setRoomCount(value)}
+            />
+            <hr />
+            <Counter
+              title="Bathrooms"
+              subtitle="How many bathrooms are there?"
+              value={bathroomCount}
+              onChange={(value) => setBathroomCount(value)}
+            />
+          </>
+        )}
+
+        {category === "Room" && (
+          <>
+            <Counter
+              title="Guests"
+              subtitle="How many guests can stay in this room?"
+              value={guestCount}
+              onChange={(value) => setGuestCount(value)}
+            />
+            <hr />
+            <Counter
+              title="Beds"
+              subtitle="How many beds are in this room?"
+              value={roomCount}
+              onChange={(value) => setRoomCount(value)}
+            />
+            <hr />
+            <Counter
+              title="Bathrooms"
+              subtitle="How many bathrooms are accessible to this room?"
+              value={bathroomCount}
+              onChange={(value) => setBathroomCount(value)}
+            />
+          </>
+        )}
+
+        {category === "Events Place" && (
+          <>
+            <Counter
+              title="Guests"
+              subtitle="How many guests can the events place accommodate?"
+              value={guestCount}
+              onChange={(value) => setGuestCount(value)}
+            />
+            <hr />
+            <Counter
+              title="Rooms"
+              subtitle="How many event rooms are available?"
+              value={roomCount}
+              onChange={(value) => setRoomCount(value)}
+            />
+            <hr />
+            {/* Optional: Add event-specific fields, e.g., event capacity, facilities */}
+          </>
+        )}
+
+        {category === "Resort" && (
+          <>
+            <Counter
+              title="Guests"
+              subtitle="How many guests can your resort accommodate?"
+              value={guestCount}
+              onChange={(value) => setGuestCount(value)}
+            />
+            <hr />
+            <Counter
+              title="Rooms"
+              subtitle="How many rooms does your resort have?"
+              value={roomCount}
+              onChange={(value) => setRoomCount(value)}
+            />
+            <hr />
+            <Counter
+              title="Bathrooms"
+              subtitle="How many bathrooms are available?"
+              value={bathroomCount}
+              onChange={(value) => setBathroomCount(value)}
+            />
+            <hr />
+            {/* Add resort-specific fields, like pool or amenities */}
+          </>
+        )}
       </div>
     );
   }
