@@ -37,11 +37,11 @@ const AboutUsEdit = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null); // Clear previous errors before submitting
-  
+
     // Confirm before proceeding with the update
     const isConfirmed = window.confirm('Are you sure you want to update the About Us content?');
     if (!isConfirmed) return;
-  
+
     try {
       // Include heroImageSrc in the payload
       await axios.put('/api/about-us', { vision, mission, heroImageSrc, heroTitle, heroDescription });
@@ -51,12 +51,12 @@ const AboutUsEdit = () => {
       console.error('Error updating About Us content:', err);
     }
   };
-  
+
 
   return (
     <div>
       <h2 className="text-2xl font-bold mb-6">Settings / About Us</h2>
-      
+
       {/* Error message if there's an error */}
       {error && <p className="text-red-600">{error}</p>}
 
@@ -159,7 +159,7 @@ const AboutUsEdit = () => {
               </div>
               <div className="lg:w-1/2 mt-8 lg:mt-0 lg:pl-8 flex justify-center lg:justify-end">
                 <Image
-                  src="/images/ourvision.png"
+                  src="/images/aboutvision.png"
                   alt="WHAT IS CaviteNest?"
                   width={1000}
                   height={400}
@@ -185,7 +185,7 @@ const AboutUsEdit = () => {
               </div>
               <div className="lg:w-1/2 mt-8 lg:mt-0 lg:pr-8 flex justify-center lg:justify-start">
                 <Image
-                  src="/images/ourmission.png"
+                  src="/images/aboutmission.png"
                   alt="WHAT does CaviteNest DO?"
                   width={1000}
                   height={400}
