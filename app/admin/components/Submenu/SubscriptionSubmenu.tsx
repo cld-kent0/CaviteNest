@@ -52,6 +52,14 @@ const SubscriptionSubmenu = ({ isOpen, activePath, setActivePath }: Subscription
             activePath={activePath}
             setActivePath={setActivePath}
           />
+          <SidebarItem
+            icon={<FiDollarSign />}
+            label="Subscription Plan"
+            isOpen={isOpen}
+            path="/admin/subscription-management/subscriptions-plan"
+            activePath={activePath}
+            setActivePath={setActivePath}
+          />
         </div>
       )}
     </div>

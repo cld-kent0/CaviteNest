@@ -155,8 +155,8 @@ const getPaymentLink = (
         ? process.env.NEXT_PUBLIC_STRIPE_QUARTERLY_PREMIUM_PLAN_LINK
         : process.env.NEXT_PUBLIC_STRIPE_YEARLY_PREMIUM_PLAN_LINK
       : billingPeriod === "quarterly"
-      ? process.env.NEXT_PUBLIC_STRIPE_QUARTERLY_BUSINESS_PLAN_LINK
-      : process.env.NEXT_PUBLIC_STRIPE_YEARLY_BUSINESS_PLAN_LINK;
+        ? process.env.NEXT_PUBLIC_STRIPE_QUARTERLY_BUSINESS_PLAN_LINK
+        : process.env.NEXT_PUBLIC_STRIPE_YEARLY_BUSINESS_PLAN_LINK;
     // } else if (paymentMethod === "gcash") {
     //     return process.env.NEXT_PUBLIC_GCASH_PLAN_LINK;
     // } else if (paymentMethod === "otherOption") {
@@ -270,7 +270,7 @@ const SubscriptionNext = () => {
           <div className="flex-none -my-12">
             <h1 className="text-4xl font-extrabold">Select a Plan</h1>
             <div className="flex flex-col gap-4">
-              {planType === "premium" && (
+              {planType === "premium plan" && (
                 <>
                   <PlanCard
                     plan="Quarterly Premium"
@@ -288,7 +288,7 @@ const SubscriptionNext = () => {
                   />
                 </>
               )}
-              {planType === "business" && (
+              {planType === "business plan" && (
                 <>
                   <PlanCard
                     plan="Quarterly Business"
@@ -322,21 +322,19 @@ const SubscriptionNext = () => {
         <div className="relative gap-4 mt-4">
           <button
             onClick={() => setSelectedPaymentMethod("stripe")}
-            className={`px-4 py-4 mt-4 rounded-lg w-full ${
-              selectedPaymentMethod === "stripe"
-                ? "bg-violet-800 text-white border-solid border-2 border-gray-500"
-                : "bg-violet-500 text-white"
-            }`}
+            className={`px-4 py-4 mt-4 rounded-lg w-full ${selectedPaymentMethod === "stripe"
+              ? "bg-violet-800 text-white border-solid border-2 border-gray-500"
+              : "bg-violet-500 text-white"
+              }`}
           >
             Stripe
           </button>
           <button
             onClick={() => setSelectedPaymentMethod("gcash")}
-            className={`px-4 py-4 mt-4 rounded-lg w-full ${
-              selectedPaymentMethod === "gcash"
-                ? "bg-blue-800 text-white border-solid border-2 border-gray-500"
-                : "bg-blue-500 text-white"
-            }`}
+            className={`px-4 py-4 mt-4 rounded-lg w-full ${selectedPaymentMethod === "gcash"
+              ? "bg-blue-800 text-white border-solid border-2 border-gray-500"
+              : "bg-blue-500 text-white"
+              }`}
           >
             GCash
           </button>

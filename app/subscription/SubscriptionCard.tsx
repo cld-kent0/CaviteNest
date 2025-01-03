@@ -47,9 +47,8 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
         }}
       />
       <div
-        className={`bg-white shadow-xl rounded-2xl p-7 ${
-          border ? `border-2 ${borderColor}` : ""
-        }`}
+        className={`bg-white shadow-xl rounded-2xl p-7 ${border ? `border-2 ${borderColor}` : ""
+          }`}
       >
         <div className="text-4xl font-extrabold">{title}</div>
         <div className="mt-4 text-1xl font-medium text-black">
@@ -75,10 +74,9 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
                 border-2
                 border-black
                 rounded-3xl
-                ${
-                  isSelected
-                    ? "bg-green-600"
-                    : `hover:text-white text-transition duration-300 hover:${hoverColor}`
+                ${isSelected
+                  ? "bg-green-600"
+                  : `hover:text-white text-transition duration-300 hover:${hoverColor}`
                 }
               `}
               disabled={disabled} // Use the 'disabled' prop here
