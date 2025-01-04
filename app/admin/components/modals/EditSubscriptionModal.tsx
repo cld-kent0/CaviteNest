@@ -65,7 +65,8 @@ const EditSubscriptionModal: React.FC<EditSubscriptionModalProps> = ({ isOpen, p
                         type="text"
                         id="name"
                         value={newPlan.name || ""}
-                        onChange={(e) => setNewPlan({ ...newPlan, name: e.target.value })}
+                        // onChange={(e) => setNewPlan({ ...newPlan, name: e.target.value })}
+                        readOnly
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
