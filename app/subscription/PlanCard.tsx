@@ -2,7 +2,7 @@
 
 import React from "react";
 
-interface PlanCardProps{
+interface PlanCardProps {
     plan?: string;
     price?: string;
     borderColor?: string;
@@ -27,25 +27,25 @@ const PlanCard: React.FC<PlanCardProps> = ({
                 p-8 
                 mt-6
             `}>
-            <div className="
+                <div className="
                 text-3xl 
                 font-bold 
                 mb-3">
                     {plan}
-            </div>
-            <hr className={`w-[120px] h-[5px] mb-3 -mt-2 ml-1 ${borderColor}`}/>
-            <div className="
+                </div>
+                <hr className={`w-[120px] h-[5px] mb-3 -mt-2 ml-1 ${borderColor}`} />
+                <div className="
                 text-2xl
                 font-medium
                 ml-5
                 mb-6
                 mt-4">
                     {price} / {plan?.toLowerCase()}
-            </div>
-            <div className="flex justify-center">
-                <button
-                 onClick={onClick}  // Attach the onClick handler
-                 className={`
+                </div>
+                <div className="flex justify-center">
+                    <button
+                        onClick={onClick}  // Attach the onClick handler
+                        className={`
                     p-2
                     px-5
                     border-2
@@ -59,9 +59,9 @@ const PlanCard: React.FC<PlanCardProps> = ({
                     hover:text-white
                     transition duration-300s
                 `}>
-                    Select
-                </button>
-            </div>
+                        Select
+                    </button>
+                </div>
             </div>
         </div>
     );

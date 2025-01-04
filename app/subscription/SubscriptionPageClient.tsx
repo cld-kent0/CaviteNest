@@ -98,13 +98,13 @@ const SubscriptionPageClient = () => {
   const getPlanColors = (planType: string) => {
     switch (planType) {
       case "free":
-        return { lineColor: "black", borderColor: "black", hoverColor: "gray" };
+        return { lineColor: "black", borderColor: "border-black-600", hoverColor: "bg-gray-700" };
       case "premium":
-        return { lineColor: "green", borderColor: "green", hoverColor: "darkgreen" };
+        return { lineColor: "green", borderColor: "border-green-700", hoverColor: "bg-green-700" };
       case "business":
-        return { lineColor: "blue", borderColor: "blue", hoverColor: "darkblue" };
+        return { lineColor: "blue", borderColor: "border-blue-900", hoverColor: "bg-blue-800" };
       default:
-        return { lineColor: "black", borderColor: "black", hoverColor: "gray" };
+        return { lineColor: "black", borderColor: "border-black-600", hoverColor: "bg-gray-700" };
     }
   };
 
@@ -118,7 +118,8 @@ const SubscriptionPageClient = () => {
       description: plan.description,
       price: `₱${plan.price.toFixed(2)}`,
       features: plan.features.join(","),
-      planType: plan.name.toLowerCase(),
+      planType: planType,
+      // planType: plan.name.toLowerCase(),
       lineColor: colors.lineColor,
       borderColor: colors.borderColor,
       hoverColor: colors.hoverColor,

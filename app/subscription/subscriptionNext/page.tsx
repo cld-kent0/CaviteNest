@@ -270,7 +270,7 @@ const SubscriptionNext = () => {
           <div className="flex-none -my-12">
             <h1 className="text-4xl font-extrabold">Select a Plan</h1>
             <div className="flex flex-col gap-4">
-              {planType === "premium plan" && (
+              {planType === "premium" && (
                 <>
                   <PlanCard
                     plan="Quarterly Premium"
@@ -288,7 +288,7 @@ const SubscriptionNext = () => {
                   />
                 </>
               )}
-              {planType === "business plan" && (
+              {planType === "business" && (
                 <>
                   <PlanCard
                     plan="Quarterly Business"
