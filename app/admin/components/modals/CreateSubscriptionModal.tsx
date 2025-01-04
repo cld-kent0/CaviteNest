@@ -27,6 +27,12 @@ const CreateSubscriptionModal: React.FC<CreateSubscriptionModalProps> = ({ isOpe
         features: [],
     });
 
+    const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const price = parseFloat(e.target.value);
+        const annualPrice = price * 2 - 149;
+        setNewPlan({ ...newPlan, price, annualPrice });
+    };
+
     const handleSave = () => {
         if (newPlan.name && newPlan.description && newPlan.price && newPlan.annualPrice) {
             const planWithId = {
@@ -68,12 +74,12 @@ const CreateSubscriptionModal: React.FC<CreateSubscriptionModalProps> = ({ isOpe
                     />
                 </div>
                 <div>
-                    <label htmlFor="price" className="block text-sm font-medium text-gray-700">Price (₱)</label>
+                    <label htmlFor="price" className="block text-sm font-medium text-gray-700">Quarterly Price (₱)</label>
                     <input
                         type="number"
                         id="price"
-                        value={newPlan.price || 0}
-                        onChange={(e) => setNewPlan({ ...newPlan, price: parseFloat(e.target.value) })}
+                        value={newPlan.price || ""}
+                        onChange={handlePriceChange}
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
@@ -83,7 +89,7 @@ const CreateSubscriptionModal: React.FC<CreateSubscriptionModalProps> = ({ isOpe
                         type="number"
                         id="annualPrice"
                         value={newPlan.annualPrice || 0}
-                        onChange={(e) => setNewPlan({ ...newPlan, annualPrice: parseFloat(e.target.value) })}
+                        readOnly
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>

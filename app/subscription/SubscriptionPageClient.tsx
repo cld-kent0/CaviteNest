@@ -11,6 +11,7 @@ type SubscriptionPlan = {
   name: string;
   description: string;
   price: number;
+  annualPrice: number; // Add this field
   features: string[];
 };
 
@@ -34,7 +35,10 @@ const SubscriptionPageClient = () => {
       const res = await fetch("/api/subscription/plans");
       const data = await res.json();
       if (res.ok) {
-        setPlans(data);
+        setPlans(data.map((plan: any) => ({
+          ...plan,
+          annualPrice: plan.annualPrice || 0, // Ensure annualPrice is included
+        })));
       }
     } catch (error) {
       console.error("Error fetching plans:", error);
@@ -135,6 +139,7 @@ const SubscriptionPageClient = () => {
   const toSentenceCase = (text: string) =>
     text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
 
+
   return (
     <div className="min-h-screen">
       <Container>
@@ -153,6 +158,19 @@ const SubscriptionPageClient = () => {
               title={plan.name}
               description={plan.description}
               price={`₱${plan.price.toFixed(2)}`}
+              priceDesc={
+                <>
+                  ₱{plan.annualPrice.toFixed(2)} when you&nbsp;
+                  <span
+                    style={{
+                      textDecoration: "underline",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    pay annually
+                  </span>
+                </>
+              }
               features={plan.features}
               border={true}
               hoverColor={
