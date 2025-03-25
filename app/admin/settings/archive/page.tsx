@@ -287,12 +287,12 @@ const ArchivePage = () => {
         type,
         id,
       });
-      console.log('Unarchive success:', response.data);
+      console.log('Restore success:', response.data);
       fetchArchiveItems(); // Refresh the list after unarchiving
-      toast.success('Item unarchived successfully!');
+      toast.success('Item restore successfully!');
     } catch (error) {
-      console.error('Error performing unarchive action:', error);
-      toast.error('Failed to unarchive item.');
+      console.error('Error performing restore action:', error);
+      toast.error('Failed to restore item.');
     }
   };
 
@@ -310,13 +310,13 @@ const ArchivePage = () => {
     }
   };
 
-  const handleAction = async (action: 'archive' | 'unarchive' | 'delete', item: ArchiveItem) => {
+  const handleAction = async (action: 'archive' | 'restore' | 'delete', item: ArchiveItem) => {
     toast(
       (t) => (
         <div>
           <p>
-            {action === 'unarchive'
-              ? 'Are you sure you want to unarchive this item?'
+            {action === 'restore'
+              ? 'Are you sure you want to restore this item?'
               : action === 'delete'
                 ? 'Are you sure you want to delete this item? This action cannot be undone.'
                 : 'Are you sure you want to archive this item?'}
@@ -326,7 +326,7 @@ const ArchivePage = () => {
               onClick={() => {
                 toast.dismiss(t.id);
                 // Perform the corresponding action
-                if (action === 'unarchive') {
+                if (action === 'restore') {
                   handleUnarchive(item.type, item.id);
                 } else if (action === 'delete') {
                   handleDelete(item.type, item.id);
@@ -439,8 +439,8 @@ const ArchivePage = () => {
                       itemId={item.id}
                       actions={[
                         {
-                          label: item.is_archived ? 'Unarchive' : 'Archive',
-                          onClick: () => handleAction(item.is_archived ? 'unarchive' : 'archive', item),
+                          label: item.is_archived ? 'Restore' : 'Archive',
+                          onClick: () => handleAction(item.is_archived ? 'restore' : 'archive', item),
                         },
                         {
                           label: 'Delete',
