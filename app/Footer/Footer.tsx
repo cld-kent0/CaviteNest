@@ -25,11 +25,10 @@ const Footer = () => {
 
   return (
     <footer
-      className={`flex flex-wrap items-center justify-between bg-white border-t border-gray-300 transition-shadow duration-300 p-4 ${
-        isAtBottom
-          ? "shadow-[0_15px_25px_5px_rgba(0,0,0,0.2)]" // Custom stronger shadow when at the bottom
-          : "shadow-md" // Default shadow
-      }`}
+      className={`flex flex-wrap items-center justify-between bg-white border-t border-gray-300 transition-shadow duration-300 p-4 ${isAtBottom
+        ? "shadow-[0_15px_25px_5px_rgba(0,0,0,0.2)]" // Custom stronger shadow when at the bottom
+        : "shadow-md" // Default shadow
+        }`}
     >
       {/* Left Section (Logo and Links) */}
       <div className="flex items-center w-full sm:w-auto justify-center sm:justify-start">
@@ -93,13 +92,13 @@ const Footer = () => {
 
         {/* GitHub Source Code Link */}
         <a
-          href="https://github.com/cld-kent0/CaviteNest" // Replace with your actual GitHub URL
+          href="https://cavite-nest.vercel.app/" // Replace with your actual GitHub URL | ito yung link https://github.com/cld-kent0/CaviteNest
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-2 text-gray-600 hover:text-black hover:underline transition-colors duration-300"
         >
-          <FaGithub size={24} />
-          <span className="text-sm">GitHub Source Code</span>
+          {/* <FaGithub size={24} />
+          <span className="text-sm">GitHub Source Code</span> */}
         </a>
       </div>
     </footer>
