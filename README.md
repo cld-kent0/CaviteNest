@@ -90,16 +90,16 @@ The platform allows users to list their properties for booking or renting, and e
 - [x] Multiple Images Upload in Listing Property - Allow property owners to upload multiple images per listing
 - Email Notifications
   - [x] Reservations
-  - [ ] Cancellations
+  - [ ] Cancellations [Discontinued]
   - [x] Messages
 - Messaging
-  - [ ] Image uploading
+  - [ ] Image uploading [Discontinued]
 - Locations
   - [ ] Limit the location to only be around Cavite City
 - Error Trapping
   - [x] First Batch
   - [x] Pre-defense Batch
-  - [ ] File formats & sizes (specified & trapped)
+  - [ ] File formats & sizes (specified & trapped) [Discontinued]
 - Design Improvements
   - [x] First Batch
   - [x] Pre-defense Batch
@@ -107,23 +107,6 @@ The platform allows users to list their properties for booking or renting, and e
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AdditionalFeature`)
-3. Commit your Changes (`git commit -m 'Add some AdditionalFeature'`)
-4. Push to the Branch (`git push origin feature/AdditionalFeature`)
-5. Open a Pull Request
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 <!-- TEAM -->
 ## Development Team
